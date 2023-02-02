@@ -33,9 +33,16 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
 
-        $user ->save();
+        if ($user ->save()) {
 
-        View::renderTemplate('Signup/success.html');
+            View::renderTemplate('Signup/success.html'); 
+
+        } else {
+
+            View::renderTemplate('Signup/new.html', [
+                'user' => $user
+            ]);
+
+        }
     }
-
 }
