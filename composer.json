@@ -1,7 +1,6 @@
 {
     "require": {
-        "twig/twig": "~3.0",
-        "twbs/bootstrap": "^5.2"
+        "twig/twig": "~3.0"
     },
     "autoload": {
         "psr-4": {

@@ -3,9 +3,10 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Models\User;
 
 /**
- * Home controller
+ * Signup controller
  *
  * PHP version 7.0
  */
@@ -13,7 +14,7 @@ class Signup extends \Core\Controller
 {
 
     /**
-     * Show the index page
+     * Show the signup page
      *
      * @return void
      */
@@ -21,4 +22,20 @@ class Signup extends \Core\Controller
     {
         View::renderTemplate('Signup/new.html');
     }
+
+
+    /**
+     * Sign up the new user
+     *
+     * @return void
+     */
+    public function createAction()
+    {
+        $user = new User($_POST);
+
+        $user ->save();
+
+        View::renderTemplate('Signup/success.html');
+    }
+
 }
