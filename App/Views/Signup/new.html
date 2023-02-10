@@ -2,6 +2,120 @@
 
 {% block title %}Sign up{% endblock %}
 
+{% block footer %}
+
+
+
+    <script src="/js/hideShowPassword.min.js"></script>
+    <!--<script src="/js/javascrip.js"></script>
+    -->
+
+    <script>
+        /**
+         * Add jQuery Validation plugin method for a valid password
+         *
+         * Valid passwords contain at least one letter and one number.
+         */
+        $.validator.addMethod('validPassword',
+            function(value, element, param) {
+
+                if (value != '') {
+                    if (value.match(/.*[a-z]+.*/i) == null) {
+                        return false;
+                    }
+                    if (value.match(/.*\d+.*/) == null) {
+                        return false;
+                    }
+                    if (value.match(/.*\W+.*/i) == null) {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            'Must contain at least one letter,one number and one special character'
+        );
+
+                
+        $.validator.addMethod('validUsername',
+            function(value, element, param) {
+
+                if (value != '') {
+
+                    if (value.match(/^[A-ZŁŚ][a-ząęółśżźćń]+$/)) {
+                        return true;
+                    }
+                    
+                }
+
+                return false;
+            },
+            'Imię może zawierać tylko litery! Zacznij od wielkiej litery!'
+        ); 
+
+
+        $(document).ready(function() {
+
+            /**
+             * Validate the form
+             */
+            $('#formSignup').validate({
+                errorPlacement: function(error, element) {
+                error.appendTo( element.parent().next() );
+                },
+
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 20,
+                        validUsername: true
+                    },
+                    email: {
+                        required: true,
+                        email: true,
+                        remote: '/account/validate-email'
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8,
+                        maxlength: 20,
+                        validPassword: true
+                    }
+                },
+                messages: {
+                    username: {
+                        required: 'Nazwa użytkownika jest wymagana',
+                        minlength: 'Nazwa użytkownika musi mieć co najmniej 2 znaki',
+                        maxlength: 'Nazwa użytkownika może mieć maksymalnie 20 znaków'
+                    },
+                    email: {
+                        required: 'Adres e-mail jest wymagany',
+                        email: 'Proszę podać prawidłowy adres e-mail',
+                        remote: 'Ten adres e-mail jest już zajęty'
+                    },
+                    password: {
+                        required: 'Hasło jest wymagane',
+                        minlength: 'Hasło musi mieć co najmniej 8 znaków',
+                        maxlength: 'Hasło może mieć maksymalnie 20 znaków'
+                    }
+                }
+
+            });
+
+
+            /**
+              * Show password toggle button
+              */
+            $('#inputPassword').hideShowPassword({
+                show: false,
+                innerToggle: 'focus'
+            });
+        });
+    </script>
+
+{% endblock %}
+
 {% block body %}
 
 <a href="login.php" class="btn btn-lg btn-outline-secondary position-absolute end-0 me-3">Logowanie</a>
@@ -27,35 +141,30 @@
             Rejestracja
         </header>
 
-        <form method="post" action="/signup/create">
-
-            <div class="input-group pt-3 pb-4 m-auto">
+        <form method="post" action="/signup/create" id="formSignup" class="needs-validation" novalidate>
+            
+            <div class="input-group pt-5 pb-1 m-auto ">
                 <label for="inputName" class="input-group-text w-25">Imię</label>
-
                 <input type="text" id="inputName" class="form-control" placeholder="Podaj imię" aria-label="Name" name="username" value="{{ user.username }}" required>
-
+                <div class="text-success"></div>
             </div>
+            <div class="text-danger ms-2 fs-6 position-absolute"></div>
 
-
-            <div class="input-group pt-3 pb-4 m-auto">
+            <div class="input-group pt-5 pb-1 m-auto">
                 <label for="inputEmail" class="input-group-text w-25">E-mail</label>
 
                 <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres Email" aria-label="Email" name="email" value="{{ user.email }}" required>
             </div>
+            <div class="text-danger ms-2 fs-6 position-absolute"></div>
 
-            <div class="input-group pt-3 pb-4 m-auto">
+            <div class="input-group pt-5 pb-1 m-auto">
                 <label for="inputPassword" class="input-group-text w-25">Hasło</label>
 
                 <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password" required>
             </div>
+            <div class="text-danger ms-2 fs-6 position-absolute"></div>
 
-            <div class="input-group pt-3 pb-4 m-auto">
-                <label for="repeatPassword" class="input-group-text w-25">Powtórz hasło</label>
-
-                <input type="password" id="repeatPassword" class="form-control" placeholder="Podaj hasło" aria-label="passwordConfirmation" name="passwordConfirmation" required>
-            </div>
-
-            <div class="col-12 col-md-11 col-lg-9 m-auto">
+            <div class="col-12 col-md-11 col-lg-9 m-auto pt-3">
                 <div class="ms-3 p-3 fs-6">
                     <label>
                         <input type="checkbox" class="form-check-input" value="a" name="statute"> Akceptuję <a href=""
@@ -79,18 +188,47 @@
             <div class="btn-group btn-group-lg mt-5 start-50 translate-middle">
                 <button type="submit" class="btn btn-success">Zarejestruj się</button>
             </div>
+            
 
         </form>
+    
 
     </div>
 
 </article>
+<!--
+<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+<form method="post" action="/signup/create" id="formSignup">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-    crossorigin="anonymous"></script>
+    <div class="input-group pt-3 pb-4 m-auto">
+        <label for="inputName" class="input-group-text w-25">Imię</label>
+
+        <input type="text" id="inputName" class="form-control" placeholder="Podaj imię" aria-label="Name" name="username" value="{{ user.username }}" required>
+        <div class="valid-tooltip">
+            Looks good!
+        </div>
+    </div>
+
+
+    <div class="input-group pt-3 pb-4 m-auto">
+        <label for="inputEmail" class="input-group-text w-25">E-mail</label>
+
+        <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres Email" aria-label="Email" name="email" value="{{ user.email }}" required>
+    </div>
+
+    <div class="input-group pt-3 pb-4 m-auto">
+        <label for="inputPassword" class="input-group-text w-25">Hasło</label>
+
+        <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password" required>
+    </div>
+
+    <button type="submit">Sign up</button>
+
+</form>
+</div>
+-->
+
+
 
 
 {% endblock %}
