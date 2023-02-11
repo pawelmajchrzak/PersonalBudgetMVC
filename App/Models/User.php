@@ -89,7 +89,7 @@ class User extends \Core\Model
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
             $this->errors[] = 'Nieprawidłowy adres email';
         }
-        if ($this->emailExists($this->email)) {
+        if (static::emailExists($this->email)) {
             $this->errors[] = 'Jest już konto z tym emailem!';
         }
 
@@ -123,7 +123,7 @@ class User extends \Core\Model
      *
      * @return boolean  True if a record already exists with the specified email, false otherwise
      */
-    protected function emailExists($email)
+    public static function emailExists($email)
     {
         $sql = 'SELECT * FROM users WHERE email = :email';
 

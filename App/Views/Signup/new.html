@@ -32,7 +32,7 @@
 
                 return true;
             },
-            'Must contain at least one letter,one number and one special character'
+            'Hasło musi zawierać co najmniej jedną literę, jedną cyfrę i jeden znak specjalny.'
         );
 
                 
@@ -98,6 +98,9 @@
                         minlength: 'Hasło musi mieć co najmniej 8 znaków',
                         maxlength: 'Hasło może mieć maksymalnie 20 znaków'
                     }
+                },
+                submitHandler: function(form) {
+                form.submit();
                 }
 
             });
@@ -113,6 +116,7 @@
                                 innerToggle: 'focus'
                             });
                             
+
                            
                       
         });
@@ -146,11 +150,11 @@
             Rejestracja
         </header>
 
-        <form method="post" action="/signup/create" id="formSignup" class="needs-validation" novalidate>
+        <form method="post" action="/signup/create" id="formSignup">
             
             <div class="input-group pt-5 pb-1 m-auto ">
                 <label for="inputName" class="input-group-text w-25">Imię</label>
-                <input type="text" id="inputName" class="form-control" placeholder="Podaj imię" aria-label="Name" name="username" value="{{ user.username }}" required>
+                <input type="text" id="inputName" class="form-control" placeholder="Podaj imię" aria-label="Name" name="username" value="{{ user.username }}">
                 <div class="text-success"></div>
             </div>
             <div class="text-danger ms-2 fs-6 position-absolute"></div>
@@ -158,14 +162,14 @@
             <div class="input-group pt-5 pb-1 m-auto">
                 <label for="inputEmail" class="input-group-text w-25">E-mail</label>
 
-                <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres Email" aria-label="Email" name="email" value="{{ user.email }}" required>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres Email" aria-label="Email" name="email" value="{{ user.email }}">
             </div>
             <div class="text-danger ms-2 fs-6 position-absolute"></div>
 
             <div class="input-group pt-5 pb-1 m-auto">
                 <label for="inputPassword" class="input-group-text w-25">Hasło</label>
 
-                <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password" required>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password">
                 <div class="text-danger ms-2 fs-6 position-absolute mt-4 pt-3"></div>
             </div>
            
