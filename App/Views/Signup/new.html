@@ -7,8 +7,7 @@
 
 
     <script src="/js/hideShowPassword.min.js"></script>
-    <!--<script src="/js/javascrip.js"></script>
-    -->
+
 
     <script>
         /**
@@ -104,14 +103,20 @@
             });
 
 
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
-            });
+                            /**
+                             * Show password toggle button
+                             */
+
+                            
+                            $('#inputPassword').hideShowPassword({
+                                show: false,
+                                innerToggle: 'focus'
+                            });
+                            
+                           
+                      
         });
+        
     </script>
 
 {% endblock %}
@@ -161,8 +166,9 @@
                 <label for="inputPassword" class="input-group-text w-25">Hasło</label>
 
                 <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password" required>
+                <div class="text-danger ms-2 fs-6 position-absolute mt-4 pt-3"></div>
             </div>
-            <div class="text-danger ms-2 fs-6 position-absolute"></div>
+           
 
             <div class="col-12 col-md-11 col-lg-9 m-auto pt-3">
                 <div class="ms-3 p-3 fs-6">
