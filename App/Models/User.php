@@ -52,8 +52,12 @@ class User extends \Core\Model
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 
-            $sql = 'INSERT INTO users (username, password, email)
-                    VALUES (:username, :password_hash, :email)';
+            $token = new Token();
+            $hashed_token = $token->getHash();
+            $this->activation_token = $token->getValue();
+
+            $sql = 'INSERT INTO users (username, password, email, activation_hash)
+                    VALUES (:username, :password_hash, :email, :activation_hash)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -61,6 +65,7 @@ class User extends \Core\Model
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
 
             return $stmt->execute();
         }
@@ -97,26 +102,33 @@ class User extends \Core\Model
         }
 
         // Password
-        /** 
-        *   if ($this->password != $this->passwordConfirmation) {
-        *    $this->errors[] = 'Hasła są różne!';
-        *   }
-        */
-        if ((strlen($this->password) < 8) || (strlen($this->password) > 20)) {
+        
+        if (isset($this->password)) {
+
+            if (strlen($this->password) < 8) {
+                $this->errors[] = 'Hasło musi posiadać od 8 do 20 znaków!';
+            }
+
+            if ((strlen($this->password) > 20)) {
             $this->errors[] = 'Hasło musi posiadać od 8 do 20 znaków!';
-        }
+            }
 
-        if (preg_match('/.*[a-z]+.*/i', $this->password) == false) {
-            $this->errors[] = 'Hasło musi posiadać przynajmniej jedną literę!';
-        }
+            if (preg_match('/.*[a-z]+.*/i', $this->password) == false) {
+                $this->errors[] = 'Hasło musi posiadać przynajmniej jedną literę!';
+            }
 
-        if (preg_match('/.*\W+.*/i', $this->password) == false) {
-            $this->errors[] = 'Hasło musi posiadać conajmniej jeden znak specjalny!';
-        }
+            if (preg_match('/.*\W+.*/i', $this->password) == false) {
+                $this->errors[] = 'Hasło musi posiadać conajmniej jeden znak specjalny!';
+            }
 
-        if (preg_match('/.*[A-Z]+.*/i', $this->password) == false) {
-            $this->errors[] = 'Hasło musi posiadać przynajmniej jedną wielką literę!';
-        }
+            if (preg_match('/.*[A-Z]+.*/i', $this->password) == false) {
+                $this->errors[] = 'Hasło musi posiadać przynajmniej jedną wielką literę!';
+            }
+
+        } 
+
+
+        
     }
 
     /**
@@ -174,7 +186,7 @@ class User extends \Core\Model
     {
         $user = static::findByEmail($email);
 
-        if ($user) {
+        if ($user && $user->is_active) {
             if (password_verify($password, $user->password)) {
                 return $user;
             }
@@ -364,6 +376,102 @@ class User extends \Core\Model
 
             $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+
+        return false;
+    }
+
+    /**
+     * Send an email to the user containing the activation link
+     *
+     * @return void
+     */
+    public function sendActivationEmail()
+    {
+        $url = 'http://' . $_SERVER['HTTP_HOST'] . '/signup/activate/' . $this->activation_token;
+
+        $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
+        $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
+
+        Mail::send($this->email, 'Account activation', $text, $html);
+    }
+
+    /**
+     * Activate the user account with the specified activation token
+     *
+     * @param string $value Activation token from the URL
+     *
+     * @return void
+     */
+    public static function activate($value)
+    {
+        $token = new Token($value);
+        $hashed_token = $token->getHash();
+
+        $sql = 'UPDATE users
+                SET is_active = 1,
+                    activation_hash = null
+                WHERE activation_hash = :hashed_token';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':hashed_token', $hashed_token, PDO::PARAM_STR);
+
+        $stmt->execute();                
+    }
+
+    /**
+     * Update the user's profile
+     *
+     * @param array $data Data from the edit profile form
+     *
+     * @return boolean  True if the data was updated, false otherwise
+     */
+    public function updateProfile($data)
+    {
+        $this->username = $data['username'];
+        $this->email = $data['email'];
+        unset($this->password);
+        // Only validate and update the password if a value provided
+        if ($data['password'] != '') {
+            $this->password = $data['password'];
+        } 
+
+        
+
+        $this->validate();
+
+        if (empty($this->errors)) {
+            
+            $sql = 'UPDATE users
+                    SET username = :username,
+                        email = :email';
+
+            // Add password if it's set
+            if (isset($this->password)) {
+                $sql .= ', password = :password';
+            }
+
+            $sql .= "\nWHERE id = :id";
+
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            // Add password if it's set
+            if (isset($this->password)) {
+
+                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
+
+            }
 
             return $stmt->execute();
         }

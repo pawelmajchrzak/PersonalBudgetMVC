@@ -34,42 +34,5 @@ class Mail
         'text'    => $text
       ]);
     }
-
-      
-      /*
-        $mg = Mailgun::create('Fxufr7z6HCjjBEkaoFOfYwGCwQE0Dv8s', 'https://api.mailgun.net/v3/sandbox0d9a2d2e64154bc4adc734c4231571ed.mailgun.org');
-        $domain = "DOMAIN";
-
-        $result = $mg->domains()->updateWebScheme($domain, 'https');
-
-print_r($result);
-
-        $mg->messages()->send($domain, ['from'    => 'your-sender@your-domain.com',
-                                   'to'      => $to,
-                                   'subject' => $subject,
-                                   'text'    => $text]);
-    */
-
-
-
-        /*
-        $mg = Mailgun::create(Config::MAILGUN_API_KEY, 'https://api.eu.mailgun.net');
-        
-        $mg->messages()->send($domain, [
-            'from'    => 'your-sender@your-domain.com',
-            'to'      => $to,
-            'subject' => $subject,
-            'text'    => $text,
-            'html'    => $html
-          ]);
-          */
-          
-          /*
-        $mg->sendMessage($domain, ['from'    => 'your-sender@your-domain.com',
-                                   'to'      => $to,
-                                   'subject' => $subject,
-                                   'text'    => $text,
-                                   'html'    => $html]);
-          */
     
 }
