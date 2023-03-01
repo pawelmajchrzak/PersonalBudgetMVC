@@ -3,7 +3,14 @@
 namespace App;
 
 use App\Config;
-use Mailgun\Mailgun;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../vendor/phpmailer/phpmailer/src/Exception.php';
+require '../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require '../vendor/phpmailer/phpmailer/src/SMTP.php';
 
 /**
  * Mail
@@ -25,14 +32,41 @@ class Mail
      */
     public static function send($to, $subject, $text, $html)
     {
-      $mg = Mailgun::create('9a0381db37ca6d60a851a7077a016a5c-ca9eeb88-208b7ba3'); // For US servers
 
-      $mg->messages()->send('sandbox0d9a2d2e64154bc4adc734c4231571ed.mailgun.org', [
-        'from'    => 'your-sender@your-domain.com',
-        'to'      => $to,
-        'subject' => $subject,
-        'text'    => $text
-      ]);
+      try {
+        $mail = new PHPMailer(true);
+
+        //Server settings
+        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+        $mail->Username   = 'pawelmaj0@gmail.com';                     //SMTP username
+        $mail->Password   = 'zvuyaawlcarmquhb';                               //SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    
+        //Recipients
+        $mail->CharSet = 'UTF-9';
+        $mail->setFrom('from@example.com', 'Mailer');
+        $mail->addAddress($to);               
+        $mail->addReplyTo('info@example.com', 'Information');
+        
+    
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = $subject;
+        $mail->Body    = $html;
+        $mail->AltBody = $text;
+    
+        $mail->send();
+        echo 'Message has been sent';
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+
+
+
     }
     
 }
