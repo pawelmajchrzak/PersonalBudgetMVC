@@ -151,4 +151,19 @@ circle {
 .alert-warning {
     background-color: #fcf8e3;
 }
+
 */
+.input-group-text {
+    background-color: #e9ecef;
+	border: 1px solid #ced4da;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+
+}
+
+.form-check-input {
+    border: var(--bs-border-width) solid #ced4da;
+
+}

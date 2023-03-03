@@ -30,6 +30,20 @@
         ); 
 
 
+        function submitUserForm() {
+            var response = grecaptcha.getResponse();
+            if(response.length == 0) {
+                document.getElementById('g-recaptcha-error').innerHTML = 'Potwierdź, że nie jesteś botem';
+                return false;
+            }
+            return true;
+        }
+
+        function verifyCaptcha() {
+            document.getElementById('g-recaptcha-error').innerHTML = '';
+        }
+
+        
         $(document).ready(function() {
 
             /**
@@ -57,6 +71,9 @@
                         minlength: 8,
                         maxlength: 20,
                         validPassword: true
+                    },
+                    statute: {
+                        required: true
                     }
                 },
                 messages: {
@@ -74,7 +91,11 @@
                         required: 'Hasło jest wymagane',
                         minlength: 'Hasło musi mieć co najmniej 8 znaków',
                         maxlength: 'Hasło może mieć maksymalnie 20 znaków'
+                    },
+                    statute: {
+                        required: 'Potwierdź akceptację regulaminu i Polityki Prywatności'
                     }
+
                 },
                 submitHandler: function(form) {
                 form.submit();
@@ -94,8 +115,7 @@
                             });
                             
 
-                           
-                      
+         
         });
         
     </script>
@@ -104,18 +124,11 @@
 
 {% block body %}
 
-<a href="login.php" class="btn btn-lg btn-outline-secondary position-absolute top-0 end-0 me-3 mt-3">Logowanie</a>
+<a href="/login" class="btn btn-lg btn-outline-secondary position-absolute top-0 end-0 me-3 mt-3">Logowanie</a>
 
 
 
-{% if user.errors is not empty %}
-<p>Errors:</p>
-<ul>
-    {% for error in user.errors %}
-        <li>{{ error }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+
 
 <article>
 
@@ -125,9 +138,9 @@
             Rejestracja
         </header>
 
-        <form method="post" action="/signup/create" id="formSignup">
+        <form method="post" action="/signup/create" id="formSignup" onsubmit="return submitUserForm();">
             
-            <div class="input-group pt-5 pb-1 m-auto ">
+            <div class="input-group pt-3 pb-1 m-auto ">
                 <label for="inputName" class="input-group-text w-25">Imię</label>
                 <input type="text" id="inputName" class="form-control" placeholder="Podaj imię" aria-label="Name" name="username" value="{{ user.username }}">
                 <div class="text-success"></div>
@@ -156,15 +169,16 @@
                             target="_blank" class="link">Regulamin</a> i <a href="" target="_blank"
                             class="link">Politykę prywatności</a>
                     </label>
+                    <div class="text-danger ms-2 fs-6 position-absolute mt-2 pt-3"></div>
                     <br />
                     Masz już konto? <a href="login.php" class="link">Zaloguj się</a>
 
                 </div>
-
+                <br />
                 <div class="position-absolute start-50 translate-middle-x">
 
-                    <div class="g-recaptcha" data-sitekey="6LeQ1OQjAAAAADZ_Iswn1RcAXpgAWXbxjNq0Go0n" ></div>
-
+                    <div class="g-recaptcha" data-sitekey="6LeQ1OQjAAAAADZ_Iswn1RcAXpgAWXbxjNq0Go0n" data-callback="verifyCaptcha"></div>
+                    <div class="text-danger fs-6" id="g-recaptcha-error"></div>
                 </div>
                 <br /><br /><br />
             </div>
@@ -176,11 +190,21 @@
             
 
         </form>
-    
 
     </div>
-
+    <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+                {% if user.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
 </article>
+
+
 <!--
 <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
 <form method="post" action="/signup/create" id="formSignup">

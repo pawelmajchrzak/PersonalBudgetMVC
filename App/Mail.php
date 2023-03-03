@@ -47,10 +47,10 @@ class Mail
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
         //Recipients
-        $mail->CharSet = 'UTF-9';
+        $mail->CharSet = 'UTF-8';
         $mail->setFrom('from@example.com', 'Mailer');
         $mail->addAddress($to);               
-        $mail->addReplyTo('info@example.com', 'Information');
+        //$mail->addReplyTo('info@example.com', 'Information');
         
     
         //Content
