@@ -48,6 +48,8 @@ class User extends \Core\Model
     {
         $this->validate();
 
+        $this->validateStatuteAndCaptcha();
+
         if (empty($this->errors)) {
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
@@ -127,9 +129,28 @@ class User extends \Core\Model
 
         } 
 
+    }
 
+    public function validateStatuteAndCaptcha()
+    {
+        //Czy zaakceptowano regulamin?        
+        if (!isset($this->statute))
+		{
+            $this->errors[] = 'Potwierdź akceptację regulaminu!';
+		}	
+        
+        //Bot or not? Oto jest pytanie!
+        
+        $secretKey = "6LeQ1OQjAAAAAAS2VjtWBMwrNIM_uL9U5YHAwgml";
+		$checkCaptcha = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$this->{'g-recaptcha-response'});
+		$answerCaptcha = json_decode($checkCaptcha);
+        if ($answerCaptcha->success==false)
+        {
+            $this->errors[] = 'Potwierdź że nie jesteś botem';
+		}
         
     }
+
 
     /**
      * See if a user record already exists with the specified email

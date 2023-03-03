@@ -1,3 +1,143 @@
+body {
+    background-color: #eee;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    margin-bottom:50px;
+}
+
+h1.logo
+{
+	font-size: 40px;
+	font-weight: 400;
+	font-family: 'Caveat', cursive;
+	line-height: 40px;
+	margin-top: 10px;
+	margin-bottom: 22px;
+}
+
+select:hover,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus
+{
+	border: 1px solid #5BEB3D;
+}
+
+select:hover,
+input[type=text]:hover,
+input[type=password]:hover,
+input[type=email]:hover,
+input[type=number]:hover
+{
+	border: 1px solid #5BEB3D;
+}
+
+.link
+{
+	color: #5BEB3D;
+	text-decoration: none;
+}
+
+.link:hover
+{
+	text-decoration: underline;
+}
+
+.link:visited
+{
+	color: #5BEB3D;
+	text-decoration: none;
+}
+
+.cleanLink,
+.cleanLink:hover,
+.cleanLink:visited
+{
+	color: #000;
+	text-decoration: none;
+}
+
+ol > li
+{
+	height: 55px;
+}
+
+ol > li:hover > a
+{
+	border-bottom: 2px solid #4bb063;
+	padding-bottom: 15px;
+}
+
+ol > li:hover > ul
+{
+	display: block;
+}
+
+ol > li > ul > li > a
+{
+	font-size: 16px;
+	height: 30px;
+}
+
+ol > li > ul > li:hover > a
+{
+	border-bottom: 1px solid #4bb063;
+	height: 30px;
+}
+
+.pie {
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+	margin-top: 100px;
+}
+
+svg {
+  width: 300px; height: 300px;
+  transform: rotate(-90deg);
+  background: yellowgreen;
+  border-radius: 50%;
+}
+
+circle {
+  fill: yellowgreen;
+  stroke: #655;
+  stroke-width: 32;
+  stroke-dasharray: 38 100; /* for 38% */
+}
+
+.pie2 {
+	margin-left: auto;
+	margin-right: auto;
+	width: 150px;
+	margin-top: 40px;
+}
+
+.pie2 > svg {
+  width: 150px; height: 150px;
+  transform: rotate(-90deg);
+  background: yellowgreen;
+  border-radius: 50%;
+}
+
+.pie2 > circle {
+  fill: yellowgreen;
+  stroke: #655;
+  stroke-width: 32;
+  stroke-dasharray: 38 100; /* for 38% */
+}
+
+.navbar
+{
+	min-height: 57px;
+}
+
+.welcomeConteiner
+{
+	min-height: 600px;
+}
+/*
 .alert {
     border: 1px solid #ccc;
     padding: 6px;
@@ -11,3 +151,4 @@
 .alert-warning {
     background-color: #fcf8e3;
 }
+*/

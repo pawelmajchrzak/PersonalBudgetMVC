@@ -4,14 +4,35 @@
 
 {% block body %}
 
-    <h1>Welcome</h1>
+
 
     {% if current_user %}
         Hello {{ current_user.username }}.
 
         <a href="/logout">Log out</a>
     {% else %}
-        <a href="/signup/new">Sign up</a> or <a href="/login">log in</a>.
+    <article>
+	
+		<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+		
+			<header class="h4 text-start mx-auto my-3 text-center" style="letter-spacing: 2px;">
+				Witaj w aplikacji Budżet osobisty!
+			</header>
+			
+			<div class="input-group p-3 m-auto text-center px-5">
+				Ta aplikacja pozwoli usystematyzować Twoj budżet domowy. 
+				Dzięki temu będziesz miał kontrolę nad finansami.
+			</div>
+
+			<div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+				<button type="button"  class="btn btn-outline-success me-2 btn-lg" onclick="location.href='/signup/new';">Zarejestruj się</button>
+				<button type="button" class="btn btn-success ms-2 btn-lg" onclick="location.href='/login';">Zaloguj się</button>
+			</div>
+				
+		</div>
+	
+	</article>
+       
     {% endif %}
 
 {% endblock %}
