@@ -3,9 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-</head>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Caveat&family=Lato:wght@300;400;700&family=Poppins:wght@200;400&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/css/fontello.css" type="text/css" />
+	<link rel="icon" href="/image/logo.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </head>
 <body>
+    {% if current_user %}
+        <header class="col-12 col-lg-11 col-xl-10 col-xxl-8 px-3 m-auto mt-3 pt-4">
+            <h1 class="logo"><a href="/" class="cleanLink"><i class="icon-money"></i>  Budżet osobisty</a></h1>
+        </header>
+    {% else %}
+        <header class="col-12 col-md-8 col-lg-7 col-xl-6 col-xxl-5 px-3 m-auto mt-3 pt-4">
+            <h1 class="logo"><i class="icon-money"></i>  Budżet osobisty</h1>
+        </header>     
+    {% endif %}
+    
+    <div style="height: 35px;" class="mt-0">
+        {% for message in flash_messages %}
+        <div class="alert alert-{{ message.type }} h-75 pt-0 fs-6 text-center">
+            {{ message.body }}
+        </div>
+        {% endfor %}
+    </div>
+
+
+    {% if current_user %}
+    <div class="col-lg-11 col-xl-10 col-xxl-8 bg-white m-2 m-lg-auto border border-light rounded p-2 shadow-lg">	
+		
+		<nav class="navbar navbar-light text-center navbar-expand-lg pt-3 px-3 mb-4">
+	
+			<button class="navbar-toggler"
+					type="button"
+					data-bs-toggle="collapse"
+					data-bs-target="#menu"
+					aria-controls="menu"
+					aria-expanded="false"
+					aria-label="Przełącznik nawigacji"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="menu">
+			
+				<ol class="navbar-nav m-lg-auto col-12">
+					<li class="nav-item col-lg-3"><a class="nav-link" href="/addIncome"><i class="icon-money-1"></i>Dodaj przychód</a></li>
+					<li class="nav-item col-lg-3"><a class="nav-link" href="addExpense.php"><i class="icon-basket"></i>Dodaj wydatek</a></li>
+					<li class="nav-item col-lg-3"><a class="nav-link" href="viewBalanceSheet.php"><i class="icon-chart-pie"></i>Przeglądaj bilans</a></li>
+					<li class="nav-item dropdown col-lg-3"><a class="nav-link" href="" data-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"><i class="icon-cog-alt"></i>Ustawienia <i class="icon-down-open"></i></a>
+						<ul class="dropdown-menu" aria-labelledby="submenu">
+							<li><a class="dropdown-item" href="/profile/show">Edytuj konto</a></li>
+							<li><a class="dropdown-item" href="#">Preferencje użytkownika</a></li>
+							<li><a class="dropdown-item" href="#">Edytuj/Usuń operację</a></li>
+						</ul>					
+					</li>
+				</ol>
+			</div>
+			
+		</nav>
+    {% endif %}
+    
+    <!--
+    <nav>
+        <ul>
+            
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile/show">Profile</a></li>
+                <li><a href="/logout">Log out</a></li>                                
+            
+        </ul>
+    </nav>
+    -->
+
     {% block body %}
+    {% endblock %}
+    
+    {% if current_user %}
+    </div>
+    {% endif %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+
+    {% block footer %}
     {% endblock %}
 </body>
 </html>

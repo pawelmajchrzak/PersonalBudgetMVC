@@ -1,11 +1,18 @@
 {
     "require": {
-        "twig/twig": "~3.0"
+        "twig/twig": "~3.0",       
+        "symfony/http-client": "^5.4",
+        "nyholm/psr7": "^1.5",
     },
     "autoload": {
         "psr-4": {
             "Core\\": "Core/",
             "App\\": "App/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     }
 }
