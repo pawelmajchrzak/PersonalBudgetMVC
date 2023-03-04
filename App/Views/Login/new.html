@@ -4,7 +4,59 @@
 
 {% block body %}
 
+<a href="/signup/new" class="btn btn-lg btn-outline-secondary position-absolute top-0 end-0 me-3 mt-3">Rejestracja</a>
+
+<article>
+	
+    <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+    
+        <header class="h3 text-start m-3" style="letter-spacing: 2px;">
+            Logowanie
+        </header>
+        
+        <form action="/login/create" method="post">
+
+            <div class="input-group p-3 m-auto">
+                <span class="input-group-text w-25">E-mail</span>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres E-mail" aria-label="Email" name="email" autofocus value="{{ email }}">
+            </div>
+
+            <div class="input-group p-3 m-auto">
+                <span class="input-group-text w-25">Hasło</span>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password">
+            </div>
+
+            <div class="col-12 col-md-11 col-lg-9 m-auto pt-3">
+                <div class="ms-3 p-3 fs-6">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="remember_me" {% if remember_me %} checked="checked"{% endif %}> Zapamiętaj mnie
+                    </label>
+                    <div class="text-danger ms-2 fs-6 position-absolute mt-2 pt-3"></div>
+
+                </div>
+
+            </div>
+
+            <div class="col-8 m-auto">
+                <div class="ms-3 p-2 fs-6">
+                    <a href="/password/forgot" class="link"> Przypomnienie hasła </a>
+                    <br />
+                    Nie masz konta? <a href="/signup/new" class="link">Zarejestruj się</a>
+                </div>
+            </div>
+            
+            <div class="btn-group btn-group-lg mt-5 start-50 translate-middle">
+                <button type="submit" class="btn btn-success">Zaloguj się</button>
+            </div>
+            
+        </form>	
+    
+    </div>
+
+</article>
+    <!--
     <h1>Log in</h1>
+
 
     <form action="/login/create" method="post">
 
@@ -26,5 +78,6 @@
         <a href="/password/forgot">Forgot password?</a>
 
     </form>
+    -->
 
 {% endblock %}

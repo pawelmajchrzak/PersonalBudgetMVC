@@ -33,37 +33,23 @@ class Signup extends \Core\Controller
     {
         $user = new User($_POST);
 
+        if ($user ->save()) {
 
-		//$secretKey = "6LeQ1OQjAAAAAAS2VjtWBMwrNIM_uL9U5YHAwgml";
-		//$checkCaptcha = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
-		//$answerCaptcha = json_decode($checkCaptcha);
+            $user->sendActivationEmail();
 
-        //if ($answerCaptcha->success==true) 
-        //{
-
-            if ($user ->save()) {
-
-                $user->sendActivationEmail();
-
-                header('Location://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
-                exit();
+            header('Location://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
+            exit();
 
 
-            } else {
+        } else {
 
-                View::renderTemplate('Signup/new.html', [
-                    'user' => $user
-                ]);
+            View::renderTemplate('Signup/new.html', [
+                'user' => $user
+            ]);
 
-            }
+        }
         
-        //} else 
-        //{
 
-        //    View::renderTemplate('Signup/new.html', [
-        //    'user' => $user
-        //    ]);
-        //}
     }
 
     public function successAction()
@@ -91,5 +77,15 @@ class Signup extends \Core\Controller
     public function activatedAction()
     {
         View::renderTemplate('Signup/activated.html');
+    }
+
+    public function statuteAction()
+    {
+        View::renderTemplate('Signup/statute.html');
+    }
+
+    public function privacyAction()
+    {
+        View::renderTemplate('Signup/privacy.html');
     }
 }
