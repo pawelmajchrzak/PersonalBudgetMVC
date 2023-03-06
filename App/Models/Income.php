@@ -42,22 +42,20 @@ class Income extends \Core\Model
     {
         $this->validate();
 
+        echo $_SESSION['id'];
+
+
         if (empty($this->errors)) {
 
-            echo 'Walidacja udana';
-            /*
-            $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
+            //echo 'Walidacja udana';
 
-            $token = new Token();
-            $hashed_token = $token->getHash();
-            $this->activation_token = $token->getValue();
-
-            $sql = 'INSERT INTO users (username, password, email, activation_hash)
+/*
+            $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
                     VALUES (:username, :password_hash, :email, :activation_hash)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
-
+            
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
