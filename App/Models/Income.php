@@ -42,27 +42,29 @@ class Income extends \Core\Model
     {
         $this->validate();
 
-        echo $_SESSION['id'];
+        //echo $_SESSION['id'];
 
 
         if (empty($this->errors)) {
 
-            //echo 'Walidacja udana';
+            echo 'Walidacja udana';
+            //exit();
 
-/*
+
             $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
-                    VALUES (:username, :password_hash, :email, :activation_hash)';
+                    VALUES (:id, :category, :amount, :date, :comment)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
             
-            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
-            $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-            $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
+            $stmt->bindValue(':category', '5', PDO::PARAM_STR);
+            $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
+            $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
+            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
+            $stmt->bindValue(':id', '15', PDO::PARAM_STR);
 
             return $stmt->execute();
-            */
+            
         }
 
         return false;
@@ -80,8 +82,14 @@ class Income extends \Core\Model
         if(is_numeric($this->amount)==false) {
             $this->errors[] = 'Wpisz poprawny format liczby!';
         }
+        else if($this->amount<0) {
+            $this->errors[] = 'Kwota nie może być ujemna';
+        }
+        else {
+            $this->amount = number_format($this->amount, 2, '.', '');
+        }
         
-        $this->amount = number_format($this->amount, 2, '.', '');
+        
 
 
         //Sprawdź poprawność daty
@@ -101,7 +109,7 @@ class Income extends \Core\Model
 
         //walidacja kategorii
         if ($this->category == '') {
-            $this->errors[] = 'Kwota jest wymagana!';
+            $this->errors[] = 'Kategoria jest wymagana!';
         }
 
         if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->category) == false) {

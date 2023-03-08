@@ -4,7 +4,99 @@
 
 {% block footer %}
 
+<script>
 
+    $.validator.addMethod('validAmount',
+                function(value, element, param) {
+
+                    if (value != '') {
+
+                        if(is_numeric(value)==true) {
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                'Wpisz poprawny format liczby!'
+    ); 
+
+    $.validator.addMethod('validAmount',
+                function(value, element, param) {
+
+                    if (value != '') {
+
+                        if(is_numeric(value)==true) {
+                            return true;
+                        }
+                    }
+                    return false;
+                },
+                'Wpisz poprawny format liczby!'
+    ); 
+
+    $(document).ready(function() {
+
+        $('#formAddIncome').validate({
+            errorPlacement: function(error, element) {
+            error.appendTo( element.parent().next() );
+            },
+
+            rules: {
+                amount: {
+                    required: true,
+                    minlength: 2,
+                    maxlength: 20,
+                    validAmount: true
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    remote: '/account/validate-email'
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20,
+                    validPassword: true
+                },
+                statute: {
+                    required: true
+                }
+            },
+            messages: {
+                amount: {
+                    required: 'Kwota jest wymagana',
+                    minlength: 'Nazwa użytkownika musi mieć co najmniej 2 znaki',
+                    maxlength: 'Nazwa użytkownika może mieć maksymalnie 20 znaków'
+                },
+                email: {
+                    required: 'Adres e-mail jest wymagany',
+                    email: 'Proszę podać prawidłowy adres e-mail',
+                    remote: 'Ten adres e-mail jest już zajęty'
+                },
+                password: {
+                    required: 'Hasło jest wymagane',
+                    minlength: 'Hasło musi mieć co najmniej 8 znaków',
+                    maxlength: 'Hasło może mieć maksymalnie 20 znaków'
+                },
+                statute: {
+                    required: 'Potwierdź akceptację regulaminu i Polityki Prywatności'
+                }
+
+            },
+            submitHandler: function(form) {
+            form.submit();
+            }
+
+        });
+                        
+
+
+    });
+
+
+
+</script>
 
 
 
@@ -23,7 +115,7 @@
                     Dodaj przychód
                 </header>
                 
-                <form method="post" action="/addIncome/create">
+                <form method="post" action="/addIncome/create" >
                 
                     <div class="row m-0 m-lg-3">
                         <div class="col-12 col-lg-6">
@@ -55,15 +147,11 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Kategoria</span>
-                                <select class="form-select" name="category" id="inputCategory" aria-label="category" value="{{ income.category }}"> 
+                                <select class="form-select" name="category" id="inputCategory" aria-label="category" value="{{ income.category }}" required> 
 
                                     <option value="cat0" selected disabled>	</option>
                                     
-                                    {% for category in incomesCategory %}
-                                    <option value="{{ category.id }}">
-                                            {{ category.category }}
-                                    </option>
-                                    {% endfor %}
+
                                     <option value="cat2" >	Spadek</option>
 
 

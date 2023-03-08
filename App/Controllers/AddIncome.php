@@ -32,11 +32,11 @@ class AddIncome extends \Core\Controller
 
         
         $income = new Income($_POST);
-        $income ->save();
-/*
-        if ($user ->save()) {
+        
 
-            $user->sendActivationEmail();
+        if ($income ->save()) {
+
+            
 
             header('Location://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
             exit();
@@ -44,12 +44,12 @@ class AddIncome extends \Core\Controller
 
         } else {
 
-            View::renderTemplate('Signup/new.html', [
-                'user' => $user
+            View::renderTemplate('AddIncome/new.html', [
+                'income' => $income
             ]);
 
         }
-        */
+        
 
     }
 /*
