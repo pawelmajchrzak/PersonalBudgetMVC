@@ -58,7 +58,12 @@
                                 <select class="form-select" name="category" id="inputCategory" aria-label="category" value="{{ income.category }}"> 
 
                                     <option value="cat0" selected disabled>	</option>
-                                    <option value="cat1" >	Wynagrodzenie</option>
+                                    
+                                    {% for category in incomesCategory %}
+                                    <option value="{{ category.id }}">
+                                            {{ category.category }}
+                                    </option>
+                                    {% endfor %}
                                     <option value="cat2" >	Spadek</option>
 
 

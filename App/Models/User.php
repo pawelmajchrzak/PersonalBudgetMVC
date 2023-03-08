@@ -173,7 +173,7 @@ class User extends \Core\Model
         
         //Bot or not? Oto jest pytanie!
         
-        $secretKey = "6LeQ1OQjAAAAAAS2VjtWBMwrNIM_uL9U5YHAwgml";
+        $secretKey = Config::CAPTCHA_SECRET_KEY;
 		$checkCaptcha = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$this->{'g-recaptcha-response'});
 		$answerCaptcha = json_decode($checkCaptcha);
         if ($answerCaptcha->success==false)

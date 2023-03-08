@@ -144,6 +144,25 @@ class Income extends \Core\Model
         return $stmt->fetch();
     }
 
+    public static function selectIncomesCategory()
+    {
+        $id = $_SESSION['id'];
+
+        $sql = "
+                SELECT id, name
+                FROM incomes_category_assigned_to_users
+                WHERE user_id = :id
+                ";
+
+        $db = static::getDb();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }   
+
     /*
     public function updateProfile($data)
     {
