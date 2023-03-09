@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Add Income{% endblock %}
+
+{% block body %}
+
+
+
+    <div class="p-3 m-auto text-center px-5">
+        Przychód został dodany! 
+        <br>
+        Jeśli chcesz dodać kolejny przychód kliknij poniższy przycisk
+    </div>
+    <div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+        <button type="button"  class="btn btn-outline-success " onclick="location.href='/addIncome';">Dodaj kolejny przychód</button>
+    </div>
+
+
+
+{% endblock %}

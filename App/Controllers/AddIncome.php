@@ -38,7 +38,7 @@ class AddIncome extends \Core\Controller
 
             
 
-            header('Location://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
+            header('Location://'.$_SERVER['HTTP_HOST'].'/addIncome/success', true, 303);
             exit();
 
 
@@ -52,13 +52,13 @@ class AddIncome extends \Core\Controller
         
 
     }
-/*
+
     public function successAction()
     {
-        View::renderTemplate('Signup/success.html'); 
+        View::renderTemplate('AddIncome/success.html'); 
     }
 
-
+/*
     public function activateAction()
     {
         User::activate($this->route_params['token']);

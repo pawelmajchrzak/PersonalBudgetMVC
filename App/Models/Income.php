@@ -106,22 +106,26 @@ class Income extends \Core\Model
 		if(checkdate($month, $day, $year)==false) {
 			$this->errors[] ="Wpisz poprawny format daty!";
 		}
-
         //walidacja kategorii
-        if ($this->category == '') {
+        if (!isset($this->category))
+		{
+            $this->errors[] = 'Wybierz kategorię!';
+		}	
+        else if($this->category == '') {
             $this->errors[] = 'Kategoria jest wymagana!';
         }
-
-        if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->category) == false) {
+        else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->category) == false) {
             $this->errors[] = 'Kategoria może składać się tylko z liter i cyfr';
         }
+
+
 
 
         //walidacja komentarza
         if (isset($this->comment)) {
 
             if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->comment) == false) {
-                $this->errors[] = 'Kategoria może składać się tylko z liter i cyfr';
+                $this->errors[] = 'Komentarz może składać się tylko z liter i cyfr';
             }
 
         }
