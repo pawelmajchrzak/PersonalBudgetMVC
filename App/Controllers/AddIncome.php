@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Models\User;
 use \App\Models\Income;
 use App\Date;
+use \App\Flash;
 
 /**
  * Signup controller
@@ -43,6 +44,7 @@ class AddIncome extends \Core\Controller
             
 
             header('Location://'.$_SERVER['HTTP_HOST'].'/addIncome/success', true, 303);
+            Flash::addMessage('Dodano nowy przychód');
             exit();
 
 
