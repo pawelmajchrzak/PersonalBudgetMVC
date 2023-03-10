@@ -43,7 +43,7 @@ class Income extends \Core\Model
         $this->validate();
 
         //echo $_SESSION['id'];
-
+        $id = (int)$_SESSION['user_id'];
 
         if (empty($this->errors)) {
 
@@ -57,11 +57,11 @@ class Income extends \Core\Model
             $db = static::getDB();
             $stmt = $db->prepare($sql);
             
-            $stmt->bindValue(':category', '5', PDO::PARAM_STR);
+            $stmt->bindValue(':category', $this->category, PDO::PARAM_STR);
             $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
             $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
             $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
-            $stmt->bindValue(':id', '15', PDO::PARAM_STR);
+            $stmt->bindValue(':id', $id, PDO::PARAM_STR);
 
             return $stmt->execute();
             
@@ -158,7 +158,7 @@ class Income extends \Core\Model
 
     public static function selectIncomesCategory()
     {
-        $id = $_SESSION['id'];
+        $id = $_SESSION['user_id'];
 
         $sql = "
                 SELECT id, name

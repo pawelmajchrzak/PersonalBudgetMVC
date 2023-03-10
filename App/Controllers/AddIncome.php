@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Models\Income;
+use App\Date;
 
 /**
  * Signup controller
@@ -21,7 +22,10 @@ class AddIncome extends \Core\Controller
      */
     public function newAction()
     {
-        View::renderTemplate('AddIncome/new.html');
+        View::renderTemplate('AddIncome/new.html', [
+            'date' => Date::getCurrentDate(),
+            'incomesCategory' => Income::selectIncomesCategory()
+        ]);
     }
 
     
