@@ -120,8 +120,8 @@ class Income extends \Core\Model
         //walidacja komentarza
         if (isset($this->comment)) {
 
-            if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->comment) == false) {
-                $this->errors[] = 'Komentarz może składać się tylko z liter i cyfr';
+            if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+_ -.,]*$/', $this->comment) == false) {
+                $this->errors[] = 'To pole może składać się tylko z liter, cyfr, plusów, minusów oraz spacji';
             }
 
         }
@@ -170,6 +170,32 @@ class Income extends \Core\Model
 
         return $stmt->fetchAll();
     }   
+
+    public static function selectUserIncomes()
+    {
+        $id = $_SESSION['user_id'];
+
+		$startOfCurrentMonth = date('Y-m-01');
+		$startOfNextMonth = date('Y-m-01',strtotime('+1 month',time()));
+
+        $sql = "
+                SELECT *
+                FROM incomes
+                WHERE user_id = :id AND date_of_income >= :startOfCurrentMonth AND date_of_income < :startOfNextMonth
+                ";
+
+
+        $db = static::getDb();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':startOfCurrentMonth', $startOfCurrentMonth, PDO::PARAM_STR);
+        $stmt->bindValue(':startOfNextMonth', $startOfNextMonth, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }   
+
 
     /*
     public function updateProfile($data)

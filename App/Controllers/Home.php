@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
+use \App\Models\Income;
+use \App\Models\Expense;
+use \App\Date;
 
 /**
  * Home controller
@@ -22,6 +25,13 @@ class Home extends \Core\Controller
     {
         
 
-        View::renderTemplate('Home/index.html');
+        View::renderTemplate('Home/index.html'/*, [
+            'date' => Date::getCurrentDate(),
+            'userIncomes' => Income::selectUserIncomes()
+        ]*/);
+
+
+
+
     }
 }

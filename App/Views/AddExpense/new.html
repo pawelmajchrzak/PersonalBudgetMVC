@@ -13,7 +13,7 @@
 
                 if (value != '') {
 
-                    if (value.match(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/)) {
+                    if (value.match(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+_ -.,]*$/)) {
                         return true;
                     }
                     
@@ -22,7 +22,7 @@
 
                 return false;
             },
-            'To pole może składać się tylko z liter i cyfr'
+            'To pole może składać się tylko z liter, cyfr, plusów, minusów oraz spacji'
     ); 
 
     $(document).ready(function() {
@@ -92,6 +92,8 @@
 {% endblock %}
 
 {% block body %}
+
+{% if current_user %}
 
 <main>
 		
@@ -201,5 +203,9 @@
     </article>
     
 </main>
+
+{% endif %}
+
+ 
 
 {% endblock %}

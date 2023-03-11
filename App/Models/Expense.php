@@ -132,8 +132,8 @@ class Expense extends \Core\Model
         //walidacja komentarza
         if (isset($this->comment)) {
 
-            if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->comment) == false) {
-                $this->errors[] = 'Komentarz może składać się tylko z liter i cyfr';
+            if (preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+_ -.,]*$/', $this->comment) == false) {
+                $this->errors[] = 'To pole może składać się tylko z liter, cyfr, plusów, minusów oraz spacji';
             }
 
         }

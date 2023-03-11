@@ -23,11 +23,14 @@ class AddExpense extends \Core\Controller
      */
     public function newAction()
     {
+        if (isset($_SESSION['user_id']))
         View::renderTemplate('AddExpense/new.html', [
             'date' => Date::getCurrentDate(),
             'expensesCategory' => Expense::selectExpensesCategory(),
             'methodsPayment' => Expense::selectMethodsPayment()
         ]);
+    else 
+        View::renderTemplate('Login/new.html');
     }
 
     

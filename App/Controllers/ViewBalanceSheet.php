@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
-use \App\Models\Income;
+//use \App\Models\ViewBalanceSheet;
 use App\Date;
 use \App\Flash;
 
@@ -13,7 +13,7 @@ use \App\Flash;
  *
  * PHP version 7.0
  */
-class AddIncome extends \Core\Controller
+class ViewBalanceSheet extends \Core\Controller
 {
 
     /**
@@ -21,18 +21,15 @@ class AddIncome extends \Core\Controller
      *
      * @return void
      */
-    public function newAction()
+    public function indexAction()
     {
         if (isset($_SESSION['user_id']))
-            View::renderTemplate('AddIncome/new.html', [
-                'date' => Date::getCurrentDate(),
-                'incomesCategory' => Income::selectIncomesCategory()
-            ]);
+            View::renderTemplate('ViewBalanceSheet/index.html');
         else 
             View::renderTemplate('Login/new.html');
     }
 
-    
+    /*
     public function createAction()
     {
 
@@ -59,27 +56,11 @@ class AddIncome extends \Core\Controller
 
         }
         
+    
 
     }
 
-    public function successAction()
-    {
-        View::renderTemplate('AddIncome/success.html'); 
-    }
-
-/*
-    public function activateAction()
-    {
-        User::activate($this->route_params['token']);
-
-        $this->redirect('/signup/activated');        
-    }
-
-
-    public function activatedAction()
-    {
-        View::renderTemplate('Signup/activated.html');
-    }
     */
+
 
 }

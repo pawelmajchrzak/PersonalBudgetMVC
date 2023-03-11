@@ -37,6 +37,7 @@ $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'ac
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('addIncome', ['controller' => 'AddIncome', 'action' => 'new']);
 $router->add('addExpense', ['controller' => 'AddExpense', 'action' => 'new']);
+$router->add('viewBalanceSheet', ['controller' => 'ViewBalanceSheet', 'action' => 'index']);
 $router->add('{controller}/{action}');
     
 $router->dispatch($_SERVER['QUERY_STRING']);
