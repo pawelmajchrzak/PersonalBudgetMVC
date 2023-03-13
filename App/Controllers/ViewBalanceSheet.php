@@ -34,104 +34,91 @@ class ViewBalanceSheet extends \Core\Controller
     
     public function createAction()
     {
-        /*
-        if (!isset($_POST['timePeriod']))
-        {
-            $_POST['timePeriod']=5;
-        }
-    
-        $fr_period=$_POST['timePeriod'];
-    
-        if($_POST['timePeriod']==1)
-        {
-            $startOfPeriodTime = date('Y-m-01');
-            $endOfPeriodTime = date('Y-m-01',strtotime('+1 month',time()));
-        }
-        elseif ($_POST['timePeriod']==2)
-        {
-            $startOfPeriodTime = date('Y-m-01',strtotime('-1 month',time()));
-            $endOfPeriodTime = date('Y-m-01');
-        }
-        elseif ($_POST['timePeriod']==3)
-        {
-            $startOfPeriodTime = date('Y-01-01');
-            $endOfPeriodTime = date('Y-01-01',strtotime('+1 Year',time()));
-        }
-        elseif ($_POST['timePeriod']==4)
-        {
-            $startOfPeriodTime = date('Y-01-01',strtotime('-1 Year',time()));
-            $endOfPeriodTime = date('Y-01-01');
-        }
-        elseif ($_POST['timePeriod']==5)
-        {
-            $startOfPeriodTime=$_POST['startPeriod'];
-            $endOfPeriodTime=$_POST['endPeriod'];
-            $dateObject= new DateTime($endOfPeriodTime);
-            $dateObject->modify( '+1 day' );
-            $endOfPeriodTime = $dateObject->format('Y-m-d');
-            
-        }
-        */
         $balance = new Balance($_POST);
 
         $resultPeriodTime = $balance ->periodTime();
         $startOfPeriodTime = $resultPeriodTime[0];
         $endOfPeriodTime = $resultPeriodTime[1];
 
-        $categories = $balance -> selectIncomesCategory();
-
+        $incomeCategories = $balance -> selectIncomesCategory();
         $i=0;
 		$generalSumOfIncomes = 0;
-        foreach ($categories as $singleCategory)
+        foreach ($incomeCategories as $singleCategory)
         {
             $incomes = $balance -> selectUserIncomes($startOfPeriodTime,$endOfPeriodTime,$singleCategory['id']);
             $sumOfIncomes[$i]=0;
-            
-            
-            //echo $singleCategory['name'] . '<br>';
+
             foreach ($incomes as $income)
             {
-                //echo $income['amount'] . '<br>';
                 $sumOfIncomes[$i]+=$income['amount'];
-                
             }
             $generalSumOfIncomes += $sumOfIncomes[$i];
 
-            //echo $singleCategory['name'] . '<br>';
-            //echo $sumOfIncomes[$i] . '<br>';
+			$i++;
+        }
+
+        $expenseCategories = $balance -> selectExpensesCategory();
+        $i=0;
+		$generalSumOfExpenses = 0;
+        foreach ($expenseCategories as $singleCategory)
+        {
+            $expenses = $balance -> selectUserExpenses($startOfPeriodTime,$endOfPeriodTime,$singleCategory['id']);
+            $sumOfExpenses[$i]=0;
+
+            foreach ($expenses as $expense)
+            {
+                $sumOfExpenses[$i]+=$expense['amount'];
+            }
+            $generalSumOfExpenses += $sumOfExpenses[$i];
 
 			$i++;
         }
-        //echo $generalSumOfIncomes . '<br>';
-        
+
+
+
+        $dateObject= new DateTime($endOfPeriodTime);
+        $dateObject->modify( '-1 day' );
+        $workingDate = $dateObject->format('Y-m-d');
+
+        $periodTime = $startOfPeriodTime.' -zakres czasu- '.$workingDate;
+
+        $balance = $generalSumOfIncomes-$generalSumOfExpenses;
+
+		if($balance >= 200)
+		{
+			$commentToBalance= 'Gratulacje! Dobrze gospodarujesz swoimi pieniędzmi!';
+			$colorText='text-success';
+            
+		}
+		elseif ($balance >= -200)
+		{
+			$commentToBalance= 'Uważaj! Jesteś na granicy płynności!';
+			$colorText='text-warning';
+		}
+		else
+		{
+			$commentToBalance= 'Źle gospodarujesz swoimi pieniędzmi! Czas na zmiany...';
+			$colorText='text-danger';
+		}
+        if ($balance >= 0)
+        $balanceString = '+'.$balance;
+
+
 
         View::renderTemplate('ViewBalanceSheet/index.html', [
-            'categories' => $categories,
+            'incomeCategories' => $incomeCategories,
             'sumOfIncomes' => $sumOfIncomes,
-            'generalSumOfIncomes' => $generalSumOfIncomes
+            'generalSumOfIncomes' => $generalSumOfIncomes,
+            'expenseCategories' => $expenseCategories,
+            'sumOfExpenses' => $sumOfExpenses,
+            'generalSumOfExpenses' => $generalSumOfExpenses,
+            'periodTime' => $periodTime,
+            'balance' => $balance,
+            'commentToBalance' => $commentToBalance,
+            'colorText' => $colorText,
+
         ]);
-/*
-        
-        $income = new Income($_POST);
-        
-
-        if ($income ->save()) {
-
-            
-
-            header('Location://'.$_SERVER['HTTP_HOST'].'/addIncome/success', true, 303);
-            Flash::addMessage('Dodano nowy przychód');
-            exit();
-
-
-        } else {
-
-            View::renderTemplate('AddIncome/new.html', [
-                'income' => $income
-            ]);
-
-        }
-*/       
+  
 
     
 

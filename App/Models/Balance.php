@@ -77,51 +77,7 @@ class Balance extends \Core\Model
         }
 
         return array($startOfPeriodTime,$endOfPeriodTime);
-
-
     }
-
-
-
-
-
-
-
-
-/*
-    public function save()
-    {
-        $this->validate();
-
-        $id = (int)$_SESSION['user_id'];
-
-        if (empty($this->errors)) {
-
-
-            $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
-                    VALUES (:id, :category, :amount, :date, :comment)';
-
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-            
-            $stmt->bindValue(':category', $this->category, PDO::PARAM_STR);
-            $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
-            $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
-            $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
-            $stmt->bindValue(':id', $id, PDO::PARAM_STR);
-
-            return $stmt->execute();
-            
-        }
-
-        return false;
-    }
-*/
-
-    
-
-
-
 
 
     public static function selectIncomesCategory()
@@ -151,6 +107,49 @@ class Balance extends \Core\Model
                 SELECT *
                 FROM incomes
                 WHERE user_id = :id AND date_of_income >= :startOfPeriodTime AND date_of_income < :endOfPeriodTime AND income_category_assigned_to_user_id= :categoryId
+                ";
+
+
+        $db = static::getDb();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_INT);
+        $stmt->bindValue(':startOfPeriodTime', $startOfPeriodTime, PDO::PARAM_STR);
+        $stmt->bindValue(':endOfPeriodTime', $endOfPeriodTime, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }   
+
+
+    public static function selectExpensesCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        $sql = "
+                SELECT id, name
+                FROM expenses_category_assigned_to_users
+                WHERE user_id = :id
+                ";
+
+        $db = static::getDb();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }   
+
+    public static function selectUserExpenses($startOfPeriodTime,$endOfPeriodTime,$categoryId)
+    {
+        $id = $_SESSION['user_id'];
+
+        $sql = "
+                SELECT *
+                FROM expenses
+                WHERE user_id = :id AND date_of_expense >= :startOfPeriodTime AND date_of_expense < :endOfPeriodTime AND expense_category_assigned_to_user_id= :categoryId
                 ";
 
 

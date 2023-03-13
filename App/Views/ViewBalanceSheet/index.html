@@ -66,17 +66,13 @@
 						<section>
 							<div class="row my-3 px-4">
 								<div class="col-6 h4 text-center fw-bold">Bilans:</div>
-								<div class="col-5 h4  text-center fw-bold"><span class="text-success"><?php if(isset($balance)) if($balance>=0) echo '+' ?> </span><?php if(isset($balance)) echo $balance; else echo '0'; ?> zł</div>
+								<div class="col-5 h4  text-center fw-bold"><span class={{colorText}}>{{balance}} </span> zł</div>
 							</div>
 
-							<div class="fs-6 text-center <?php echo 'text-'.$colorText.'">'.$commentToBalance ?></div>
-							<?php
-								if (isset($_SESSION['periodTime']))
-								{
-									echo '<div class="text-success fs-6 text-center "><br>'.$_SESSION['periodTime'].'</div>';
-									unset($_SESSION['periodTime']);
-								}
-							?>
+							<div class="fs-6 text-center {{colorText}}"> {{commentToBalance}}</div>
+
+							<div class="text-success fs-6 text-center "><br>{{periodTime}}</div>
+
 						</section>
 
 					</div>
@@ -93,7 +89,7 @@
 									Przychody
 							</header>					
 							
-							{% for category in categories %}
+							{% for category in incomeCategories %}
 								{% if sumOfIncomes[loop.index-1]>0 %}
 									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
 									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-success pe-1">+</span>{{ sumOfIncomes[loop.index-1] }}zł</div>
@@ -102,26 +98,6 @@
 
 
 
-							
-
-
-
-
-							<!--
-							<?php
-								if(isset($balance))
-								{
-									for ($i=0; $i<$iteratorIncomes;$i++)
-									{	
-										if($sumOfIncomes[$i]>0)
-										{
-										echo '<div class="col-7 text-start d-inline-block ms-2 my-2">'.$categoryIncome_name[$i].': </div>';
-										echo '<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-success pe-1">+</span>'.$sumOfIncomes[$i].' zł</div>';
-										}
-									}
-								}
-							?>
--->
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
@@ -137,24 +113,17 @@
 								Wydatki
 							</header>	
 							
-							<?php
-								if(isset($balance))
-								{
-									for ($i=0; $i<$iteratorExpenses;$i++)
-									{
-										if($sumOfExpenses[$i]>0)
-										{
-										echo '<div class="col-7 text-start d-inline-block ms-2 my-2">'.$categoryExpense_name[$i].': </div>';
-										echo '<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-danger pe-1">-</span>'.$sumOfExpenses[$i].' zł</div>';
-										}
-									}
-								}
-							?>
+							{% for category in expenseCategories %}
+								{% if sumOfExpenses[loop.index-1]>0 %}
+									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
+									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-danger pe-1">-</span>{{ sumOfExpenses[loop.index-1] }}zł</div>
+								{% endif %}
+							{% endfor %}
 
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
-							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-danger pe-1">-</span><?php if(isset($balance)) echo $generalSumOfExpenses; else echo '0'; ?> zł</div>
+							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-danger pe-1">-</span>{{ generalSumOfExpenses }} zł</div>
 													
 						</section>
 					</div>
