@@ -143,14 +143,14 @@ class Balance extends \Core\Model
         return $stmt->fetchAll();
     }   
 
-    public static function selectUserIncomes($startOfPeriodTime,$endOfPeriodTime)
+    public static function selectUserIncomes($startOfPeriodTime,$endOfPeriodTime,$categoryId)
     {
         $id = $_SESSION['user_id'];
 
         $sql = "
                 SELECT *
                 FROM incomes
-                WHERE user_id = :id AND date_of_income >= :startOfPeriodTime AND date_of_income < :endOfPeriodTime
+                WHERE user_id = :id AND date_of_income >= :startOfPeriodTime AND date_of_income < :endOfPeriodTime AND income_category_assigned_to_user_id= :categoryId
                 ";
 
 
@@ -158,6 +158,7 @@ class Balance extends \Core\Model
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':categoryId', $categoryId, PDO::PARAM_INT);
         $stmt->bindValue(':startOfPeriodTime', $startOfPeriodTime, PDO::PARAM_STR);
         $stmt->bindValue(':endOfPeriodTime', $endOfPeriodTime, PDO::PARAM_STR);
         $stmt->execute();

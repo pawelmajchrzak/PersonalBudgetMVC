@@ -78,13 +78,38 @@ class ViewBalanceSheet extends \Core\Controller
         $startOfPeriodTime = $resultPeriodTime[0];
         $endOfPeriodTime = $resultPeriodTime[1];
 
-        $incomes = $balance ->selectUserIncomes($startOfPeriodTime,$endOfPeriodTime);
-        echo $firstIncomeAmount = $incomes[0]['amount'].'<br>';
-        echo $firstIncomeAmount = $incomes[1]['amount'].'<br>';
-        echo $firstIncomeAmount = $incomes[2]['amount'].'<br>';
+        $categories = $balance -> selectIncomesCategory();
 
-        exit();
-        //View::renderTemplate($startOfPeriodTime.$endOfPeriodTime);
+        $i=0;
+		$generalSumOfIncomes = 0;
+        foreach ($categories as $singleCategory)
+        {
+            $incomes = $balance -> selectUserIncomes($startOfPeriodTime,$endOfPeriodTime,$singleCategory['id']);
+            $sumOfIncomes[$i]=0;
+            
+            
+            //echo $singleCategory['name'] . '<br>';
+            foreach ($incomes as $income)
+            {
+                //echo $income['amount'] . '<br>';
+                $sumOfIncomes[$i]+=$income['amount'];
+                
+            }
+            $generalSumOfIncomes += $sumOfIncomes[$i];
+
+            //echo $singleCategory['name'] . '<br>';
+            //echo $sumOfIncomes[$i] . '<br>';
+
+			$i++;
+        }
+        //echo $generalSumOfIncomes . '<br>';
+        
+
+        View::renderTemplate('ViewBalanceSheet/index.html', [
+            'categories' => $categories,
+            'sumOfIncomes' => $sumOfIncomes,
+            'generalSumOfIncomes' => $generalSumOfIncomes
+        ]);
 /*
         
         $income = new Income($_POST);

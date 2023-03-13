@@ -93,6 +93,21 @@
 									Przychody
 							</header>					
 							
+							{% for category in categories %}
+								{% if sumOfIncomes[loop.index-1]>0 %}
+									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
+									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-success pe-1">+</span>{{ sumOfIncomes[loop.index-1] }}zł</div>
+								{% endif %}
+							{% endfor %}
+
+
+
+							
+
+
+
+
+							<!--
 							<?php
 								if(isset($balance))
 								{
@@ -106,11 +121,11 @@
 									}
 								}
 							?>
-
+-->
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
-							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-success pe-1">+</span><?php if(isset($balance)) echo $generalSumOfIncomes; else echo '0'; ?> zł</div>
+							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-success pe-1">+</span>{{ generalSumOfIncomes }} zł</div>
 							
 						</section>
 					</div>
