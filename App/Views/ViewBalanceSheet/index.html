@@ -35,11 +35,11 @@
 										
 										<select class="form-select border border-success col-6" name="timePeriod" onchange="this.form.submit()">
 											
-											<option value="0" disabled selected>	Wybierz zakres	</option>
-											<option value="1" >	Ten miesiąc		</option>
-											<option value="2" >				Ubiegły miesiąc	</option>
-											<option value="3" >				Ten rok			</option>
-											<option value="4" >				Ubiegły rok		</option>
+											<option value="0" {% if timePeriod %} {% elseif timePeriod==5 %} selected {% else %} selected {% endif %}>	Wybierz zakres	</option>
+											<option value="1" {% if timePeriod==1 %} selected {% endif %}>	Ten miesiąc		</option>
+											<option value="2" {% if timePeriod==2 %} selected {% endif %}>				Ubiegły miesiąc	</option>
+											<option value="3" {% if timePeriod==3 %} selected {% endif %}>				Ten rok			</option>
+											<option value="4" {% if timePeriod==4 %} selected {% endif %}>				Ubiegły rok		</option>
 											
 										</select>
 									
@@ -66,7 +66,7 @@
 						<section>
 							<div class="row my-3 px-4">
 								<div class="col-6 h4 text-center fw-bold">Bilans:</div>
-								<div class="col-5 h4  text-center fw-bold"><span class={{colorText}}>{{balance}} </span> zł</div>
+								<div class="col-5 h4  text-center fw-bold"><span class={{colorText}}>{{balanceSign}}{{balance}} </span> zł</div>
 							</div>
 
 							<div class="fs-6 text-center {{colorText}}"> {{commentToBalance}}</div>

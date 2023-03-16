@@ -100,9 +100,12 @@ class ViewBalanceSheet extends \Core\Controller
 			$commentToBalance= 'Źle gospodarujesz swoimi pieniędzmi! Czas na zmiany...';
 			$colorText='text-danger';
 		}
+        $balanceSign = '';
         if ($balance >= 0)
-        $balanceString = '+'.$balance;
+            $balanceSign = '+';
 
+        if (!isset($_POST['timePeriod']))
+            $_POST['timePeriod']=5;
 
 
         View::renderTemplate('ViewBalanceSheet/index.html', [
@@ -114,9 +117,10 @@ class ViewBalanceSheet extends \Core\Controller
             'generalSumOfExpenses' => $generalSumOfExpenses,
             'periodTime' => $periodTime,
             'balance' => $balance,
+            'balanceSign' => $balanceSign,
             'commentToBalance' => $commentToBalance,
             'colorText' => $colorText,
-
+            'timePeriod' => $_POST['timePeriod'],
         ]);
   
 
