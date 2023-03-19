@@ -34,15 +34,15 @@
 							<section>
 							
 								<div class="col-7 text-start d-inline-block ms-2 my-3">Suma przychodów:</div>
-								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-success pe-1">+</span><?php echo $sumOfIncomes;?> zł</div>
+								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-success pe-1">+</span>{{ generalSumOfIncomes }} zł</div>
 
 								<div class="col-7 text-start d-inline-block ms-2 my-3">Suma wydatków:</div>
-								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-danger pe-1">-</span><?php echo $sumOfExpenses;?> zł</div>
+								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-danger pe-1">-</span>{{ generalSumOfExpenses }} zł</div>
 
 								<div class="border-bottom border-success my-2"></div>
 
 								<div class="col-7 text-start d-inline-block ms-2 my-3 fw-bold">Bilans:</div>
-								<div class="col-4 text-end d-inline-block me-2 my-3 fw-bold"> <span class="text-success pe-1"><?php if($balance>=0) echo '+';?></span><?php echo $balance;?> zł</div>
+								<div class="col-4 text-end d-inline-block me-2 my-3 fw-bold"> <span class="text-success pe-1">{{ balance }} zł</div>
 			
 							</section>
 							
