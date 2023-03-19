@@ -162,14 +162,14 @@
 							<div class="col-12 col-lg-6">
 								<div class="input-group mb-3">
 									<span class="input-group-text w-25">Od</span>
-									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="startPeriod" min="1900-01-01" value="" max="2030-12-31" required>
+									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="startPeriod" min="1990-01-01" value="" max="2035-12-31" required onchange="setMinEndDate(event)">
 								</div>
 							</div>
 							
 							<div class="col-12 col-lg-6">
 								<div class="input-group mb-3">
 									<span class="input-group-text w-25">Do</span>
-									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="endPeriod" min="1900-01-01" value="" max="2030-12-31" required>
+									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="endPeriod" min="1990-01-01" value="" max="2035-12-31" required>
 								</div>
 							</div>
 						</div>
@@ -188,6 +188,19 @@
 			</div>
 			</div>
 	</div>
+
+	<script>
+		// pobieranie elementów formularza
+		const startDateInput = document.querySelector('input[name="startPeriod"]');
+		const endDateInput = document.querySelector('input[name="endPeriod"]');
+		
+		// ustawienie minimalnej wartości dla pola wyboru daty końcowej
+		function setMinEndDate(event) {
+		  const startDateValue = event.target.value;
+		  endDateInput.min = startDateValue;
+		  endDateInput.value = startDateValue;
+		}
+	  </script>
 
 
 
