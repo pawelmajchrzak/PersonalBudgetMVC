@@ -53,8 +53,12 @@ class ViewBalanceSheet extends \Core\Controller
             }
             $generalSumOfIncomes += $sumOfIncomes[$i];
 
+            $sumOfIncomes[$i] = number_format($sumOfIncomes[$i], 2, '.', '');
+            
 			$i++;
         }
+
+        $generalSumOfIncomes = number_format($generalSumOfIncomes, 2, '.', '');
 
         $expenseCategories = $balance -> selectExpensesCategory();
         $i=0;
@@ -70,10 +74,12 @@ class ViewBalanceSheet extends \Core\Controller
             }
             $generalSumOfExpenses += $sumOfExpenses[$i];
 
+            $sumOfExpenses[$i] = number_format($sumOfExpenses[$i], 2, '.', '');
+
 			$i++;
         }
 
-
+        $generalSumOfExpenses = number_format($generalSumOfExpenses, 2, '.', '');
 
         $dateObject= new DateTime($endOfPeriodTime);
         $dateObject->modify( '-1 day' );
@@ -82,6 +88,7 @@ class ViewBalanceSheet extends \Core\Controller
         $periodTime = $startOfPeriodTime.' -zakres czasu- '.$workingDate;
 
         $balance = $generalSumOfIncomes-$generalSumOfExpenses;
+        $balance = number_format($balance, 2, '.', '');
 
 		if($balance >= 200)
 		{

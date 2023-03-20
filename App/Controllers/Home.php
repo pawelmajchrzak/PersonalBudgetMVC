@@ -68,6 +68,12 @@ class Home extends \Core\Controller
             }
 
             $balance = $generalSumOfIncomes-$generalSumOfExpenses;
+            
+            $generalSumOfIncomes = number_format($generalSumOfIncomes, 2, '.', '');
+            $generalSumOfExpenses = number_format($generalSumOfExpenses, 2, '.', '');
+            $balance = number_format($balance, 2, '.', '');
+
+
 
         View::renderTemplate('Home/index.html', [
             'incomeCategories' => $incomeCategories,

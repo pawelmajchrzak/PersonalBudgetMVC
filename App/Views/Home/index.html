@@ -2,6 +2,68 @@
 
 {% block title %}Home{% endblock %}
 
+{% block head %}
+<script>
+	window.onload = function () {
+	
+	var chartDataIncomes = [];
+	{% for category in incomeCategories %}
+		{% if sumOfIncomes[loop.index-1]>0 %}
+			chartDataIncomes.push({
+				y: {{ sumOfIncomes[loop.index-1] }},
+				label: "{{ category.name }}"
+			});				
+		{% endif %}
+	{% endfor %}
+
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		data: [{
+			type: "doughnut",
+			startAngle: -90,
+			//innerRadius: 60,
+			indexLabelFontSize: 17,
+			indexLabel: "{label} - #percent%",
+			toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+			dataPoints: chartDataIncomes
+		}]
+	});
+
+	chart.render();
+	}
+
+	window.onload = function () {
+	
+	var chartDataExpenses = [];
+	{% for category in expenseCategories %}
+		{% if sumOfExpenses[loop.index-1]>0 %}
+			chartDataExpenses.push({
+				y: {{ sumOfExpenses[loop.index-1] }},
+				label: "{{ category.name }}"
+			});				
+		{% endif %}
+	{% endfor %}
+
+	var chart = new CanvasJS.Chart("chartContainer2", {
+		animationEnabled: true,
+		data: [{
+			type: "doughnut",
+			startAngle: -90,
+			//innerRadius: 60,
+			indexLabelFontSize: 17,
+			indexLabel: "{label} - #percent%",
+			toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+			dataPoints: chartDataExpenses
+		}]
+	});
+	chart.render();
+	}
+
+	</script>
+
+{% endblock %}
+
+
 {% block body %}
 
 
@@ -24,9 +86,7 @@
 								<div class="d-inline-block">Ten miesiąc:  </div>
 								
 								<div class="d-inline-block">
-									<?php
-										echo date('Y-m');
-									?>
+
 
 								</div>
 							</header>
@@ -59,6 +119,7 @@
 							</header>
 							
 							<section class="pb-2">	
+								<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 								<div class="pie2">
 									<svg viewBox="0 0 32 32">
 									  <circle r="16" cx="16" cy="16" />
@@ -81,6 +142,7 @@
 								</header>
 								
 								<section>
+									<div id="chartContainer2" style="height: 370px; width: 100%;"></div>
 										<div class="pie">
 											<svg viewBox="0 0 32 32">
 											  <circle r="16" cx="16" cy="16" />
@@ -91,15 +153,12 @@
 						</div>
 					</article>
 				</div>
-				{% for income in userIncomes %}
 
-				{{ income.amount }}
-				{% endfor %}
 				
 			</div>
 		</main>	
 
-
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 
 
