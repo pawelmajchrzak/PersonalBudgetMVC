@@ -107,18 +107,32 @@
         </ul>
     {% endif %}
 
-    <form method="post" id="formPassword" action="/password/reset-password">
+    <article>
+        
+        <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+        
+            <header class="h3 text-start m-3" style="letter-spacing: 2px;">
+                Przypomnienie hasła
+            </header>
+            
+            <form action="/password/request-reset" method="post">
+    
+                <div class="input-group p-3 m-auto">
+                    <span class="input-group-text w-25">E-mail</span>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres E-mail" aria-label="Email" name="email" autofocus value="{{ email }}">
+                </div>
+    
 
-        <input type="hidden" name="token" value="{{ token }}" />
+    
+                <div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+                    <button type="button"  class="btn btn-outline-success me-2" onclick="location.href='/';">Anuluj</button>
+                    <button type="submit" class="btn btn-success ms-2">Zresetuj hasło</button>
+                </div>
 
-        <div>
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required />
+            </form>	
+        
         </div>
-        <div></div>
-
-        <button type="submit">Reset password</button>
-
-    </form>
+    
+    </article>
 
 {% endblock %}
