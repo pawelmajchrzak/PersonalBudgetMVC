@@ -2,16 +2,73 @@
 
 {% block title %}Home{% endblock %}
 
-{% block body %}
+{% block head %}
+<script>
+	window.onload = function () {
+	
+	var chartDataIncomes = [];
+	{% for category in incomeCategories %}
+		{% if sumOfIncomes[loop.index-1]>0 %}
+			chartDataIncomes.push({
+				y: {{ sumOfIncomes[loop.index-1] }},
+				label: "{{ category.name }}"
+			});				
+		{% endif %}
+	{% endfor %}
 
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		data: [{
+			type: "doughnut",
+			startAngle: -90,
+			//innerRadius: 60,
+			indexLabelFontSize: 17,
+			indexLabel: "{label} - #percent%",
+			toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+			dataPoints: chartDataIncomes
+		}]
+	});
+
+	
+
+	
+	var chartDataExpenses = [];
+	{% for category in expenseCategories %}
+		{% if sumOfExpenses[loop.index-1]>0 %}
+			chartDataExpenses.push({
+				y: {{ sumOfExpenses[loop.index-1] }},
+				label: "{{ category.name }}"
+			});				
+		{% endif %}
+	{% endfor %}
+
+	var chart2 = new CanvasJS.Chart("chartContainer2", {
+		animationEnabled: true,
+		data: [{
+			type: "doughnut",
+			startAngle: -90,
+			//innerRadius: 60,
+			indexLabelFontSize: 17,
+			indexLabel: "{label} - #percent%",
+			toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+			dataPoints: chartDataExpenses
+		}]
+	});
+
+	chart.render();
+	chart2.render();
+	}
+
+	</script>
+
+{% endblock %}
+
+
+{% block body %}
 
 
     {% if current_user %}
         
-
-		<span class="text-success position-absolute top-0 end-0 me-3 fs-6 mt-3">Użytkownik: {{ current_user.username }}</span>
-		<a href="/logout" class="btn btn-lg btn-outline-secondary position-absolute top-0 end-0 me-3 mt-5">Wyloguj się</a>
-
         <main>
 	
 			<div class="row px-2">
@@ -25,9 +82,7 @@
 								<div class="d-inline-block">Ten miesiąc:  </div>
 								
 								<div class="d-inline-block">
-									<?php
-										echo date('Y-m');
-									?>
+
 
 								</div>
 							</header>
@@ -35,15 +90,15 @@
 							<section>
 							
 								<div class="col-7 text-start d-inline-block ms-2 my-3">Suma przychodów:</div>
-								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-success pe-1">+</span><?php echo $sumOfIncomes;?> zł</div>
+								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-success pe-1">+</span>{{ generalSumOfIncomes }} zł</div>
 
 								<div class="col-7 text-start d-inline-block ms-2 my-3">Suma wydatków:</div>
-								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-danger pe-1">-</span><?php echo $sumOfExpenses;?> zł</div>
+								<div class="col-4 text-end d-inline-block me-2 my-3"><span class="text-danger pe-1">-</span>{{ generalSumOfExpenses }} zł</div>
 
 								<div class="border-bottom border-success my-2"></div>
 
 								<div class="col-7 text-start d-inline-block ms-2 my-3 fw-bold">Bilans:</div>
-								<div class="col-4 text-end d-inline-block me-2 my-3 fw-bold"> <span class="text-success pe-1"><?php if($balance>=0) echo '+';?></span><?php echo $balance;?> zł</div>
+								<div class="col-4 text-end d-inline-block me-2 my-3 fw-bold"> <span class="text-success pe-1">{{ balance }} zł</div>
 			
 							</section>
 							
@@ -60,12 +115,8 @@
 							</header>
 							
 							<section class="pb-2">	
-								<div class="pie2">
-									<svg viewBox="0 0 32 32">
-									  <circle r="16" cx="16" cy="16" />
-									</svg>
-								</div>
-							</section>
+								<div id="chartContainer" style="height: 250px; width: 100%;"></div>
+
 						
 						</div>
 					
@@ -75,34 +126,26 @@
 				
 				<div class="col-12 col-lg-7">
 					<article>
-						<div class="mb-3 border border-success bg-light rounded p-2" style="height: 525px;">
+						<div class="mb-3 border border-success bg-light rounded p-2" style="height: 603px;">
 							
 								<header class="h4 text-center mb-3">
 									Wydatki
 								</header>
-								
+								<br>
 								<section>
-										<div class="pie">
-											<svg viewBox="0 0 32 32">
-											  <circle r="16" cx="16" cy="16" />
-											</svg>
-										</div>
+									<div id="chartContainer2" style="height: 450px; width: 100%;"></div>
+	
 								</section>
 							
 						</div>
 					</article>
 				</div>
+
 				
 			</div>
 		</main>	
 
-
-
-
-
-
-
-
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
 
     {% else %}

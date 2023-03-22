@@ -9,7 +9,7 @@ use \Core\View;
 use DateTime;
 
 
-class Income extends \Core\Model
+class Expense extends \Core\Model
 {
 
     public $errors = [];
@@ -31,13 +31,14 @@ class Income extends \Core\Model
         if (empty($this->errors)) {
 
 
-            $sql = 'INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment)
-                    VALUES (:id, :category, :amount, :date, :comment)';
+            $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
+                    VALUES (:id, :category, :paymentMethod, :amount, :date, :comment)';
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
             
             $stmt->bindValue(':category', $this->category, PDO::PARAM_STR);
+            $stmt->bindValue(':paymentMethod', $this->paymentMethod, PDO::PARAM_STR);
             $stmt->bindValue(':amount', $this->amount, PDO::PARAM_STR);
             $stmt->bindValue(':date', $this->date, PDO::PARAM_STR);
             $stmt->bindValue(':comment', $this->comment, PDO::PARAM_STR);
@@ -98,6 +99,17 @@ class Income extends \Core\Model
             $this->errors[] = 'Kategoria może składać się tylko z liter i cyfr';
         }
 
+        //walidacja metody płatności
+        if (!isset($this->paymentMethod))
+		{
+            $this->errors[] = 'Wybierz metodę płatności!';
+		}	
+        else if($this->paymentMethod == '') {
+            $this->errors[] = 'Metoda płatności jest wymagana!';
+        }
+        else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->paymentMethod) == false) {
+            $this->errors[] = 'Metoda płatności może składać się tylko z liter i cyfr';
+        }
 
 
 
@@ -113,14 +125,6 @@ class Income extends \Core\Model
     }
 
 
-
-    /**
-     * Find a user model by ID
-     *
-     * @param string $id The user ID
-     *
-     * @return mixed User object if found, false otherwise
-     */
     public static function findByID($id)
     {
         $sql = 'SELECT * FROM users WHERE id = :id';
@@ -136,13 +140,13 @@ class Income extends \Core\Model
         return $stmt->fetch();
     }
 
-    public static function selectIncomesCategory()
+    public static function selectExpensesCategory()
     {
         $id = $_SESSION['user_id'];
 
         $sql = "
                 SELECT id, name
-                FROM incomes_category_assigned_to_users
+                FROM expenses_category_assigned_to_users
                 WHERE user_id = :id
                 ";
 
@@ -155,26 +159,20 @@ class Income extends \Core\Model
         return $stmt->fetchAll();
     }   
 
-    public static function selectUserIncomes()
+    public static function selectMethodsPayment()
     {
         $id = $_SESSION['user_id'];
 
-		$startOfCurrentMonth = date('Y-m-01');
-		$startOfNextMonth = date('Y-m-01',strtotime('+1 month',time()));
-
         $sql = "
-                SELECT *
-                FROM incomes
-                WHERE user_id = :id AND date_of_income >= :startOfCurrentMonth AND date_of_income < :startOfNextMonth
+                SELECT id, name
+                FROM payment_methods_assigned_to_users
+                WHERE user_id = :id
                 ";
-
 
         $db = static::getDb();
         $stmt = $db->prepare($sql);
 
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':startOfCurrentMonth', $startOfCurrentMonth, PDO::PARAM_STR);
-        $stmt->bindValue(':startOfNextMonth', $startOfNextMonth, PDO::PARAM_STR);
         $stmt->execute();
 
         return $stmt->fetchAll();

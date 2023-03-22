@@ -4,15 +4,25 @@
 
 {% block body %}
 
-    <h1>Profile</h1>
+<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
 
-    <dl>
-        <dt>Name</dt>
-        <dd>{{ user.username }}</dd>
-        <dt>email</dt>
-        <dd>{{ user.email }}</dd>
-    </dl>
+    <header class="h3 text-start m-auto" style="letter-spacing: 2px;">
+        Profil
+    </header>
 
-    <a href="/profile/edit">Edit</a>
+    <div class="input-group p-3 m-auto px-5">
+        <dl>
+            <dt>Imię</dt>
+            <dd>{{ user.username }}</dd>
+            <dt>Email</dt>
+            <dd>{{ user.email }}</dd>
+        </dl>
+        
+    </div>
+    <button type="button"  class="btn btn-outline-success m-auto" onclick="location.href='/profile/edit';">Edytuj</button>
+</div>
+
+</article>
+
 
 {% endblock %}

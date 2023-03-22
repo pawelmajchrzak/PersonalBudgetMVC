@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name = "viewport" id = "viewport_device">
     <title>{% block title %}{% endblock %}</title>
     
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -13,6 +14,8 @@
     
     <link rel="stylesheet" href="/css/styles.css" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {% block head %}
+    {% endblock %}
     </head>
 <body>
     {% if current_user %}
@@ -35,6 +38,7 @@
 
 
     {% if current_user %}
+    
     <div class="col-lg-11 col-xl-10 col-xxl-8 bg-white m-2 m-lg-auto border border-light rounded p-2 shadow-lg">	
 		
 		<nav class="navbar navbar-light text-center navbar-expand-lg pt-3 px-3 mb-4">
@@ -54,8 +58,8 @@
 			
 				<ol class="navbar-nav m-lg-auto col-12">
 					<li class="nav-item col-lg-3"><a class="nav-link" href="/addIncome"><i class="icon-money-1"></i>Dodaj przychód</a></li>
-					<li class="nav-item col-lg-3"><a class="nav-link" href="addExpense.php"><i class="icon-basket"></i>Dodaj wydatek</a></li>
-					<li class="nav-item col-lg-3"><a class="nav-link" href="viewBalanceSheet.php"><i class="icon-chart-pie"></i>Przeglądaj bilans</a></li>
+					<li class="nav-item col-lg-3"><a class="nav-link" href="/addExpense"><i class="icon-basket"></i>Dodaj wydatek</a></li>
+					<li class="nav-item col-lg-3"><a class="nav-link" href="/viewBalanceSheet"><i class="icon-chart-pie"></i>Przeglądaj bilans</a></li>
 					<li class="nav-item dropdown col-lg-3"><a class="nav-link" href="" data-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"><i class="icon-cog-alt"></i>Ustawienia <i class="icon-down-open"></i></a>
 						<ul class="dropdown-menu" aria-labelledby="submenu">
 							<li><a class="dropdown-item" href="/profile/show">Edytuj konto</a></li>
@@ -67,20 +71,12 @@
 			</div>
 			
 		</nav>
+
+        <span class="text-success position-absolute top-0 end-0 me-3 fs-6 mt-3">Użytkownik: {{ current_user.username }} </span>
+		<a href="/logout" class="btn btn-lg btn-outline-secondary position-absolute top-0 end-0 me-3 mt-5">Wyloguj się</a>
+
     {% endif %}
     
-    <!--
-    <nav>
-        <ul>
-            
-                <li><a href="/">Home</a></li>
-                <li><a href="/profile/show">Profile</a></li>
-                <li><a href="/logout">Log out</a></li>                                
-            
-        </ul>
-    </nav>
-    -->
-
     {% block body %}
     {% endblock %}
     

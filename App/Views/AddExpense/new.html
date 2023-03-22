@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Add Income{% endblock %}
+{% block title %}Add Expense{% endblock %}
 
 {% block footer %}
 
@@ -25,7 +25,7 @@
 
     $(document).ready(function() {
 
-        $('#formAddIncome').validate({
+        $('#formAddExpense').validate({
             errorPlacement: function(error, element) {
             error.appendTo( element.parent().next() );
             },
@@ -46,6 +46,11 @@
                 comment: {
                     validTextField: true
                     
+                },
+                paymentMethod: {
+                    required: true,
+                    validTextField: true,
+                    
                 }
             },
             messages: {
@@ -59,8 +64,11 @@
                 },
                 category: {
                     required: 'Kategoria jest wymagana',
+                },
+                paymentMethod: {
+                    required: 'Sposób płatności jest wymagany',
+                    
                 }
-
 
             },
             submitHandler: function(form) {
@@ -68,16 +76,17 @@
             }
 
         });
-                        
+                    
     });
 
 </script>
 
 
-
 {% endblock %}
 
 {% block body %}
+
+{% if current_user %}
 
 <main>
 		
@@ -87,26 +96,26 @@
         
             <div class="col-12 border border-success bg-light rounded p-3 ">
                 <header class="h3 text-center mb-5">
-                    Dodaj przychód
+                    Dodaj wydatek
                 </header>
                 
-                <form method="post" action="/addIncome/create" id="formAddIncome">
-                
+                <form method="post" action="/addExpense/create" id="formAddExpense">
+
                     <div class="row m-0 m-lg-3 pb-1">
                         <div class="col-12 col-lg-6">
-
                             <div class="input-group mb-3">
+
                                 <span class="input-group-text w-50">Kwota</span>
-                                <input type="number" id="inputAmount" value="{{ income.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" aria-describedby="amount" name="amount">
+                                <input type="number" id="inputAmount" value="{{ expense.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" name="amount">
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
-
                         </div>
                         
                         <div class="col-12 col-lg-6">
                             <div class="input-group mb-3">
+
                                 <span class="input-group-text w-50">Data</span>
-                                <input type="date" id="inputDate" class="form-control" aria-label="Date" aria-describedby="date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31">
+                                <input type="date" id="inputDate" class="form-control" aria-label="Date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31">
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>
@@ -116,23 +125,35 @@
                     <div class="row m-0 m-lg-3 pt-3">
                         <div class="col-12 col-lg-6">
 
+                            <div class="input-group mb-3">
+                                <span class="input-group-text w-50">Sposób płatności </span>
+                                <select class="form-select" id="inputPayment" name="paymentMethod" aria-label="payment">
+                                    <option value="cat0" selected disabled> </option>
+                                    {% for paymentMethod in methodsPayment %}
+                                    <option value="{{ paymentMethod.id }}">
+                                            {{ paymentMethod.name }}
+                                    </option>
+                                    {% endfor %}
+
+                                </select>		
+                            </div>
+                            <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>
                         
                         <div class="col-12 col-lg-6">
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Kategoria</span>
-                                <select class="form-select" name="category" id="inputCategory" aria-label="category" value="{{ income.category }}" required> 
-
+                                <select class="form-select" name="category" id="inputCategory" aria-label="category">
                                     <option value="cat0" selected disabled>	</option>
-                                    {% for category in incomesCategory %}
+                                    {% for category in expensesCategory %}
                                     <option value="{{ category.id }}">
                                             {{ category.name }}
                                     </option>
                                     {% endfor %}
 
-                                </select>	
-                                						
+
+                                </select>								
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>
@@ -144,14 +165,14 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Komentarz</span>
-                                <input type="text" name="comment" id="inputComment" class="form-control" placeholder="Dodaj komentarz" aria-label="Comment" aria-describedby="comment" value="{{ income.comment }}">
+                                <input type="text" name="comment" id="inputComment" class="form-control" placeholder="Dodaj komentarz" aria-label="Comment">
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>
                     </div>
                     
                     <div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
-                        <button type="button"  class="btn btn-outline-success me-2" onclick="location.href='/';">Anuluj</button>
+                        <button type="button" class="btn btn-outline-success me-2" onclick="location.href='/';">Anuluj</button>
                         <button type="submit" class="btn btn-success ms-2">Dodaj</button>
                     </div>
 
@@ -162,10 +183,10 @@
         </div>
 
         <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
-            {% if income.errors is not empty %}
+            {% if expense.errors is not empty %}
                 <p>Errors:</p>
                 <ul>
-                    {% for error in income.errors %}
+                    {% for error in expense.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
@@ -175,5 +196,9 @@
     </article>
     
 </main>
+
+{% endif %}
+
+ 
 
 {% endblock %}

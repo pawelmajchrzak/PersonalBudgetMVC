@@ -6,37 +6,20 @@ use PDO;
 use \App\Token;
 use \App\Mail;
 use \Core\View;
+use \App\Config;
 
-/**
- * Example user model
- *
- * PHP version 7.0
- */
+
 class User extends \Core\Model
 {
-    /**
-     * Error messages
-     * 
-     * @var array
-     */
+
     public $errors = [];
 
-
-    /**
-     * Class constructor
-     * 
-     * @param array $data Initial property values
-     * 
-     * @return void
-     */
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;
         };
     }
-
-
 
 
     /**
@@ -58,18 +41,49 @@ class User extends \Core\Model
             $hashed_token = $token->getHash();
             $this->activation_token = $token->getValue();
 
-            $sql = 'INSERT INTO users (username, password, email, activation_hash)
+            $sqlAddUser = 'INSERT INTO users (username, password, email, activation_hash)
                     VALUES (:username, :password_hash, :email, :activation_hash)';
 
+            $sqlAddIncomesCategory = "INSERT INTO incomes_category_assigned_to_users (user_id, name)
+                                        SELECT users.id, incomes_category_default.name 
+                                        FROM users, incomes_category_default
+                                        WHERE users.email = :email";
+
+            $sqlAddExpensesCategory = "INSERT INTO expenses_category_assigned_to_users (user_id, name)
+                                        SELECT users.id, expenses_category_default.name 
+                                        FROM users, expenses_category_default
+                                        WHERE users.email = :email";
+
+            $sqlAddMethodPayments = "INSERT INTO payment_methods_assigned_to_users (user_id, name)
+                                        SELECT users.id, payment_methods_default.name 
+                                        FROM users, payment_methods_default
+                                        WHERE users.email = :email";
+
             $db = static::getDB();
-            $stmt = $db->prepare($sql);
+
+            $stmt = $db->prepare($sqlAddUser);
 
             $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            $stmt->execute();
+
+            
+
+            $stmt_incomes = $db->prepare($sqlAddIncomesCategory);
+            $stmt_incomes->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt_incomes->execute();
+
+            $stmt_expenses = $db->prepare($sqlAddExpensesCategory);
+            $stmt_expenses->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt_expenses->execute();
+
+            $stmt_method_payments = $db->prepare($sqlAddMethodPayments);
+            $stmt_method_payments->bindValue(':email', $this->email, PDO::PARAM_STR);
+
+            return $stmt_method_payments->execute();
         }
 
         return false;
@@ -141,7 +155,7 @@ class User extends \Core\Model
         
         //Bot or not? Oto jest pytanie!
         
-        $secretKey = "6LeQ1OQjAAAAAAS2VjtWBMwrNIM_uL9U5YHAwgml";
+        $secretKey = Config::CAPTCHA_SECRET_KEY;
 		$checkCaptcha = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$this->{'g-recaptcha-response'});
 		$answerCaptcha = json_decode($checkCaptcha);
         if ($answerCaptcha->success==false)
@@ -250,7 +264,6 @@ class User extends \Core\Model
         $hashed_token = $token->getHash();
         $this->remember_token = $token->getValue();
 
-        //$expiry_timestamp = time() + 60 * 60 * 24 * 30;  // 30 days from now
         $this->expiry_timestamp = time() + 60 * 60 * 24 * 30;  // 30 days from now
 
         $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at)
@@ -261,7 +274,6 @@ class User extends \Core\Model
 
         $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR);
         $stmt->bindValue(':user_id', $this->id, PDO::PARAM_INT);
-        //$stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR);
         $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $this->expiry_timestamp), PDO::PARAM_STR);
 
         return $stmt->execute();

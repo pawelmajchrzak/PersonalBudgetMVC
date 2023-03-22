@@ -96,8 +96,7 @@
 
 {% block body %}
 
-    <h1>Reset password</h1>
-
+    
     {% if user.errors is not empty %}
         <p>Errors:</p>
         <ul>
@@ -107,18 +106,36 @@
         </ul>
     {% endif %}
 
-    <form method="post" id="formPassword" action="/password/reset-password">
+    <article>
+        
+        <div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+        
+            <header class="h3 text-start m-3" style="letter-spacing: 2px;">
+                Przypomnienie hasła
+            </header>
+            
 
-        <input type="hidden" name="token" value="{{ token }}" />
+            
+            <form method="post" id="formPassword" action="/password/reset-password">
+    
+                <input type="hidden" name="token" value="{{ token }}" />
 
-        <div>
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required />
+                <div class="input-group p-3 m-auto">
+                    <span class="input-group-text w-25">Hasło</span>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password">
+                </div>
+    
+
+    
+                <div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+                    <button type="button"  class="btn btn-outline-success me-2" onclick="location.href='/';">Anuluj</button>
+                    <button type="submit" class="btn btn-success ms-2">Zresetuj hasło</button>
+                </div>
+
+            </form>	
+        
         </div>
-        <div></div>
-
-        <button type="submit">Reset password</button>
-
-    </form>
+    
+    </article>
 
 {% endblock %}

@@ -11,8 +11,6 @@
 
     <script>
         
-
-                
         $.validator.addMethod('validUsername',
             function(value, element, param) {
 
@@ -104,15 +102,18 @@
             });
 
 
-                            /**
-                             * Show password toggle button
-                             */
-
-                            
-                            $('#inputPassword').hideShowPassword({
-                                show: false,
-                                innerToggle: 'focus'
-                            });
+            /**
+             * Show password toggle button
+             */
+            $('#inputPassword').hideShowPassword({
+                show: false,
+                innerToggle: 'focus',
+                toggleHtml: '<span class="toggle-text"></span>',
+                toggleText: {
+                    show: 'pokaż',
+                    hide: 'ukryj'
+                }
+            });
                             
 
          
@@ -162,14 +163,14 @@
             </div>
            
 
-            <div class="col-12 col-md-11 col-lg-9 m-auto pt-3">
+            <div class="col-12 col-md-11 col-lg-9 m-auto pt-3 pb-2">
                 <div class="ms-3 p-3 fs-6">
                     <label>
                         <input type="checkbox" class="form-check-input" value="a" name="statute"> Akceptuję <a href="/signup/statute"
                             target="_blank" class="link">Regulamin</a> i <a href="/signup/privacy" target="_blank"
                             class="link">Politykę prywatności</a>
                     </label>
-                    <div class="text-danger ms-2 fs-6 position-absolute mt-2 pt-3"></div>
+                    <div class="text-danger ms-2 fs-6 position-absolute mt-4"></div>
                     <br />
                     Masz już konto? <a href="/login" class="link">Zaloguj się</a>
 
@@ -203,41 +204,5 @@
         {% endif %}
     </div>
 </article>
-
-
-<!--
-<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
-<form method="post" action="/signup/create" id="formSignup">
-
-    <div class="input-group pt-3 pb-4 m-auto">
-        <label for="inputName" class="input-group-text w-25">Imię</label>
-
-        <input type="text" id="inputName" class="form-control" placeholder="Podaj imię" aria-label="Name" name="username" value="{{ user.username }}" required>
-        <div class="valid-tooltip">
-            Looks good!
-        </div>
-    </div>
-
-
-    <div class="input-group pt-3 pb-4 m-auto">
-        <label for="inputEmail" class="input-group-text w-25">E-mail</label>
-
-        <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres Email" aria-label="Email" name="email" value="{{ user.email }}" required>
-    </div>
-
-    <div class="input-group pt-3 pb-4 m-auto">
-        <label for="inputPassword" class="input-group-text w-25">Hasło</label>
-
-        <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password" required>
-    </div>
-
-    <button type="submit">Sign up</button>
-
-</form>
-</div>
--->
-
-
-
 
 {% endblock %}
