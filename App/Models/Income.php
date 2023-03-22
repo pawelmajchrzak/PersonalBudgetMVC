@@ -8,28 +8,12 @@ use \App\Mail;
 use \Core\View;
 use DateTime;
 
-/**
- * Example user model
- *
- * PHP version 7.0
- */
+
 class Income extends \Core\Model
 {
-    /**
-     * Error messages
-     * 
-     * @var array
-     */
+
     public $errors = [];
 
-
-    /**
-     * Class constructor
-     * 
-     * @param array $data Initial property values
-     * 
-     * @return void
-     */
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
@@ -196,55 +180,4 @@ class Income extends \Core\Model
         return $stmt->fetchAll();
     }   
 
-
-    /*
-    public function updateProfile($data)
-    {
-        $this->username = $data['username'];
-        $this->email = $data['email'];
-        unset($this->password);
-        // Only validate and update the password if a value provided
-        if ($data['password'] != '') {
-            $this->password = $data['password'];
-        } 
-
-        
-
-        $this->validate();
-
-        if (empty($this->errors)) {
-            
-            $sql = 'UPDATE users
-                    SET username = :username,
-                        email = :email';
-
-            // Add password if it's set
-            if (isset($this->password)) {
-                $sql .= ', password = :password';
-            }
-
-            $sql .= "\nWHERE id = :id";
-
-
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
-
-            $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-
-            // Add password if it's set
-            if (isset($this->password)) {
-
-                $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
-                $stmt->bindValue(':password', $password_hash, PDO::PARAM_STR);
-
-            }
-
-            return $stmt->execute();
-        }
-
-        return false;
-    }
-    */
 }

@@ -10,19 +10,10 @@ use \App\Models\Balance;
 use \App\Models\HomeThisMonth;
 use DateTime;
 
-/**
- * Home controller
- *
- * PHP version 7.0
- */
+
 class Home extends \Core\Controller
 {
 
-    /**
-     * Show the index page
-     *
-     * @return void
-     */
     public function indexAction()
     {
         if (isset($_SESSION['user_id']))
@@ -90,12 +81,6 @@ class Home extends \Core\Controller
         else 
 
         View::renderTemplate('Login/new.html');
-        
-        
-
-
-
-
 
     }
 }

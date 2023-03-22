@@ -8,19 +8,8 @@ use \App\Models\Balance;
 use \App\Flash;
 use DateTime;
 
-/**
- * Signup controller
- *
- * PHP version 7.0
- */
 class ViewBalanceSheet extends \Core\Controller
 {
-
-    /**
-     * Show the signup page
-     *
-     * @return void
-     */
     public function indexAction()
     {
         if (isset($_SESSION['user_id']))
@@ -29,8 +18,6 @@ class ViewBalanceSheet extends \Core\Controller
             View::renderTemplate('Login/new.html');
     }
 
-
-    
     public function createAction()
     {
         $balance = new Balance($_POST);
@@ -128,15 +115,7 @@ class ViewBalanceSheet extends \Core\Controller
             'colorText' => $colorText,
             'timePeriod' => $_POST['timePeriod'],
         ]);
-  
-
-    
 
     }
-
-
-
-    
-
 
 }

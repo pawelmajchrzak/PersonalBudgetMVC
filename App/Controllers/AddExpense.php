@@ -5,22 +5,13 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Models\Expense;
-use App\Date;
 use \App\Flash;
+use \App\Date;
 
-/**
- * Signup controller
- *
- * PHP version 7.0
- */
+
 class AddExpense extends \Core\Controller
 {
 
-    /**
-     * Show the signup page
-     *
-     * @return void
-     */
     public function newAction()
     {
         if (isset($_SESSION['user_id']))
@@ -33,7 +24,6 @@ class AddExpense extends \Core\Controller
         View::renderTemplate('Login/new.html');
     }
 
-    
     public function createAction()
     {
 

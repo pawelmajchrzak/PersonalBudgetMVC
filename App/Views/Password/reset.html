@@ -96,8 +96,7 @@
 
 {% block body %}
 
-    <h1>Reset password</h1>
-
+    
     {% if user.errors is not empty %}
         <p>Errors:</p>
         <ul>
@@ -115,11 +114,15 @@
                 Przypomnienie hasła
             </header>
             
-            <form action="/password/request-reset" method="post">
+
+            
+            <form method="post" id="formPassword" action="/password/reset-password">
     
+                <input type="hidden" name="token" value="{{ token }}" />
+
                 <div class="input-group p-3 m-auto">
-                    <span class="input-group-text w-25">E-mail</span>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Podaj adres E-mail" aria-label="Email" name="email" autofocus value="{{ email }}">
+                    <span class="input-group-text w-25">Hasło</span>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Podaj hasło" aria-label="Password" name="password">
                 </div>
     
 

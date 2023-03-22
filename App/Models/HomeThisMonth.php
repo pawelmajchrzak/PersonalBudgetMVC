@@ -8,21 +8,10 @@ use \App\Mail;
 use \Core\View;
 use DateTime;
 
-/**
- * Example user model
- *
- * PHP version 7.0
- */
+
 class HomeThisMonth extends \Core\Model
 {
-    /**
-     * Error messages
-     * 
-     * @var array
-     */
     public $errors = [];
-
-
 
     public function periodTime()
     {
@@ -117,7 +106,5 @@ class HomeThisMonth extends \Core\Model
 
         return $stmt->fetchAll();
     }   
-
-
 
 }

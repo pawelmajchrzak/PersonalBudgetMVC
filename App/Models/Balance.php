@@ -8,28 +8,11 @@ use \App\Mail;
 use \Core\View;
 use DateTime;
 
-/**
- * Example user model
- *
- * PHP version 7.0
- */
 class Balance extends \Core\Model
 {
-    /**
-     * Error messages
-     * 
-     * @var array
-     */
+
     public $errors = [];
 
-
-    /**
-     * Class constructor
-     * 
-     * @param array $data Initial property values
-     * 
-     * @return void
-     */
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
@@ -164,7 +147,5 @@ class Balance extends \Core\Model
 
         return $stmt->fetchAll();
     }   
-
-
 
 }

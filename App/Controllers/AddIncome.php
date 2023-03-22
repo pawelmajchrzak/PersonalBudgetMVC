@@ -5,22 +5,13 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Models\User;
 use \App\Models\Income;
-use App\Date;
 use \App\Flash;
+use \App\Date;
 
-/**
- * Signup controller
- *
- * PHP version 7.0
- */
+
 class AddIncome extends \Core\Controller
 {
 
-    /**
-     * Show the signup page
-     *
-     * @return void
-     */
     public function newAction()
     {
         if (isset($_SESSION['user_id']))
@@ -32,16 +23,11 @@ class AddIncome extends \Core\Controller
             View::renderTemplate('Login/new.html');
     }
 
-    
     public function createAction()
     {
 
-
-
-        
         $income = new Income($_POST);
         
-
         if ($income ->save()) {
 
             
@@ -49,7 +35,6 @@ class AddIncome extends \Core\Controller
             header('Location://'.$_SERVER['HTTP_HOST'].'/addIncome/success', true, 303);
             Flash::addMessage('Dodano nowy przychód');
             exit();
-
 
         } else {
 
@@ -59,7 +44,6 @@ class AddIncome extends \Core\Controller
 
         }
         
-
     }
 
     public function successAction()
@@ -67,19 +51,5 @@ class AddIncome extends \Core\Controller
         View::renderTemplate('AddIncome/success.html'); 
     }
 
-/*
-    public function activateAction()
-    {
-        User::activate($this->route_params['token']);
-
-        $this->redirect('/signup/activated');        
-    }
-
-
-    public function activatedAction()
-    {
-        View::renderTemplate('Signup/activated.html');
-    }
-    */
 
 }
