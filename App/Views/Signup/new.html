@@ -28,6 +28,8 @@
         ); 
 
 
+
+        
         function submitUserForm() {
             var response = grecaptcha.getResponse();
             if(response.length == 0) {
@@ -36,11 +38,12 @@
             }
             return true;
         }
-
+        
+       
         function verifyCaptcha() {
             document.getElementById('g-recaptcha-error').innerHTML = '';
         }
-
+        
         
         $(document).ready(function() {
 
@@ -73,6 +76,8 @@
                     statute: {
                         required: true
                     }
+
+                    
                 },
                 messages: {
                     username: {
@@ -100,8 +105,12 @@
                 }
 
             });
-
-
+            
+            $('#formSignup').on('submit', function(e) {
+                e.preventDefault(); // zapobiegaj domyślnej akcji
+                submitUserForm(); // wywołaj swoją funkcję
+            });
+            
             /**
              * Show password toggle button
              */
@@ -139,7 +148,7 @@
             Rejestracja
         </header>
 
-        <form method="post" action="/signup/create" id="formSignup" onsubmit="return submitUserForm();">
+        <form method="post" action="/signup/create" id="formSignup" >
             
             <div class="input-group pt-3 pb-1 m-auto ">
                 <label for="inputName" class="input-group-text w-25">Imię</label>
