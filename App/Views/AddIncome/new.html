@@ -97,7 +97,7 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Kwota</span>
-                                <input type="number" id="inputAmount" value="{{ income.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" aria-describedby="amount" name="amount">
+                                <input type="number" id="inputAmount" value="{{ income.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" aria-describedby="amount" name="amount" min="0" required>
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
 
@@ -106,7 +106,7 @@
                         <div class="col-12 col-lg-6">
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Data</span>
-                                <input type="date" id="inputDate" class="form-control" aria-label="Date" aria-describedby="date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31">
+                                <input type="date" id="inputDate" class="form-control" aria-label="Date" aria-describedby="date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31" required>
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>

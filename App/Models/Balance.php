@@ -13,6 +13,22 @@ class Balance extends \Core\Model
 
     public $errors = [];
 
+    public $startOfPeriodTime;
+    public $endOfPeriodTime;
+
+    public $incomeCategories = [];
+    public $sumOfIncomes = [];
+    public $generalSumOfIncomes;
+    public $expenseCategories = [];
+    public $sumOfExpenses = [];
+    public $generalSumOfExpenses;
+    public $periodTime;
+    public $balanceAmount;
+    public $balanceSign;
+    public $commentToBalance;
+    public $colorText;
+
+
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
@@ -58,8 +74,99 @@ class Balance extends \Core\Model
             $endOfPeriodTime = $dateObject->format('Y-m-d');
             
         }
+         
+        $this->startOfPeriodTime = $startOfPeriodTime;
+        $this->endOfPeriodTime = $endOfPeriodTime;
+    }
 
-        return array($startOfPeriodTime,$endOfPeriodTime);
+    public function setBalance()
+    {
+        $incomeCategories = $this -> selectIncomesCategory();
+        $i=0;
+        $generalSumOfIncomes = 0;
+        foreach ($incomeCategories as $singleCategory)
+        {
+            $incomes = $this -> selectUserIncomes($this->startOfPeriodTime,$this->endOfPeriodTime,$singleCategory['id']);
+            $sumOfIncomes[$i]=0;
+
+            foreach ($incomes as $income)
+            {
+                $sumOfIncomes[$i]+=$income['amount'];
+            }
+            $generalSumOfIncomes += $sumOfIncomes[$i];
+
+            $sumOfIncomes[$i] = number_format($sumOfIncomes[$i], 2, '.', '');
+            
+            $i++;
+        }
+
+        $generalSumOfIncomes = number_format($generalSumOfIncomes, 2, '.', '');
+
+        $expenseCategories = $this -> selectExpensesCategory();
+        $i=0;
+        $generalSumOfExpenses = 0;
+        foreach ($expenseCategories as $singleCategory)
+        {
+            $expenses = $this -> selectUserExpenses($this->startOfPeriodTime,$this->endOfPeriodTime,$singleCategory['id']);
+            $sumOfExpenses[$i]=0;
+
+            foreach ($expenses as $expense)
+            {
+                $sumOfExpenses[$i]+=$expense['amount'];
+            }
+            $generalSumOfExpenses += $sumOfExpenses[$i];
+
+            $sumOfExpenses[$i] = number_format($sumOfExpenses[$i], 2, '.', '');
+
+            $i++;
+        }
+
+        $generalSumOfExpenses = number_format($generalSumOfExpenses, 2, '.', '');
+
+        $dateObject= new DateTime($this->endOfPeriodTime);
+        $dateObject->modify( '-1 day' );
+        $workingDate = $dateObject->format('Y-m-d');
+
+        $periodTime = $this->startOfPeriodTime.' -zakres czasu- '.$workingDate;
+        
+        $balanceAmount = $generalSumOfIncomes-$generalSumOfExpenses;
+        $balanceAmount = number_format($balanceAmount, 2, '.', '');
+
+        if($balanceAmount >= 200)
+        {
+            $commentToBalance= 'Gratulacje! Dobrze gospodarujesz swoimi pieniędzmi!';
+            $colorText='text-success';
+            
+        }
+        elseif ($balanceAmount >= -200)
+        {
+            $commentToBalance= 'Uważaj! Jesteś na granicy płynności!';
+            $colorText='text-warning';
+        }
+        else
+        {
+            $commentToBalance= 'Źle gospodarujesz swoimi pieniędzmi! Czas na zmiany...';
+            $colorText='text-danger';
+        }
+        $balanceSign = '';
+        if ($balanceAmount >= 0)
+            $balanceSign = '+';
+
+        if (!isset($_POST['timePeriod']))
+            $_POST['timePeriod']=5;
+
+            $this->incomeCategories = $incomeCategories;
+            $this->sumOfIncomes = $sumOfIncomes;
+            $this->generalSumOfIncomes = $generalSumOfIncomes;
+            $this->expenseCategories = $expenseCategories;
+            $this->sumOfExpenses = $sumOfExpenses;
+            $this->generalSumOfExpenses = $generalSumOfExpenses;
+            $this->periodTime = $periodTime;
+            $this->balanceAmount = $balanceAmount;
+            $this->balanceSign = $balanceSign;
+            $this->commentToBalance = $commentToBalance;
+            $this->colorText = $colorText;
+
     }
 
 

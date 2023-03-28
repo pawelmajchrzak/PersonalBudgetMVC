@@ -106,7 +106,7 @@
                             <div class="input-group mb-3">
 
                                 <span class="input-group-text w-50">Kwota</span>
-                                <input type="number" id="inputAmount" value="{{ expense.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" name="amount">
+                                <input type="number" id="inputAmount" value="{{ expense.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" name="amount" min="0" required>
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>
@@ -115,7 +115,7 @@
                             <div class="input-group mb-3">
 
                                 <span class="input-group-text w-50">Data</span>
-                                <input type="date" id="inputDate" class="form-control" aria-label="Date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31">
+                                <input type="date" id="inputDate" class="form-control" aria-label="Date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31" required>
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
                         </div>
@@ -127,7 +127,7 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Sposób płatności </span>
-                                <select class="form-select" id="inputPayment" name="paymentMethod" aria-label="payment">
+                                <select class="form-select" id="inputPayment" name="paymentMethod" aria-label="payment" required>
                                     <option value="cat0" selected disabled> </option>
                                     {% for paymentMethod in methodsPayment %}
                                     <option value="{{ paymentMethod.id }}">
@@ -144,7 +144,7 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Kategoria</span>
-                                <select class="form-select" name="category" id="inputCategory" aria-label="category">
+                                <select class="form-select" name="category" id="inputCategory" aria-label="category" required>
                                     <option value="cat0" selected disabled>	</option>
                                     {% for category in expensesCategory %}
                                     <option value="{{ category.id }}">

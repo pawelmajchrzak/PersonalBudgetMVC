@@ -20,7 +20,7 @@ class AddIncome extends \Core\Controller
                 'incomesCategory' => Income::selectIncomesCategory()
             ]);
         else 
-            View::renderTemplate('Login/new.html');
+            View::renderTemplate('Home/index.html');
     }
 
     public function createAction()

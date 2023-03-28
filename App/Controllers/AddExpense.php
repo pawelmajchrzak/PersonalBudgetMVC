@@ -21,7 +21,7 @@ class AddExpense extends \Core\Controller
             'methodsPayment' => Expense::selectMethodsPayment()
         ]);
     else 
-        View::renderTemplate('Login/new.html');
+        View::renderTemplate('Home/index.html');
     }
 
     public function createAction()

@@ -10,7 +10,7 @@ class Config
     const DB_HOST = 'localhost';
 
 
-    const DB_NAME = 'personalbudgetMVC';
+    const DB_NAME = 'personalbudgetmvc';
 
 
     const DB_USER = 'root';

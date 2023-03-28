@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Models\User;
 
 
+
 class Signup extends \Core\Controller
 {
 
@@ -16,6 +17,8 @@ class Signup extends \Core\Controller
 
     public function createAction()
     {
+        
+
         $user = new User($_POST);
 
         if ($user ->save()) {
@@ -23,6 +26,7 @@ class Signup extends \Core\Controller
             $user->sendActivationEmail();
 
             header('Location://'.$_SERVER['HTTP_HOST'].'/signup/success', true, 303);
+
             exit();
 
         } else {
@@ -32,6 +36,8 @@ class Signup extends \Core\Controller
             ]);
 
         }
+
+        
         
     }
 

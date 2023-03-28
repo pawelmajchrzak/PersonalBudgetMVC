@@ -80,7 +80,7 @@ class Home extends \Core\Controller
 
         else 
 
-        View::renderTemplate('Login/new.html');
+        View::renderTemplate('Home/index.html');
 
     }
 }

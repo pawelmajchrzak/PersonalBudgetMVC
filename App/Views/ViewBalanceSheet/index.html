@@ -8,7 +8,6 @@
 
 	<main>
 		
-
 		<div class="container">
 			
 			<div class="row px-2">
@@ -30,7 +29,7 @@
 										
 										<select class="form-select border border-success col-6" name="timePeriod" onchange="this.form.submit()">
 											
-											<option value="0" {% if timePeriod %} {% else %} selected {% endif %}>	Wybierz zakres	</option>
+											<option value="0" {% if timePeriod %} {% else %} selected {% endif %} disabled>	Wybierz zakres	</option>
 											<option value="1" {% if timePeriod==1 %} selected {% endif %}>	Ten miesiąc		</option>
 											<option value="2" {% if timePeriod==2 %} selected {% endif %}>				Ubiegły miesiąc	</option>
 											<option value="3" {% if timePeriod==3 %} selected {% endif %}>				Ten rok			</option>
@@ -64,12 +63,12 @@
 						<section>
 							<div class="row my-3 px-4">
 								<div class="col-6 h4 text-center fw-bold">Bilans:</div>
-								<div class="col-5 h4  text-center fw-bold"><span class={{colorText}}>{{balanceSign}}{{balance}} </span> zł</div>
+								<div class="col-5 h4  text-center fw-bold"><span class={{balance.colorText}}>{{balance.balanceSign}}{{balance.balanceAmount}} </span> zł</div>
 							</div>
 
-							<div class="fs-6 text-center {{colorText}}"> {{commentToBalance}}</div>
+							<div class="fs-6 text-center {{balance.colorText}}"> {{balance.commentToBalance}}</div>
 
-							<div class="text-success fs-6 text-center "><br>{{periodTime}}</div>
+							<div class="text-success fs-6 text-center "><br>{{balance.periodTime}}</div>
 
 						</section>
 
@@ -87,10 +86,10 @@
 									Przychody
 							</header>					
 							
-							{% for category in incomeCategories %}
-								{% if sumOfIncomes[loop.index-1]>0 %}
+							{% for category in balance.incomeCategories %}
+								{% if balance.sumOfIncomes[loop.index-1]>0 %}
 									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
-									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-success pe-1">+</span>{{ sumOfIncomes[loop.index-1] }}zł</div>
+									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-success pe-1">+</span>{{ balance.sumOfIncomes[loop.index-1] }}zł</div>
 								{% endif %}
 							{% endfor %}
 
@@ -99,7 +98,7 @@
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
-							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-success pe-1">+</span>{{ generalSumOfIncomes }} zł</div>
+							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-success pe-1">+</span>{{ balance.generalSumOfIncomes }} zł</div>
 							
 						</section>
 					</div>
@@ -111,17 +110,17 @@
 								Wydatki
 							</header>	
 							
-							{% for category in expenseCategories %}
-								{% if sumOfExpenses[loop.index-1]>0 %}
+							{% for category in balance.expenseCategories %}
+								{% if balance.sumOfExpenses[loop.index-1]>0 %}
 									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
-									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-danger pe-1">-</span>{{ sumOfExpenses[loop.index-1] }}zł</div>
+									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-danger pe-1">-</span>{{ balance.sumOfExpenses[loop.index-1] }}zł</div>
 								{% endif %}
 							{% endfor %}
 
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
-							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-danger pe-1">-</span>{{ generalSumOfExpenses }} zł</div>
+							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-danger pe-1">-</span>{{ balance.generalSumOfExpenses }} zł</div>
 													
 						</section>
 					</div>
@@ -131,6 +130,8 @@
 
 				
 		</div>
+
+		
 
 	
 	</main>
