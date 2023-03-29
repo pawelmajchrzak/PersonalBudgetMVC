@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name = "viewport" id = "viewport_device">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -19,11 +19,11 @@
     </head>
 <body>
     {% if current_user %}
-        <header class="col-12 col-lg-11 col-xl-10 col-xxl-8 px-3 m-auto mt-3 pt-4">
+        <header class="col-12 col-lg-11 col-xl-10 col-xxl-8 px-3 m-auto mt-3 pt-5">
             <h1 class="logo"><a href="/" class="cleanLink"><i class="icon-money"></i>  Budżet osobisty</a></h1>
         </header>
     {% else %}
-        <header class="col-12 col-md-8 col-lg-7 col-xl-6 col-xxl-5 px-3 m-auto mt-3 pt-4">
+        <header class="col-12 col-md-8 col-lg-7 col-xl-6 col-xxl-5 px-3 m-auto mt-3 pt-5">
             <h1 class="logo"><i class="icon-money"></i>  Budżet osobisty</h1>
         </header>     
     {% endif %}
