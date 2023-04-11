@@ -33,6 +33,20 @@ class Profile extends Authenticated
         ]);
     }
 
+    public function deleteIncomesAndExpensesAction()
+    {
+        View::renderTemplate('Profile/deleteIncomesAndExpenses.html', [
+            'user' => $this->user
+        ]);
+    }
+
+    public function deleteAccountAction()
+    {
+        View::renderTemplate('Profile/deleteAccount.html', [
+            'user' => $this->user
+        ]);
+    }
+
 
     public function updateAction()
     {

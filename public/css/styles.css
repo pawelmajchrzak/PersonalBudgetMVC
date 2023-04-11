@@ -168,3 +168,24 @@ circle {
     border: var(--bs-border-width) solid #ced4da;
 
 }
+
+.cleanLink2,
+.cleanLink2:visited
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+
+.cleanLink2:hover
+{
+	color: yellowgreen;
+	text-decoration: none;
+}
+
+ul > li
+{
+	margin-left: auto;
+	margin-right: auto;
+	list-style-type: none;
+}

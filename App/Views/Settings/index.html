@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+
+    {% if current_user %}
+
+	<main>
+		
+		<div class="container">
+			
+			<div class="row px-2">
+				<div class="col-12 border border-success bg-light rounded p-3 text-center h3">
+					Ustawienia
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span> <a class="cleanLink2" data-bs-toggle="collapse" href="#collapseIncomes" role="button" aria-expanded="false" aria-controls="collapseIncomes"><i class="icon-money-1"></i>Kategorie przychodów <i class="icon-down-open"></i></a></span>
+
+
+						<div class="collapse" id="collapseIncomes">
+							<div class="card card-body">
+								<ul>
+									{% for category in incomesCategory %}
+									<li class="py-1"> 
+										{{ category.name }} 
+										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome" data-bs-whatever="{{ category.name }}">Edytuj</button>
+										<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}">Usuń</button>
+									</li>
+									{% endfor %}
+								</ul>
+
+								<div class="d-grid gap-2 mx-auto">
+									<button
+										class="btn btn-success btn-lg"
+										data-bs-toggle="modal"
+										data-bs-target="#newCategoryIncome"
+									>
+										Dodaj nową kategorię
+									</button>
+								</div>
+							  
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span><a class="cleanLink2" data-bs-toggle="collapse" href="#collapseExpenses" role="button" aria-expanded="false" aria-controls="collapseExpenses"><i class="icon-basket"></i> Kategorie wydatków<i class="icon-down-open"></i></a> </span>
+
+						<div class="collapse" id="collapseExpenses">
+							<div class="card card-body">
+							  Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span><a class="cleanLink2" data-bs-toggle="collapse" href="#collapseMethodsPayment" role="button" aria-expanded="false" aria-controls="collapseMethodsPayment"><i class="icon-money"></i> Sposoby płatności<i class="icon-down-open"></i></a></span>
+						
+						<div class="collapse" id="collapseMethodsPayment">
+							<div class="card card-body">
+							  Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span><a class="cleanLink2" href="/profile/show"><i class="icon-user"></i> Użytkownik </a></span>
+						
+						<div class="collapse" id="collapseUserSettings">
+							<div class="card card-body">
+								<div>Imię:  {% for i in username %} <strong>{{ i.username }}</strong> {% endfor %}</div>
+								<div>E-mail: {% for i in email %} <strong>{{ i.email }}</strong> {% endfor %}</div>
+								<div>
+									<a href="/profile/show" class="btn btn-lg btn-outline-success mt-2 col-7">Edytuj swoje dane</a>
+									<button class="col-5 d-inline-block btn btn-success my-2" type="button" style="color: white" data-toggle="modal" data-target="/profile/show">
+										Edytuj swoje dane
+									</button>
+									<button name="deleteIncomesExpenses" class="col-5 d-inline-block btn btn-danger my-2" type="button"
+											data-toggle="modal" data-target=".confirmationIncomesExpenses">
+										Usuń przychody i wydatki
+									</button>
+								</div>
+								<div>
+									<button class="col-5 d-inline-block btn btn-success my-2" type="button" style="color: white"
+											data-toggle="modal" data-target=".editPasswordAccountModal">
+										Zmień hasło
+									</button>
+									<button class="col-5 d-inline-block btn btn-danger my-2" type="button"
+											data-toggle="modal" data-target=".confirmationUser">
+										Usuń moje konto
+									</button>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+			
+
+
+				
+
+				
+		</div>
+
+		
+
+	
+	</main>
+
+
+	<div
+	class="modal fade"
+	id="newCategoryIncome"
+	tabindex="-1"
+	aria-labelledby="timeRangeLabel"
+	aria-hidden="true"
+  	>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="enrollLabel">Wybierz zakres</h5>
+				<button
+				type="button"
+				class="btn-close"
+				data-bs-dismiss="modal"
+				aria-label="Close"
+				></button>
+			</div>
+				<form method="post" action="/viewBalanceSheet/create">
+					<div class="modal-body">
+						<div class="row m-0 m-lg-3">
+							<div class="col-12 col-lg-6">
+								<div class="input-group mb-3">
+									<span class="input-group-text w-25">Od</span>
+									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="startPeriod" min="1990-01-01" value="" max="2035-12-31" required onchange="setMinEndDate(event)">
+								</div>
+							</div>
+							
+							<div class="col-12 col-lg-6">
+								<div class="input-group mb-3">
+									<span class="input-group-text w-25">Do</span>
+									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="endPeriod" min="1990-01-01" value="" max="2035-12-31" required>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button
+						type="button"
+						class="btn btn-secondary"
+						data-bs-dismiss="modal"
+						>
+						Zamknij
+						</button>
+						<button type="submit" class="btn btn-success">Wybierz</button>
+					</div>
+				</form>
+			</div>
+			</div>
+	</div>
+
+
+	<div class="modal fade" id="editCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Edycja kategorii</h5>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			  <form>
+				<div class="mb-3">
+				  <label for="recipient-name" class="col-form-label">Nazwa kategorii:</label>
+				  <input type="text" class="form-control" id="recipient-name">
+				</div>
+			  </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+				<button type="button" class="btn btn-success mx-2">Zmień</button>
+			  
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  
+
+
+
+
+
+	<div
+	class="modal fade"
+	id="editCategoryIncome"
+	tabindex="-1"
+	aria-labelledby="timeRangeLabel"
+	aria-hidden="true"
+  	>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="enrollLabel">Wybierz zakres</h5>
+				<button
+				type="button"
+				class="btn-close"
+				data-bs-dismiss="modal"
+				aria-label="Close"
+				></button>
+			</div>
+				<form method="post" action="/viewBalanceSheet/create">
+					<div class="modal-body">
+						<div class="row m-0 m-lg-3">
+							<div class="col-12 col-lg-6">
+								<div class="input-group mb-3">
+									<span class="input-group-text w-25">Od</span>
+									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="startPeriod" min="1990-01-01" value="" max="2035-12-31" required onchange="setMinEndDate(event)">
+								</div>
+							</div>
+							
+							<div class="col-12 col-lg-6">
+								<div class="input-group mb-3">
+									<span class="input-group-text w-25">Do</span>
+									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="endPeriod" min="1990-01-01" value="" max="2035-12-31" required>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button
+						type="button"
+						class="btn btn-secondary"
+						data-bs-dismiss="modal"
+						>
+						Zamknij
+						</button>
+						<button type="submit" class="btn btn-success">Wybierz</button>
+					</div>
+				</form>
+			</div>
+			</div>
+	</div>
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			  <form>
+				<div class="mb-3">
+				  <label for="recipient-name" class="col-form-label">Recipient:</label>
+				  <input type="text" class="form-control" id="recipient-name">
+				</div>
+				<div class="mb-3">
+				  <label for="message-text" class="col-form-label">Message:</label>
+				  <textarea class="form-control" id="message-text"></textarea>
+				</div>
+			  </form>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary">Send message</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+
+
+
+
+
+    {% else %}
+    <article>
+	
+		<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+		
+			<header class="h4 text-start mx-auto my-3 text-center" style="letter-spacing: 2px;">
+				Witaj w aplikacji Budżet osobisty!
+			</header>
+			
+			<div class="input-group p-3 m-auto text-center px-5">
+				Ta aplikacja pozwoli usystematyzować Twoj budżet domowy. 
+				Dzięki temu będziesz miał kontrolę nad finansami.
+			</div>
+
+			<div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+				<button type="button"  class="btn btn-outline-success me-2 btn-lg" onclick="location.href='/signup/new';">Zarejestruj się</button>
+				<button type="button" class="btn btn-success ms-2 btn-lg" onclick="location.href='/login';">Zaloguj się</button>
+			</div>
+				
+		</div>
+	
+	</article>
+       
+    {% endif %}
+
+{% endblock %}
