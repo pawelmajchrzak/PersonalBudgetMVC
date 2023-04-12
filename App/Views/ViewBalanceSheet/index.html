@@ -79,48 +79,87 @@
 			
 			<div class="row">
 				<div class="col-12 col-lg-6 p-2">
-					<div class="border border-success bg-light rounded py-3 px-4">
+					<div class="border border-success bg-light rounded py-3 px-3">
 						<section>
 							
 							<header class="h4 text-center mb-3">
 									Przychody
 							</header>					
 							
-							{% for category in balance.incomeCategories %}
-								{% if balance.sumOfIncomes[loop.index-1]>0 %}
-									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
-									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-success pe-1">+</span>{{ balance.sumOfIncomes[loop.index-1] }}zł</div>
-								{% endif %}
-							{% endfor %}
+							{% for categoryIndex, category in balance.incomeCategories %}
+							{% if balance.sumOfIncomes[categoryIndex] > 0 %}
+								
+								<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
+								<div class="col-3 text-end d-inline-block ms-2 my-2"><span class="text-success pe-1">+</span>{{ balance.sumOfIncomes[categoryIndex] }}zł</div>
+								<a class="cleanLink2" data-bs-toggle="collapse" href="#collapseIncome{{categoryIndex}}" role="button" aria-expanded="false"> &nbsp; <i class="icon-down-open"></i></a>
+								<div class="collapse" id="collapseIncome{{categoryIndex}}">
+									<div class="card card-body">
+										<div class="fs-6 fst-italic">
+											<div class="col-5 text-start d-inline-block text-success">Komentarz</div>
+											<div class="col-3 text-start d-inline-block text-success">Data</div>
+											<div class="col-3 text-end d-inline-block text-success">Kwota</div>
+											{% for incomeIndex, incomeComment in balance.singleIncomeComment[categoryIndex] %}
+												
+													<div class="col-5 text-start d-inline-block">{{ incomeComment }}</div>
+													<div class="col-3 text-start d-inline-block">{{ balance.singleIncomeDate[categoryIndex][incomeIndex] }}</div>
+													<div class="col-3 text-end d-inline-block">{{ balance.singleIncomeAmount[categoryIndex][incomeIndex] }}</div>
+													
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+								
+								
+							{% endif %}
+						{% endfor %}
 
 
 
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
-							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-success pe-1">+</span>{{ balance.generalSumOfIncomes }} zł</div>
+							<div class="col-3 text-end d-inline-block  ms-2 my-2 fw-bold"><span class="text-success pe-1">+</span>{{ balance.generalSumOfIncomes }}zł</div>
 							
 						</section>
 					</div>
 				</div>
 				<div class="col-12 col-lg-6 p-2">
-					<div class="border border-success bg-light rounded py-3 px-4">
+					<div class="border border-success bg-light rounded py-3 px-3">
 						<section>
 							<header class="h4 text-center mb-3">
 								Wydatki
 							</header>	
 							
-							{% for category in balance.expenseCategories %}
-								{% if balance.sumOfExpenses[loop.index-1]>0 %}
+							{% for categoryIndex, category in balance.expenseCategories %}
+								{% if balance.sumOfExpenses[categoryIndex]>0 %}
 									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
-									<div class="col-4 text-end d-inline-block me-2 my-2"><span class="text-danger pe-1">-</span>{{ balance.sumOfExpenses[loop.index-1] }}zł</div>
+									<div class="col-3 text-end d-inline-block ms-2 my-2"><span class="text-danger pe-1">-</span>{{ balance.sumOfExpenses[categoryIndex] }}zł</div>
+									<a class="cleanLink2" data-bs-toggle="collapse" href="#collapseExpense{{categoryIndex}}" role="button" aria-expanded="false"> &nbsp; <i class="icon-down-open"></i></a>
+									<div class="collapse" id="collapseExpense{{categoryIndex}}">
+										<div class="card card-body">
+											<div class="fs-6 fst-italic">
+												<div class="col-5 text-start d-inline-block text-success">Komentarz</div>
+												<div class="col-3 text-start d-inline-block text-success">Data</div>
+												<div class="col-3 text-end d-inline-block text-success">Kwota</div>
+												{% for expenseIndex, expenseComment in balance.singleExpenseComment[categoryIndex] %}
+													
+														<div class="col-5 text-start d-inline-block">{{ expenseComment }}</div>
+														<div class="col-3 text-start d-inline-block">{{ balance.singleExpenseDate[categoryIndex][expenseIndex] }}</div>
+														<div class="col-3 text-end d-inline-block">{{ balance.singleExpenseAmount[categoryIndex][expenseIndex] }}</div>
+														
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								
+								
 								{% endif %}
 							{% endfor %}
 
 							<div class="border-bottom border-success my-2"></div>
 							
 							<div class="col-7 text-start d-inline-block ms-2 my-2 fw-bold">Suma:</div>
-							<div class="col-4 text-end d-inline-block me-2 my-2 fw-bold"><span class="text-danger pe-1">-</span>{{ balance.generalSumOfExpenses }} zł</div>
+							<div class="col-3 text-end d-inline-block ms-2 my-2 fw-bold"><span class="text-danger pe-1">-</span>{{ balance.generalSumOfExpenses }} zł</div>
 													
 						</section>
 					</div>
