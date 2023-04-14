@@ -532,6 +532,24 @@ class User extends \Core\Model
         return false;
     }
 
+    public function deleteIncomesAndExpenses()
+    {
+
+        if (empty($this->errors)) {
+            
+            $sql = 'DELETE i, e FROM incomes AS i, expenses AS e
+                    WHERE i.user_id = :id AND e.user_id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+
+        return false;
+    }
 
 
 }
