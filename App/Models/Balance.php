@@ -180,13 +180,19 @@ class Balance extends \Core\Model
             $this->balanceSign = $balanceSign;
             $this->commentToBalance = $commentToBalance;
             $this->colorText = $colorText;
+
+            if (isset($singleIncomeComment))
+            {
             $this->singleIncomeComment = $singleIncomeComment;
             $this->singleIncomeDate = $singleIncomeDate;
             $this->singleIncomeAmount = $singleIncomeAmount;
+            }
+            if (isset($singleExpenseComment))
+            {
             $this->singleExpenseComment = $singleExpenseComment;
             $this->singleExpenseDate = $singleExpenseDate;
             $this->singleExpenseAmount = $singleExpenseAmount;
-
+            }
     }
 
 

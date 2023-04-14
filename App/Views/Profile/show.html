@@ -4,9 +4,9 @@
 
 {% block body %}
 
-<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+<div class="col-md-10 col-lg-9 col-xl-8 col-xxl-7 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
 
-    <header class="h3 text-start m-auto" style="letter-spacing: 2px;">
+    <header class="h3 text-start ps-3" style="letter-spacing: 2px;">
         Profil
     </header>
 
@@ -19,9 +19,11 @@
         </dl>
         
     </div>
-    <button type="button"  class="btn btn-outline-success m-auto mx-2" onclick="location.href='/profile/edit';">Edytuj</button>
-    <button type="button"  class="btn btn-outline-danger m-auto mx-2" onclick="location.href='/profile/deleteIncomesAndExpenses';">Usuń przychody i wydatki</button>
-    <button type="button"  class="btn btn-outline-danger m-auto mx-2" onclick="location.href='/profile/deleteAccount';">Usuń konto</button>
+    <div class="d-flex justify-content-center pb-2">
+        <button type="button"  class="btn btn-outline-success m-auto mx-1" onclick="location.href='/profile/edit';">Edytuj</button>
+        <button type="button"  class="btn btn-outline-danger m-auto mx-1" onclick="location.href='/profile/deleteIncomesAndExpenses';">Usuń przychody i wydatki</button>
+        <button type="button"  class="btn btn-outline-danger m-auto mx-1" onclick="location.href='/profile/deleteAccount';">Usuń konto</button>
+    </div>
 </div>
 
 </article>

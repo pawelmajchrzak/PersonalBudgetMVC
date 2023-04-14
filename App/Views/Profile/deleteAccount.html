@@ -6,52 +6,7 @@
     <script src="/js/hideShowPassword.min.js"></script>
     <script src="/js/app.js"></script>
 
-    <script>
-        $(document).ready(function() {
-
-            var userId = '{{ user.id }}';
-
-            /**
-             * Validate the form
-             */
-            $('#formProfile').validate({
-                rules: {
-                    username: 'required',
-                    email: {
-                        required: true,
-                        email: true,
-                        remote: {
-                            url: '/account/validate-email',
-                            data: {
-                                ignore_id: function() {
-                                    return userId;
-                                }
-                            }
-                        }
-                    },
-                    password: {
-                        minlength: 6,
-                        maxlength: 20,
-                        validPassword: true
-                    }
-                },
-                messages: {
-                    email: {
-                        remote: 'email already taken'
-                    }
-                }
-            });
-
-
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
-            });
-        });
-    </script>
+    
 
 {% endblock %}
 
@@ -76,7 +31,7 @@
                     Usuwanie konta
                 </header>
                 
-                <form method="post" id="formProfile" action="/profile/deleteOperations">
+                <form method="post" id="formProfile" action="/profile/deleteAccount">
                 
                     <div class="text-center">Czy jesteś pewien, że chcesz usunąć konto i stracić wszelkie dane?</div>
 

@@ -98,13 +98,15 @@
 											<div class="col-5 text-start d-inline-block text-success">Komentarz</div>
 											<div class="col-3 text-start d-inline-block text-success">Data</div>
 											<div class="col-3 text-end d-inline-block text-success">Kwota</div>
-											{% for incomeIndex, incomeComment in balance.singleIncomeComment[categoryIndex] %}
-												
-													<div class="col-5 text-start d-inline-block">{{ incomeComment }}</div>
-													<div class="col-3 text-start d-inline-block">{{ balance.singleIncomeDate[categoryIndex][incomeIndex] }}</div>
-													<div class="col-3 text-end d-inline-block">{{ balance.singleIncomeAmount[categoryIndex][incomeIndex] }}</div>
+
+												{% for incomeIndex, incomeComment in balance.singleIncomeComment[categoryIndex] %}
 													
-											{% endfor %}
+														<div class="col-5 text-start d-inline-block">{{ incomeComment }}</div>
+														<div class="col-3 text-start d-inline-block">{{ balance.singleIncomeDate[categoryIndex][incomeIndex] }}</div>
+														<div class="col-3 text-end d-inline-block">{{ balance.singleIncomeAmount[categoryIndex][incomeIndex] }}</div>
+														
+												{% endfor %}
+
 										</div>
 									</div>
 								</div>

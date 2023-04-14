@@ -511,4 +511,27 @@ class User extends \Core\Model
 
         return false;
     }
+
+    public function deleteAccount()
+    {
+
+        if (empty($this->errors)) {
+            
+            $sql = 'UPDATE users
+                    SET is_active = "false"  
+                    WHERE id = :id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+
+        return false;
+    }
+
+
+
 }

@@ -35,16 +35,39 @@ class Profile extends Authenticated
 
     public function deleteIncomesAndExpensesAction()
     {
-        View::renderTemplate('Profile/deleteIncomesAndExpenses.html', [
-            'user' => $this->user
-        ]);
+        if ($this->user->updateProfile($_POST)) {
+
+            Flash::addMessage('Changes saved');
+
+            $this->redirect('/profile/show');
+
+        } else {
+
+            View::renderTemplate('Profile/deleteIncomesAndExpenses.html', [
+                'user' => $this->user
+            ]);
+
+        }
+        
+
     }
 
     public function deleteAccountAction()
     {
-        View::renderTemplate('Profile/deleteAccount.html', [
-            'user' => $this->user
-        ]);
+        if ($this->user->deleteAccount()) {
+
+            Flash::addMessage('Usunięto konto');
+
+            $this->redirect('/profile/show');
+
+        } else {
+
+            View::renderTemplate('Profile/deleteAccount.html', [
+                'user' => $this->user
+            ]);
+
+        }
+
     }
 
 
@@ -52,7 +75,7 @@ class Profile extends Authenticated
     {
         if ($this->user->updateProfile($_POST)) {
 
-            Flash::addMessage('Changes saved');
+            Flash::addMessage('Zapisano zmiany');
 
             $this->redirect('/profile/show');
 
