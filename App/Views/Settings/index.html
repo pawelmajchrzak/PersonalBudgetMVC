@@ -190,25 +190,35 @@
 
 	<div class="modal fade" id="editCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="exampleModalLabel">Edycja kategorii</h5>
-			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-			  <form>
-				<div class="mb-3">
-				  <label for="recipient-name" class="col-form-label">Nazwa kategorii:</label>
-				  <input type="text" class="form-control" id="recipient-name">
+		  	<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edycja kategorii</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-			  </form>
+
+				<form method="post" action="/settings/editCategoryIncome">
+					<div class="modal-body-H">
+						<div class="mb-3">
+							
+							<input type="hidden" class="form-control" name="oldNameCategory">
+						</div>
+					</div>
+					<div class="modal-body">
+					
+						<div class="mb-3">
+
+							<label for="oldName" class="col-form-label">Nowa nazwa kategorii:</label>
+							<input type="text" class="form-control" name="newNameCategory">
+						</div>
+					</div>
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+						<button type="submit" class="btn btn-success mx-2">Zmień</button>
+					
+					</div>
+				</form>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
-				<button type="button" class="btn btn-success mx-2">Zmień</button>
-			  
-			</div>
-		  </div>
 		</div>
 	  </div>
 	  
@@ -217,56 +227,7 @@
 
 
 
-	<div
-	class="modal fade"
-	id="editCategoryIncome"
-	tabindex="-1"
-	aria-labelledby="timeRangeLabel"
-	aria-hidden="true"
-  	>
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="enrollLabel">Wybierz zakres</h5>
-				<button
-				type="button"
-				class="btn-close"
-				data-bs-dismiss="modal"
-				aria-label="Close"
-				></button>
-			</div>
-				<form method="post" action="/viewBalanceSheet/create">
-					<div class="modal-body">
-						<div class="row m-0 m-lg-3">
-							<div class="col-12 col-lg-6">
-								<div class="input-group mb-3">
-									<span class="input-group-text w-25">Od</span>
-									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="startPeriod" min="1990-01-01" value="" max="2035-12-31" required onchange="setMinEndDate(event)">
-								</div>
-							</div>
-							
-							<div class="col-12 col-lg-6">
-								<div class="input-group mb-3">
-									<span class="input-group-text w-25">Do</span>
-									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="endPeriod" min="1990-01-01" value="" max="2035-12-31" required>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button
-						type="button"
-						class="btn btn-secondary"
-						data-bs-dismiss="modal"
-						>
-						Zamknij
-						</button>
-						<button type="submit" class="btn btn-success">Wybierz</button>
-					</div>
-				</form>
-			</div>
-			</div>
-	</div>
+
 
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

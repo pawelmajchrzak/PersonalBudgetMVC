@@ -17,7 +17,7 @@ class Income extends \Core\Model
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
-            $this->$key = $value;
+            $this->$key = $value;   
         };
     }
 
@@ -180,4 +180,48 @@ class Income extends \Core\Model
         return $stmt->fetchAll();
     }   
 
+    public function updateIncomeCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        /*
+        $count = sizeof(IncomeMod::selectIncomesCategory());
+        $incomeName = IncomeMod::selectIncomesCategory();
+
+        $oldIncomeCategoryName = "";
+        $newIncomeCategoryName = "";
+
+        $j = 0;
+        for ($i = 1; $i <= $count; $i++) {
+            if($_GET['editIncomeCategory' . $i] != $incomeName[$j]['category']) {
+                $oldIncomeCategoryName = $incomeName[$j]['category'];
+                $newIncomeCategoryName = $_GET['editIncomeCategory' . $i];
+            }
+            $j++;
+        }
+        
+
+        $newIncomeCategoryName = SettingsMod::convertTextToFirstCapitalize($newIncomeCategoryName);
+        */
+        $sql = "
+                UPDATE `incomes_category_assigned_to_users` 
+                SET name = :newNameCategory
+                WHERE  name = :oldNameCategory AND user_id = :id
+                ";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+        $stmt->bindValue(':oldNameCategory',      $this->oldNameCategory,    PDO::PARAM_STR);
+        $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+
+        //$result = $stmt->fetchAll();
+        $stmt->execute();
+
+        //return $result;
+
+
+
+    }
 }

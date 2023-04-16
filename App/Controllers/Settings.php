@@ -22,6 +22,34 @@ class Settings extends \Core\Controller
         else 
             View::renderTemplate('Login/new.html');
     }
+
+    public function editCategoryIncomeAction()
+    {
+        $income = new Income($_POST);
+
+        if (isset($_POST['newNameCategory'])) {
+
+            //Flash::addMessage($_POST['oldNameCategory']."--".$_POST['newNameCategory']);
+            //$this->redirect('/settings');
+            //exit();
+
+            $income->updateIncomeCategory();
+
+            Flash::addMessage('Nazwa kategorii przychodu została zmieniona');
+            $this->redirect('/settings');
+        } else {
+
+            Flash::addMessage('Nie udało się zmienić nazwy kategorii.', FLASH::INFO);
+            $this->redirect('/settings');
+        }
+    }
+
+
+
+
+
+
+
     /*
     public function createIncomeAction()
     {
