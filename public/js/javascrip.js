@@ -30,56 +30,23 @@
   var modalBodyInputH = editOperationModal.querySelector('.modal-body-H input')
   modalBodyInput.value = oldName
   modalBodyInputH.value = oldName
-
-
-
-
-
  })
 
-  //var hiddenInput = editOperationModal.querySelector('input[name=oldNameCategory]')
-//hiddenInput.value = oldName 
+ var deleteOperationModal = document.getElementById('deleteCategoryIncome')
+ deleteOperationModal.addEventListener('show.bs.modal', function (event) {
+ var button = event.relatedTarget
+ var oldName = button.getAttribute('data-bs-whatever')
+ var modalBodyInputH = deleteOperationModal.querySelector('.modal-body-H input')
+ var modalTitle = deleteOperationModal.querySelector('.text')
+ modalBodyInputH.value = oldName
+ modalTitle.textContent = oldName
+ var selectCategory = deleteOperationModal.querySelector('.form-select')
+ for (var i = 0; i < selectCategory.options.length; i++) {
+   if (selectCategory.options[i].value === oldName) {
+     selectCategory.options[i].setAttribute('disabled', true)
+   } else {
+     selectCategory.options[i].removeAttribute('disabled')
+   }
+ }
+})
 
-
-/*
-var editOperationModal = document.getElementById('editCategoryIncome');
-editOperationModal.addEventListener('show.bs.modal', function (event) {
-  var button = event.relatedTarget;
-  var oldName = button.getAttribute('data-bs-whatever');
-  var modalBodyInput = editOperationModal.querySelector('.modal-body input[name=newNameCategory]');
-  modalBodyInput.value = oldName;
-  var hiddenInput = editOperationModal.querySelector('input[name=oldNameCategory]');
-  hiddenInput.value = oldName;
-  
-  var form = editOperationModal.querySelector('form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    var newName = modalBodyInput.value;
-    // send both oldName and newName to server
-    // ...
-    // hide the modal after successful submission
-    var modal = bootstrap.Modal.getInstance(editOperationModal);
-    modal.hide();
-  });
-});
-*/
-/*
-var editOperationModal = document.getElementById('editCategoryIncome');
-editOperationModal.addEventListener('show.bs.modal', function (event) {
-  var button = event.relatedTarget;
-  var oldName = button.getAttribute('data-bs-whatever');
-  var modalBodyInput = editOperationModal.querySelector('.modal-body input[name=newNameCategory]');
-  modalBodyInput.value = oldName;
-  var hiddenInput = editOperationModal.querySelector('input[name=oldNameCategory]');
-  hiddenInput.value = oldName;
-
-  var form = editOperationModal.querySelector('form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    var oldName = editOperationModal.querySelector('input[name=oldNameCategory]').value;
-    console.log('Old name:', oldName);
-    // add your code to handle the form submission with oldName
-    // for example, you can submit the form using AJAX and pass oldName as data
-  });
-});
-*/

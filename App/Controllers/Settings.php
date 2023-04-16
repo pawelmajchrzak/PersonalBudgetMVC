@@ -47,6 +47,26 @@ class Settings extends \Core\Controller
         }
     }
 
+    public function deleteCategoryIncomeAction()
+    {
+        $income = new Income($_POST);
+
+        //Flash::addMessage('--'.$_POST['nameCategory'].'--');
+        //$this->redirect('/settings');
+        
+        if (isset($_POST['nameCategory'])) {
+
+            $income->deleteIncomeCategory();
+            Flash::addMessage('Kategoria przychodu została usunięta');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Nie udało się usunąć kategorii.', FLASH::INFO);
+            $this->redirect('/settings');
+        }
+        
+    }
 
 
 

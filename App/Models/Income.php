@@ -186,25 +186,6 @@ class Income extends \Core\Model
 
         $this->validateCategoryName();
 
-        /*
-        $count = sizeof(IncomeMod::selectIncomesCategory());
-        $incomeName = IncomeMod::selectIncomesCategory();
-
-        $oldIncomeCategoryName = "";
-        $newIncomeCategoryName = "";
-
-        $j = 0;
-        for ($i = 1; $i <= $count; $i++) {
-            if($_GET['editIncomeCategory' . $i] != $incomeName[$j]['category']) {
-                $oldIncomeCategoryName = $incomeName[$j]['category'];
-                $newIncomeCategoryName = $_GET['editIncomeCategory' . $i];
-            }
-            $j++;
-        }
-        
-
-        $newIncomeCategoryName = SettingsMod::convertTextToFirstCapitalize($newIncomeCategoryName);
-        */
         if (empty($this->errors))
         {
 
@@ -226,10 +207,6 @@ class Income extends \Core\Model
 
             return false;
         }
-
-
-
-
 
     }
 
@@ -278,5 +255,31 @@ class Income extends \Core\Model
         $stmt->execute();
 
         return $stmt->fetch();
+    }
+
+    public function deleteIncomeCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        if (empty($this->errors))
+        {
+
+            $sql = "
+            DELETE FROM `incomes_category_assigned_to_users` 
+            WHERE  name = :nameCategory AND user_id = :id
+            ";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',            $id,                    PDO::PARAM_INT);
+            $stmt->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+
     }
 }

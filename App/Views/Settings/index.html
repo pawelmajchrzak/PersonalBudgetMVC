@@ -29,7 +29,7 @@
 									{% for category in incomesCategory %}
 									<li class="py-1"> 
 										{{ category.name }} 
-										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome" data-bs-whatever="{{ category.name }}">Edytuj</button>
+										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome"  data-bs-whatever="{{ category.name }}">Edytuj</button>
 										<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}">Usuń</button>
 									</li>
 									{% endfor %}
@@ -232,38 +232,59 @@
 	  </div>
 	  
 
-
-
-
-
-
-
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal fade" id="deleteCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-			  <form>
-				<div class="mb-3">
-				  <label for="recipient-name" class="col-form-label">Recipient:</label>
-				  <input type="text" class="form-control" id="recipient-name">
+		  	<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Usuwanie kategorii</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="mb-3">
-				  <label for="message-text" class="col-form-label">Message:</label>
-				  <textarea class="form-control" id="message-text"></textarea>
-				</div>
-			  </form>
+
+
+				<form method="post" action="/settings/deleteCategoryIncome">
+					<div class="modal-body-H">
+						<div class="mb-3">
+							<span class="fs-6">Czy jesteś pewien, że chcesz usunąć kategorię o nazwie:</span><br>
+							<span class="text" id="exampleModalLabel">New message</span>
+							<input type="hidden" class="form-control" name="nameCategory">
+						</div>
+					</div>
+					<div class="modal-body">
+					
+						<div class="mb-3">
+
+							<span class="fs-6">Wybierz kategorię do której mają zostać przeniesione przychody z usuniętej kategorii:</span><br>
+							<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" value="{{ income.category }}" required> 
+
+								<option value="cat0" selected disabled>	</option>
+								{% for category in incomesCategory %}
+									
+								<option value="{{ category.id }}">
+										{{ category.name }}
+								</option>
+									
+								{% endfor %}
+							</select>
+						</div>
+					</div>	
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+						<button type="submit" class="btn btn-success mx-2">Usuń</button>
+					
+					</div>
+				</form>
 			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary">Send message</button>
-			</div>
-		  </div>
 		</div>
 	  </div>
+
+
+
+
+
+
+
+
 
 
 
