@@ -29,14 +29,17 @@ class Settings extends \Core\Controller
 
         if (isset($_POST['newNameCategory'])) {
 
-            //Flash::addMessage($_POST['oldNameCategory']."--".$_POST['newNameCategory']);
-            //$this->redirect('/settings');
-            //exit();
-
-            $income->updateIncomeCategory();
+           if($income->updateIncomeCategory()){
 
             Flash::addMessage('Nazwa kategorii przychodu została zmieniona');
             $this->redirect('/settings');
+           } else {
+
+            Flash::addMessage('Nie udało się zmienić nazwy kategorii, może jest już kategoria o tej nazwie. Kategoria może składać się tylko z liter i cyfr', FLASH::WARNING);
+            $this->redirect('/settings');
+           }
+
+
         } else {
 
             Flash::addMessage('Nie udało się zmienić nazwy kategorii.', FLASH::INFO);

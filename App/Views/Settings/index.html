@@ -196,7 +196,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 
-				<form method="post" action="/settings/editCategoryIncome">
+				<form method="post" action="/settings/editCategoryIncome" id="formCategory">
 					<div class="modal-body-H">
 						<div class="mb-3">
 							
@@ -211,7 +211,16 @@
 							<input type="text" class="form-control" name="newNameCategory">
 						</div>
 					</div>
-					
+					<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+						{% if income.errors is not empty %}
+							<p>Errors:</p>
+							<ul>
+								{% for error in income.errors %}
+									<li>{{ error }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
 						<button type="submit" class="btn btn-success mx-2">Zmień</button>
