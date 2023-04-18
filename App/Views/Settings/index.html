@@ -31,7 +31,7 @@
 										{{ category.name }} 
 										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome"  data-bs-whatever="{{ category.name }}">Edytuj</button>
 										{% if incomesCategory|length > 1 %}
-										<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
+											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
 										{% else %}
 											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
 										{% endif %}
@@ -140,57 +140,6 @@
 	</main>
 
 
-	<div
-	class="modal fade"
-	id="newCategoryIncome"
-	tabindex="-1"
-	aria-labelledby="timeRangeLabel"
-	aria-hidden="true"
-  	>
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="enrollLabel">Wybierz zakres</h5>
-				<button
-				type="button"
-				class="btn-close"
-				data-bs-dismiss="modal"
-				aria-label="Close"
-				></button>
-			</div>
-				<form method="post" action="/viewBalanceSheet/create">
-					<div class="modal-body">
-						<div class="row m-0 m-lg-3">
-							<div class="col-12 col-lg-6">
-								<div class="input-group mb-3">
-									<span class="input-group-text w-25">Od</span>
-									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="startPeriod" min="1990-01-01" value="" max="2035-12-31" required onchange="setMinEndDate(event)">
-								</div>
-							</div>
-							
-							<div class="col-12 col-lg-6">
-								<div class="input-group mb-3">
-									<span class="input-group-text w-25">Do</span>
-									<input type="date" class="form-control" aria-label="Date" aria-describedby="date" name="endPeriod" min="1990-01-01" value="" max="2035-12-31" required>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button
-						type="button"
-						class="btn btn-secondary"
-						data-bs-dismiss="modal"
-						>
-						Zamknij
-						</button>
-						<button type="submit" class="btn btn-success">Wybierz</button>
-					</div>
-				</form>
-			</div>
-			</div>
-	</div>
-
 
 	<div class="modal fade" id="editCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -236,6 +185,7 @@
 	  </div>
 	  
 
+
 	  <div class="modal fade" id="deleteCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 		  	<div class="modal-content">
@@ -247,9 +197,9 @@
 
 				<form method="post" action="/settings/deleteCategoryIncome">
 					<div class="modal-body-H">
-						<div class="mb-3">
+						<div class="mb-3 px-3">
 							<span class="fs-6">Czy jesteś pewien, że chcesz usunąć kategorię o nazwie:</span><br>
-							<span class="text" id="exampleModalLabel">New message</span>
+							<span class="text text-success fw-bold" id="exampleModalLabel">New message</span>
 							<input type="hidden" class="form-control" name="nameCategory">
 						</div>
 					</div>
@@ -284,7 +234,48 @@
 
 
 
+	<div class="modal fade" id="newCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  	<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Dodawanie nowej kategorii przychodu</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
 
+				<form method="post" action="/settings/addNewCategoryIncome" id="formCategory">
+					<div class="modal-body-H">
+						<div class="mb-3">
+							
+							<input type="hidden" class="form-control" name="oldNameCategory">
+						</div>
+					</div>
+					<div class="modal-body">
+					
+						<div class="mb-3">
+
+							<label for="oldName" class="col-form-label"> Nazwa nowej kategorii:</label>
+							<input type="text" class="form-control" name="newNameCategory">
+						</div>
+					</div>
+					<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+						{% if income.errors is not empty %}
+							<p>Errors:</p>
+							<ul>
+								{% for error in income.errors %}
+									<li>{{ error }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+						<button type="submit" class="btn btn-success mx-2">Zmień</button>
+					
+					</div>
+				</form>
+			</div>
+		</div>
+	  </div>
 
 
 

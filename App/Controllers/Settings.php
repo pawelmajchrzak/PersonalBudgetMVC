@@ -51,17 +51,9 @@ class Settings extends \Core\Controller
     {
         $income = new Income($_POST);
 
-        //Flash::addMessage('--'.$_POST['nameCategory'].'--'.$_POST['categoryReplace']);
-        //$this->redirect('/settings');
-        //exit();
         if (isset($_POST['nameCategory'])) {
-
-            
-            $xxx = $income->deleteIncomeCategory();
-            Flash::addMessage('--'.$xxx.'--');
-            $this->redirect('/settings');
-            exit();
-
+  
+            $income->deleteIncomeCategory();
 
             Flash::addMessage('Kategoria przychodu została usunięta');
             $this->redirect('/settings');
@@ -69,6 +61,25 @@ class Settings extends \Core\Controller
         } else {
 
             Flash::addMessage('Nie udało się usunąć kategorii.', FLASH::INFO);
+            $this->redirect('/settings');
+        }
+        
+    }
+
+    public function addNewCategoryIncomeAction()
+    {
+        $income = new Income($_POST);
+
+        if (isset($_POST['newNameCategory'])) {
+  
+            $income->addNewCategoryIncome();
+
+            Flash::addMessage('Dodano nową kategorię przychodu');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Nie udało się dodać kategorii.', FLASH::INFO);
             $this->redirect('/settings');
         }
         
