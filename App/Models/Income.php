@@ -261,21 +261,49 @@ class Income extends \Core\Model
     {
         $id = $_SESSION['user_id'];
 
+
+
+
+
         if (empty($this->errors))
         {
 
-            $sql = "
-            DELETE FROM `incomes_category_assigned_to_users` 
-            WHERE  name = :nameCategory AND user_id = :id
-            ";
+
+
 
             $db = static::getDB();
-            $stmt = $db->prepare($sql);
 
+            $sql1 = "SELECT id FROM `incomes_category_assigned_to_users` 
+            WHERE  name = :nameCategory AND user_id = :id";
+
+            $stmt1 = $db->prepare($sql1);
+            $stmt1->bindValue(':id',            $id,                    PDO::PARAM_INT);
+            $stmt1->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            $stmt1->execute();
+
+            $result = $stmt1->fetch(PDO::FETCH_ASSOC);
+            $idCategory = $result['id'];
+            
+            
+            $sql2 = "UPDATE `incomes` 
+            SET income_category_assigned_to_user_id = :categoryReplace
+            WHERE  income_category_assigned_to_user_id = :idCategory";
+
+            $stmt2 = $db->prepare($sql2);
+            $stmt2->bindValue(':idCategory',  $idCategory,    PDO::PARAM_STR);
+            $stmt2->bindValue(':categoryReplace',  $this->categoryReplace,    PDO::PARAM_STR);
+            $stmt2->execute();
+
+            
+            $sql = "DELETE FROM `incomes_category_assigned_to_users` 
+                    WHERE  name = :nameCategory AND user_id = :id";
+            $stmt = $db->prepare($sql);
             $stmt->bindValue(':id',            $id,                    PDO::PARAM_INT);
             $stmt->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            
             return $stmt->execute();
-
+            
+            
         } else {
 
             return false;

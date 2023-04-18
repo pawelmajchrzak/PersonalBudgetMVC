@@ -51,12 +51,18 @@ class Settings extends \Core\Controller
     {
         $income = new Income($_POST);
 
-        //Flash::addMessage('--'.$_POST['nameCategory'].'--');
+        //Flash::addMessage('--'.$_POST['nameCategory'].'--'.$_POST['categoryReplace']);
         //$this->redirect('/settings');
-        
+        //exit();
         if (isset($_POST['nameCategory'])) {
 
-            $income->deleteIncomeCategory();
+            
+            $xxx = $income->deleteIncomeCategory();
+            Flash::addMessage('--'.$xxx.'--');
+            $this->redirect('/settings');
+            exit();
+
+
             Flash::addMessage('Kategoria przychodu została usunięta');
             $this->redirect('/settings');
 

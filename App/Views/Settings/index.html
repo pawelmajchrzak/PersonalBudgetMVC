@@ -30,7 +30,11 @@
 									<li class="py-1"> 
 										{{ category.name }} 
 										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome"  data-bs-whatever="{{ category.name }}">Edytuj</button>
-										<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}">Usuń</button>
+										{% if incomesCategory|length > 1 %}
+										<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
+										{% else %}
+											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
+										{% endif %}
 									</li>
 									{% endfor %}
 								</ul>
@@ -258,11 +262,11 @@
 
 								<option value="cat0" selected disabled>	</option>
 								{% for category in incomesCategory %}
-									
-								<option value="{{ category.id }}">
-										{{ category.name }}
-								</option>
-									
+									{% if  category.name != window.oldNameC %}
+										<option value="{{ category.id }}">
+												{{ category.name }}
+										</option>
+									{% endif %}
 								{% endfor %}
 							</select>
 						</div>
