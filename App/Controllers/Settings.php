@@ -23,6 +23,9 @@ class Settings extends \Core\Controller
             View::renderTemplate('Login/new.html');
     }
 
+
+/////////////incomes////////////////////////////////////
+
     public function editCategoryIncomeAction()
     {
         $income = new Income($_POST);
@@ -34,14 +37,11 @@ class Settings extends \Core\Controller
             Flash::addMessage('Nazwa kategorii przychodu została zmieniona');
             $this->redirect('/settings');
            } else {
-
-            Flash::addMessage('Nie udało się zmienić nazwy kategorii, może jest już kategoria o tej nazwie. Kategoria może składać się tylko z liter i cyfr', FLASH::WARNING);
-            $this->redirect('/settings');
+                Flash::addMessage('Nie udało się zmienić nazwy kategorii, może jest już kategoria o tej nazwie. Kategoria może składać się tylko z liter i cyfr', FLASH::WARNING);
+                $this->redirect('/settings');
            }
 
-
         } else {
-
             Flash::addMessage('Nie udało się zmienić nazwy kategorii.', FLASH::INFO);
             $this->redirect('/settings');
         }
@@ -54,7 +54,6 @@ class Settings extends \Core\Controller
         if (isset($_POST['nameCategory'])) {
   
             $income->deleteIncomeCategory();
-
             Flash::addMessage('Kategoria przychodu została usunięta');
             $this->redirect('/settings');
 
@@ -73,7 +72,6 @@ class Settings extends \Core\Controller
         if (isset($_POST['newNameCategory'])) {
   
             $income->addNewCategoryIncome();
-
             Flash::addMessage('Dodano nową kategorię przychodu');
             $this->redirect('/settings');
 
@@ -85,50 +83,69 @@ class Settings extends \Core\Controller
         
     }
 
+/////////////////expenses/////////////////////////////////////////
 
 
 
 
-
-    /*
-    public function createIncomeAction()
+    public function editCategoryExpenseAction()
     {
-        $income = new Income($_GET);
+        $expense = new Expense($_POST);
 
-        if (isset($_GET['income'])) {
+        if (isset($_POST['newNameCategory'])) {
 
-            $income->insertIncomeCategory();
+           if($expense->updateExpenseCategory()){
 
-            Flash::addMessage('Kategoria przychodu została dodana', FLASH::INFO);
+            Flash::addMessage('Nazwa kategorii wydatku została zmieniona');
+            $this->redirect('/settings');
+           } else {
+                Flash::addMessage('Nie udało się zmienić nazwy kategorii, może jest już kategoria o tej nazwie. Kategoria może składać się tylko z liter i cyfr', FLASH::WARNING);
+                $this->redirect('/settings');
+           }
 
-            $this->redirect('/Settings');
+        } else {
+            Flash::addMessage('Nie udało się zmienić nazwy kategorii.', FLASH::INFO);
+            $this->redirect('/settings');
+        }
+    }
+
+    public function deleteCategoryExpenseAction()
+    {
+        $expense = new Expense($_POST);
+
+        if (isset($_POST['nameCategory'])) {
+  
+            $expense->deleteExpenseCategory();
+            Flash::addMessage('Kategoria wydatku została usunięta');
+            $this->redirect('/settings');
+
         } else {
 
-            Flash::addMessage('Kategoria przychodu nie została dodana, spróbuj jeszcze raz.');
-
-            $this->redirect('/Settings');
+            Flash::addMessage('Nie udało się usunąć kategorii.', FLASH::INFO);
+            $this->redirect('/settings');
         }
+        
     }
-*/
-    /*
-    public function createAction()
+
+    public function addNewCategoryExpenseAction()
     {
-        if (isset($_POST['timePeriod'])||isset($_POST['startPeriod']))
-        {
-            $balance = new Balance($_POST);
-            $balance ->periodTime();
-            $balance ->setBalance();
+        $expense = new Expense($_POST);
 
-            View::renderTemplate('ViewBalanceSheet/index.html', [
-                'timePeriod' => $_POST['timePeriod'],
-                'balance' => $balance
-            ]);
+        if (isset($_POST['newNameCategory'])) {
+  
+            $expense->addNewCategoryExpense();
+            Flash::addMessage('Dodano nową kategorię wydatku');
+            $this->redirect('/settings');
+
+        } else {
+
+            Flash::addMessage('Nie udało się dodać kategorii.', FLASH::INFO);
+            $this->redirect('/settings');
         }
-        else
-        {
-            View::renderTemplate('ViewBalanceSheet/index.html');
-        }
+        
     }
-    */
+
+    
+
 
 }

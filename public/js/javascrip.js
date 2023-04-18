@@ -18,6 +18,7 @@
       })
   })()
 
+//////////////////INCOMES///////////////////////////////////////////////////////////////////////
 
   var editOperationModal = document.getElementById('editCategoryIncome')
   editOperationModal.addEventListener('show.bs.modal', function (event) {
@@ -38,5 +39,28 @@
  var modalTitle = deleteOperationModal.querySelector('.text')
  modalBodyInputH.value = oldName
  modalTitle.textContent = oldName
+})
+
+//////////////////EXPENSES///////////////////////////////////////////////////////////////////////
+
+var editOperationModalExp = document.getElementById('editCategoryExpense')
+editOperationModalExp.addEventListener('show.bs.modal', function (event) {
+var button = event.relatedTarget
+var oldName = button.getAttribute('data-bs-whatever')
+var modalBodyInput = editOperationModalExp.querySelector('.modal-body input')
+var modalBodyInputH = editOperationModalExp.querySelector('.modal-body-H input')
+modalBodyInput.value = oldName
+modalBodyInputH.value = oldName
+})
+
+
+var deleteOperationModalExp = document.getElementById('deleteCategoryExpense')
+deleteOperationModalExp.addEventListener('show.bs.modal', function (event) {
+var button = event.relatedTarget
+var oldName = button.getAttribute('data-bs-whatever')
+var modalBodyInputH = deleteOperationModalExp.querySelector('.modal-body-H input')
+var modalTitle = deleteOperationModalExp.querySelector('.text')
+modalBodyInputH.value = oldName
+modalTitle.textContent = oldName
 })
 
