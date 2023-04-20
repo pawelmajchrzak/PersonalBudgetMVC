@@ -17,7 +17,7 @@ class Settings extends \Core\Controller
             View::renderTemplate('Settings/index.html',[
                 'incomesCategory'   =>     Income::selectIncomesCategory(),
                 'expensesCategory'  =>     Expense::selectExpensesCategory(),
-                'paymentMethods'    =>     Expense::selectMethodsPayment()
+                'paymentMethod'    =>     Expense::selectMethodsPayment()
             ]);
         else 
             View::renderTemplate('Login/new.html');
@@ -145,7 +145,69 @@ class Settings extends \Core\Controller
         
     }
 
+
+
+/////////////////payment//method/////////////////////////////////////////
+
+
+
+
+public function editPaymentMethodAction()
+{
+    $expense = new Expense($_POST);
+
+    if (isset($_POST['newNameCategory'])) {
+
+       if($expense->updatePaymentMethod()){
+
+        Flash::addMessage('Nazwa metody płatności wydatku została zmieniona');
+        $this->redirect('/settings');
+       } else {
+            Flash::addMessage('Nie udało się zmienić nazwy metody płatności, może jest już kategoria o tej nazwie. Kategoria może składać się tylko z liter i cyfr', FLASH::WARNING);
+            $this->redirect('/settings');
+       }
+
+    } else {
+        Flash::addMessage('Nie udało się zmienić nazwy kategorii.', FLASH::INFO);
+        $this->redirect('/settings');
+    }
+}
+
+public function deletePaymentMethodAction()
+{
+    $expense = new Expense($_POST);
+
+    if (isset($_POST['nameCategory'])) {
+
+        $expense->deletePaymentMethod();
+        Flash::addMessage('Metoda płatności została usunięta');
+        $this->redirect('/settings');
+
+    } else {
+
+        Flash::addMessage('Nie udało się usunąć metody płatności.', FLASH::INFO);
+        $this->redirect('/settings');
+    }
     
+}
+
+public function addNewPaymentMethodAction()
+{
+    $expense = new Expense($_POST);
+
+    if (isset($_POST['newNameCategory'])) {
+
+        $expense->addNewPaymentMethod();
+        Flash::addMessage('Dodano nową metodę płatności');
+        $this->redirect('/settings');
+
+    } else {
+
+        Flash::addMessage('Nie udało się dodać metody płatności.', FLASH::INFO);
+        $this->redirect('/settings');
+    }
+    
+}
 
 
 }
