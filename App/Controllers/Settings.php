@@ -163,7 +163,7 @@ public function editPaymentMethodAction()
         Flash::addMessage('Nazwa metody płatności wydatku została zmieniona');
         $this->redirect('/settings');
        } else {
-            Flash::addMessage('Nie udało się zmienić nazwy metody płatności, może jest już kategoria o tej nazwie. Kategoria może składać się tylko z liter i cyfr', FLASH::WARNING);
+            Flash::addMessage('Nie udało się zmienić nazwy metody płatności, może jest już metoda płatności o tej nazwie. Metoda płatności może składać się tylko z liter i cyfr', FLASH::WARNING);
             $this->redirect('/settings');
        }
 

@@ -64,3 +64,25 @@ modalBodyInputH.value = oldName
 modalTitle.textContent = oldName
 })
 
+//////////////////PAYMENT_METHODS///////////////////////////////////////////////////////////////////////
+
+var editOperationModalPay = document.getElementById('editPaymentMethod')
+editOperationModalPay.addEventListener('show.bs.modal', function (event) {
+var button = event.relatedTarget
+var oldName = button.getAttribute('data-bs-whatever')
+var modalBodyInput = editOperationModalPay.querySelector('.modal-body input')
+var modalBodyInputH = editOperationModalPay.querySelector('.modal-body-H input')
+modalBodyInput.value = oldName
+modalBodyInputH.value = oldName
+})
+
+
+var deleteOperationModalPay = document.getElementById('deletePaymentMethod')
+deleteOperationModalPay.addEventListener('show.bs.modal', function (event) {
+var button = event.relatedTarget
+var oldName = button.getAttribute('data-bs-whatever')
+var modalBodyInputH = deleteOperationModalPay.querySelector('.modal-body-H input')
+var modalTitle = deleteOperationModalPay.querySelector('.text')
+modalBodyInputH.value = oldName
+modalTitle.textContent = oldName
+})
