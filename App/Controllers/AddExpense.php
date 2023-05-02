@@ -26,6 +26,23 @@ class AddExpense extends \Core\Controller
 
     public function createAction()
     {
+        //Limit//
+
+        $limit = Expense::getLimit ($_POST['category']);
+        //$limit = $_POST['category'];
+        //$endOfMonth = Expense::getLastDayOfMonth ($_POST['date']);
+        $monthlySum = Expense::getMonthlyCategoryExpense($_POST['category'],$_POST['date']);
+        $monthlySumAndThis = $monthlySum+$_POST['amount'];
+
+
+        header('Location://'.$_SERVER['HTTP_HOST'].'/addExpense/success', true, 303);
+        Flash::addMessage('Limit dla wybranej kategorii to: '.$limit.' zł. Wykorzystano już: '.$monthlySum.' zł. Po dodaniu tego przychodu będzie: '.$monthlySumAndThis.' zł.');
+        exit();
+
+        //endLimit//
+
+
+
 
         $expense = new Expense($_POST);
         
@@ -49,5 +66,23 @@ class AddExpense extends \Core\Controller
     {
         View::renderTemplate('AddExpense/success.html'); 
     }
+
+    public function limitAction() {
+
+        ///ponizszyZapisOgarnac
+        $category = $this->route_params['category'];
+        echo json_encode(Expense::getLimit($category), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function expenseMonthlySumAction() {
+
+        ///ponizszyZapisOgarnac
+        $category = $this->route_params['category'];
+        $date = $this->route_params['date'];
+
+        echo json_encode(Expense::getMonthlyCategoryExpense($category, $date), JSON_UNESCAPED_UNICODE);
+    }
+
+
 
 }

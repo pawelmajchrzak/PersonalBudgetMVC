@@ -3,8 +3,10 @@
 {% block title %}Add Expense{% endblock %}
 
 {% block footer %}
-
+<script src="/js/limit.js"></script>
 <script>
+
+    
 
     $.validator.addMethod('validTextField',
             function(value, element, param) {
@@ -98,7 +100,7 @@
                 <header class="h3 text-center mb-5">
                     Dodaj wydatek
                 </header>
-                
+                <!--<span class="text text-success fw-bold" id="exampleModalLabel">New message</span>-->
                 <form method="post" action="/addExpense/create" id="formAddExpense">
 
                     <div class="row m-0 m-lg-3 pb-1">
@@ -151,8 +153,9 @@
                                             {{ category.name }}
                                     </option>
                                     {% endfor %}
-
-
+                                    <div class="exampleModalLabel">
+                                    <span class="text text-success fw-bold" id="exampleModalLabel">New message</span>
+                                </div>
                                 </select>								
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
@@ -177,7 +180,14 @@
                     </div>
 
                 </form>
-                
+
+                <!--limit-->
+                <div class="main_content_column" id="second_column">
+                    <div class="limit_box" id="limit_info_box">1</div>
+                    <div class="limit_box" id="limit_value_box">2</div>
+                    <div class="limit_box" id="limit_left_box">3</div>
+                </div>
+                <!--limit-->
             </div>
         
         </div>

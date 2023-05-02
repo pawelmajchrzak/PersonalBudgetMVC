@@ -7,6 +7,7 @@ use \App\Token;
 use \App\Mail;
 use \Core\View;
 use DateTime;
+use DateInterval;
 
 
 class Expense extends \Core\Model
@@ -144,11 +145,9 @@ class Expense extends \Core\Model
     {
         $id = $_SESSION['user_id'];
 
-        $sql = "
-                SELECT id, name
+        $sql = "SELECT id, name
                 FROM expenses_category_assigned_to_users
-                WHERE user_id = :id
-                ";
+                WHERE user_id = :id";
 
         $db = static::getDb();
         $stmt = $db->prepare($sql);
@@ -156,18 +155,16 @@ class Expense extends \Core\Model
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }   
 
     public static function selectMethodsPayment()
     {
         $id = $_SESSION['user_id'];
 
-        $sql = "
-                SELECT id, name
+        $sql = "SELECT id, name
                 FROM payment_methods_assigned_to_users
-                WHERE user_id = :id
-                ";
+                WHERE user_id = :id";
 
         $db = static::getDb();
         $stmt = $db->prepare($sql);
@@ -490,5 +487,55 @@ public function addNewPaymentMethod()
     }
 
 }    
+
+/////////////////////To Limits//////////////////////////////
+
+    public static function getLimit ($category)
+    {
+        $db = static::getDB();
+
+        $sql = "SELECT category_limit FROM `expenses_category_assigned_to_users` 
+                WHERE  id = :id";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id',     $category,    PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$result) {
+            return null;
+        }
+        else {
+            return $result['category_limit'];
+        }
+    }
+
+    public static function getMonthlyCategoryExpense($category,$date)
+    {
+        $dateObject = new DateTime($date);
+        $beginMonth = $dateObject->format('Y-m-01');
+        $endMonth = $dateObject->format('Y-m-t');
+
+        $db = static::getDB();
+
+        $sql = "SELECT SUM(amount) AS monthlySum FROM `expenses` 
+                WHERE  expense_category_assigned_to_user_id = :id
+                AND date_of_expense BETWEEN :beginMonth AND :endMonth";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id',             $category,      PDO::PARAM_INT);
+        $stmt->bindValue(':beginMonth',     $beginMonth,    PDO::PARAM_STR);
+        $stmt->bindValue(':endMonth',       $endMonth,      PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return null;
+        }
+        else {
+            return $result['monthlySum'];
+        }
+    }
+    
 
 }
