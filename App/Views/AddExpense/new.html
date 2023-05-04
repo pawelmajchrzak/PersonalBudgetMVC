@@ -147,7 +147,7 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Kategoria</span>
                                 <select class="form-select" name="category" id="inputCategory" aria-label="category" required>
-                                    <option value="cat0" selected disabled>	</option>
+                                    <option value="" selected disabled>	</option>
                                     {% for category in expensesCategory %}
                                     <option value="{{ category.id }}">
                                             {{ category.name }}
@@ -182,10 +182,13 @@
                 </form>
 
                 <!--limit-->
-                <div class="main_content_column" id="second_column">
-                    <div class="limit_box" id="limit_info_box">1</div>
-                    <div class="limit_box" id="limit_value_box">2</div>
-                    <div class="limit_box" id="limit_left_box">3</div>
+                <div class="limitBoard bg-success text-white row justify-content-center align-items-center" id="second_column">
+                    <span class="col-4 text-center fs-6">Limit:</span>
+                    <span class="col-4 text-center fs-6">Dotychczas wydano:</span>
+                    <span class="col-4 text-center fs-6">Wydatki+wpisana kwota:</span>
+                    <div class="limit_box col-4 text-center" id="limit_info_box"></div>
+                    <div class="limit_box col-4 text-center" id="limit_value_box"></div>
+                    <div class="limit_box col-4 text-center" id="limit_left_box"></div>
                 </div>
                 <!--limit-->
             </div>
