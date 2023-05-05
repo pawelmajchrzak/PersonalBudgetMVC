@@ -4,9 +4,11 @@ const amountField = document.querySelector('#inputAmount');
 const dateField = document.querySelector('#inputDate');
 const categoryField = document.querySelector('#inputCategory');
 
+
 const limitInfoBox = document.querySelector('#limit_info_box');
 const limitValueBox = document.querySelector('#limit_value_box');
 const limitLeftBox = document.querySelector('#limit_left_box');
+const legendBox = document.querySelectorAll('.legend');
 
 const limitInfo = document.createElement('p');
 const limitValue = document.createElement('p');
@@ -35,65 +37,50 @@ const renderValueBox = (field, monthlyExpenses) => {
 
 const renderLeftBox = (field, limitInfoData, monthlyExpenses, amount) => {
     //limitLeft.innerText = `${(limitInfoData - monthlyExpenses - amount).toFixed(2)} zł`; //wydatki+kwota wpisana  
-    limitLeft.innerText = `${(limitInfoData - monthlyExpenses - amount).toFixed(2)} zł`; //wydatki+kwota wpisana  
+    limitLeft.innerText = `${(monthlyExpenses - (- amount)).toFixed(2)} zł`; //wydatki+kwota wpisana  
 
-    (limitInfoData - monthlyExpenses - amount).toFixed(2) < 0 ?  field.classList.add('break_limit') :  field.classList.remove('break_limit');
+    if ((monthlyExpenses - (- amount)).toFixed(2) > limitInfoData)
+        limitLeft.style.color='red';
+    else
+        limitLeft.style.color='white';
+
 
     field.appendChild(limitLeft);
 }
-/*
-const showBox = (box) => {
-    box.classList.add('visible');
-}
-*/
+
 
 // Events logic.
 const eventsAction = async (category, date, amount) => {
-    if (category && date && amount) {
+    if (category && date && amount>0) {
 
         const limitInfoData = await getLimitForCategory(category);
         const monthlyExpenses = await getMonthlyExpenses(category, date);
 
+        legendBox.forEach(element => {
+            element.innerHTML = '<span class="col-4 text-center fs-6">Limit:</span><span class="col-4 text-center fs-6">Dotychczas wydano:</span><span class="col-4 text-center fs-6">Wydatki + wpisana kwota:</span>';
+          });
         renderInfoBox(limitInfoBox, limitInfoData);
         renderValueBox(limitValueBox, monthlyExpenses);
         renderLeftBox(limitLeftBox, limitInfoData, monthlyExpenses, amount);
     }  
-
-
-        //showBox(limitInfoBox);
-        //showBox(limitValueBox);
-        //showBox(limitLeftBox);
-        /*
-        if (date) {
-
-
-            if (amount && limitInfoData) {
-
-            } else {
-                //showBox(limitInfoBox)
-                //showBox(limitValueBox);
-                limitLeftBox.classList.remove('visible');
-            }
-        } else {
-            //showBox(limitInfoBox);
-            limitValueBox.classList.remove('visible');
-            limitLeftBox.classList.remove('visible');
-        }
+    else 
+    {
+        legendBox.forEach(element => {
+            element.innerHTML = '';
+          });
+        limitInfoBox.innerText = ``;
+        limitValueBox.innerText = ``;
+        limitLeftBox.innerText = ``;
         
-    } else {
-        limitInfoBox.classList.remove('visible');
-        limitValueBox.classList.remove('visible');
-        limitLeftBox.classList.remove('visible');
-        */
-    
-    
+    }
+
 }
 
 // Async fetch funtcions.
 const getLimitForCategory = async (category) => {
     try {
-        const res = await fetch(`../api/limit/${category}`);
-        const data = await res.json();
+        const response = await fetch(`../api/limit/${category}`);
+        const data = await response.json();
         return data;
     } catch (e) {
         console.log('ERROR', e);
@@ -102,8 +89,8 @@ const getLimitForCategory = async (category) => {
 
 const getMonthlyExpenses = async (category, date) => {
     try {
-        const res = await fetch(`../api/limitSum/${category}/${date}`);
-        const data = await res.json();
+        const response = await fetch(`../api/limitSum/${category}/${date}`);
+        const data = await response.json();
         return data;
     } catch (e) {
         console.log('ERROR', e);
