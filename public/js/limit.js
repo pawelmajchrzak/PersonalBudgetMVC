@@ -38,12 +38,12 @@ const renderValueBox = (field, monthlyExpenses) => {
 const renderLeftBox = (field, limitInfoData, monthlyExpenses, amount) => {
     //limitLeft.innerText = `${(limitInfoData - monthlyExpenses - amount).toFixed(2)} zł`; //wydatki+kwota wpisana  
     limitLeft.innerText = `${(monthlyExpenses - (- amount)).toFixed(2)} zł`; //wydatki+kwota wpisana  
-
-    if ((monthlyExpenses - (- amount)).toFixed(2) > limitInfoData)
+    
+    if (((monthlyExpenses - (- amount)) > limitInfoData) && limitInfoData)
         limitLeft.style.color='red';
     else
         limitLeft.style.color='white';
-
+    
 
     field.appendChild(limitLeft);
 }
@@ -51,17 +51,19 @@ const renderLeftBox = (field, limitInfoData, monthlyExpenses, amount) => {
 
 // Events logic.
 const eventsAction = async (category, date, amount) => {
-    if (category && date && amount>0) {
+    if (category && date && amount && (amount>0)) {
 
         const limitInfoData = await getLimitForCategory(category);
         const monthlyExpenses = await getMonthlyExpenses(category, date);
+            
+                legendBox.forEach(element => {
+                    element.innerHTML = '<span class="col-4 text-center fs-6">Limit:</span><span class="col-4 text-center fs-6">Dotychczas wydano:</span><span class="col-4 text-center fs-6">Wydatki + wpisana kwota:</span>';
+                });
+                renderInfoBox(limitInfoBox, limitInfoData);
+                renderValueBox(limitValueBox, monthlyExpenses);
+                renderLeftBox(limitLeftBox, limitInfoData, monthlyExpenses, amount);
+            
 
-        legendBox.forEach(element => {
-            element.innerHTML = '<span class="col-4 text-center fs-6">Limit:</span><span class="col-4 text-center fs-6">Dotychczas wydano:</span><span class="col-4 text-center fs-6">Wydatki + wpisana kwota:</span>';
-          });
-        renderInfoBox(limitInfoBox, limitInfoData);
-        renderValueBox(limitValueBox, monthlyExpenses);
-        renderLeftBox(limitLeftBox, limitInfoData, monthlyExpenses, amount);
     }  
     else 
     {
@@ -91,7 +93,11 @@ const getMonthlyExpenses = async (category, date) => {
     try {
         const response = await fetch(`../api/limitSum/${category}/${date}`);
         const data = await response.json();
-        return data;
+        if (data)
+            return data;
+        else
+            return 0;
+        
     } catch (e) {
         console.log('ERROR', e);
     }
