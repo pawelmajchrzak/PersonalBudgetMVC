@@ -2,6 +2,10 @@
 
 {% block title %}Settings{% endblock %}
 
+{% block footer %}
+<script src="/js/limit.js"></script>
+{% endblock %}
+
 {% block body %}
 
     {% if current_user %}
@@ -67,7 +71,12 @@
 								<ul>
 									{% for category in expensesCategory %}
 									<li class="py-1"> 
-										{{ category.name }} 
+										{{ category.name }}
+										{% if category.category_limit > 0 %}
+											<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Limit: {{ category.category_limit }}</button>
+										{% else %}
+											<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Ustaw Limit</button>
+										{% endif %}
 										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryExpense"  data-bs-whatever="{{ category.name }}">Edytuj</button>
 										{% if expensesCategory|length > 1 %}
 											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryExpense" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
@@ -345,7 +354,25 @@
 						<label for="oldName" class="col-form-label">Nowa nazwa kategorii:</label>
 						<input type="text" class="form-control" name="newNameCategory">
 					</div>
+
+					<span> <a class="cleanLink2" data-bs-toggle="collapse" href="#collapseLimit" role="button" aria-expanded="false" aria-controls="collapseLimit">Rozwiń, aby ustawić/zmienić limit <i class="icon-down-open"></i></a></span>
+
+
+					<div class="collapse" id="collapseLimit">
+						<div class="card card-body">
+                            <div class="input-group mb-3">
+
+                                <span class="input-group-text w-50">Limit</span>
+                                <input type="number" id="inputLimit" value="" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Limit" name="limit" min="0">
+                            </div>
+                            <div class="text-danger ms-2 fs-6 position-absolute"></div>
+						</div>
+					</div>
+
+
+
 				</div>
+
 				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
 					{% if expense.errors is not empty %}
 						<p>Errors:</p>
@@ -598,6 +625,53 @@
 	</div>
   </div>
 
+
+  
+<!---------------------------------------------LIMIT------------------------------------------------------------->
+
+<div class="modal fade" id="editLimit" tabindex="-1" aria-labelledby="exampleModalLabelLimit" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelLimit">Edycja/Ustawienie limitu</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<form method="post" action="/settings/editLimit" id="formCategoryExp">
+				<div class="modal-body-H">
+					<div class="mb-3">
+						<input type="hidden" class="form-control" name="oldNameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+						<div class="input-group mb-3">
+							<span class="input-group-text w-50">Nowy limit</span>
+							<input type="number" id="inputLimit" value="" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Limit" name="limit" min="0">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+					{% if expense.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in expense.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Zmień</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
     {% else %}
     <article>

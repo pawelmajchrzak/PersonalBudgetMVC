@@ -4,7 +4,6 @@ const amountField = document.querySelector('#inputAmount');
 const dateField = document.querySelector('#inputDate');
 const categoryField = document.querySelector('#inputCategory');
 
-
 const limitInfoBox = document.querySelector('#limit_info_box');
 const limitValueBox = document.querySelector('#limit_value_box');
 const limitLeftBox = document.querySelector('#limit_left_box');
@@ -17,7 +16,7 @@ const limitLeft = document.createElement('p');
 // Rendering alert boxes.
 const renderInfoBox = (field, limit) => {
     if (!!limit) {
-        limitInfo.innerText = `${limit}`; //limit  
+        limitInfo.innerText = `${limit} zł`; //limit  
     } else {
         limitInfo.innerText = `-`; //nie ma limitu
     }
@@ -36,7 +35,7 @@ const renderValueBox = (field, monthlyExpenses) => {
 }
 
 const renderLeftBox = (field, limitInfoData, monthlyExpenses, amount) => {
-    //limitLeft.innerText = `${(limitInfoData - monthlyExpenses - amount).toFixed(2)} zł`; //wydatki+kwota wpisana  
+
     limitLeft.innerText = `${(monthlyExpenses - (- amount)).toFixed(2)} zł`; //wydatki+kwota wpisana  
     
     if (((monthlyExpenses - (- amount)) > limitInfoData) && limitInfoData)
@@ -44,7 +43,6 @@ const renderLeftBox = (field, limitInfoData, monthlyExpenses, amount) => {
     else
         limitLeft.style.color='white';
     
-
     field.appendChild(limitLeft);
 }
 
@@ -55,27 +53,31 @@ const eventsAction = async (category, date, amount) => {
 
         const limitInfoData = await getLimitForCategory(category);
         const monthlyExpenses = await getMonthlyExpenses(category, date);
-            
-                legendBox.forEach(element => {
-                    element.innerHTML = '<span class="col-4 text-center fs-6">Limit:</span><span class="col-4 text-center fs-6">Dotychczas wydano:</span><span class="col-4 text-center fs-6">Wydatki + wpisana kwota:</span>';
-                });
-                renderInfoBox(limitInfoBox, limitInfoData);
-                renderValueBox(limitValueBox, monthlyExpenses);
-                renderLeftBox(limitLeftBox, limitInfoData, monthlyExpenses, amount);
-            
+        
+        if (limitInfoData) {
 
-    }  
+            legendBox.forEach(element => {
+            element.innerHTML = '<span class="col-4 text-center fs-6">Limit:</span><span class="col-4 text-center fs-6">Dotychczas wydano:</span><span class="col-4 text-center fs-6">Wydatki + wpisana kwota:</span>';
+            });
+            renderInfoBox(limitInfoBox, limitInfoData);
+            renderValueBox(limitValueBox, monthlyExpenses);
+            renderLeftBox(limitLeftBox, limitInfoData, monthlyExpenses, amount);
+        }
+        else 
+        {
+            legendBox.forEach(element => {element.innerHTML = '';});
+            limitInfoBox.innerText = ``;
+            limitValueBox.innerText = ``;
+            limitLeftBox.innerText = ``;
+        }
+    }
     else 
     {
-        legendBox.forEach(element => {
-            element.innerHTML = '';
-          });
+        legendBox.forEach(element => {element.innerHTML = '';});
         limitInfoBox.innerText = ``;
         limitValueBox.innerText = ``;
         limitLeftBox.innerText = ``;
-        
     }
-
 }
 
 // Async fetch funtcions.
@@ -109,8 +111,6 @@ amountField.addEventListener('change', async () => {
     const category = categoryField.options[categoryField.selectedIndex].value;
     const date = dateField.value;
     const amount = amountField.value;
-    //alert(`Wybrana kategoria: ${category}\nData: ${date}\nKwota: ${amount}`);
-    //console.log(category, date, amount);
     eventsAction(category, date, amount);
 })
 
@@ -118,8 +118,6 @@ dateField.addEventListener('change', async () => {
     const category = categoryField.options[categoryField.selectedIndex].value;
     const date = dateField.value;
     const amount = amountField.value;
-    //alert(`Wybrana kategoria: ${category}\nData: ${date}\nKwota: ${amount}`);
-    //console.log(category, date, amount);
     if (category != "cat0")
         eventsAction(category, date, amount);
 })
@@ -128,8 +126,18 @@ categoryField.addEventListener('change', async () => {
     const category = categoryField.options[categoryField.selectedIndex].value;
     const date = dateField.value;
     const amount = amountField.value;
-    //alert(`Wybrana kategoria: ${category}\nData: ${date}\nKwota: ${amount}`);
-    //console.log(category, date, amount);
     eventsAction(category, date, amount);
 })
 
+///////////////////Edit Category//////////////////
+
+const toggle = document.getElementById('toggle');
+const collapse = document.getElementById('collapseLimit');
+
+toggle.addEventListener('change', function() {
+  if (toggle.checked) {
+    collapse.style.display = 'block';
+  } else {
+    collapse.style.display = 'none';
+  }
+});

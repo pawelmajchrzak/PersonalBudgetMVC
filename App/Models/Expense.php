@@ -145,7 +145,7 @@ class Expense extends \Core\Model
     {
         $id = $_SESSION['user_id'];
 
-        $sql = "SELECT id, name
+        $sql = "SELECT id, name, category_limit
                 FROM expenses_category_assigned_to_users
                 WHERE user_id = :id";
 
@@ -184,7 +184,12 @@ class Expense extends \Core\Model
         $id = $_SESSION['user_id'];
 
         $this->validateCategoryName();
-
+        /*
+        if ($this->limit)
+        {
+            $this->updateLimit();
+        }
+        */
         if (empty($this->errors))
         {
 
@@ -205,6 +210,49 @@ class Expense extends \Core\Model
             return false;
         }
 
+    }
+
+    public function updateLimit()
+    {
+        $id = $_SESSION['user_id'];
+
+        $this->validateLimit();
+
+        if (empty($this->errors))
+        {
+
+            $sql = "UPDATE `expenses_category_assigned_to_users` 
+                    SET category_limit = :limitData
+                    WHERE  name = :oldNameCategory AND user_id = :id";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+            $stmt->bindValue(':oldNameCategory',      $this->oldNameCategory,    PDO::PARAM_STR);
+            $stmt->bindValue(':limitData',            $this->limit,              PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+    }
+
+    public function validateLimit()
+    {
+        //Sprawdź poprawność limitu
+        $this->limit = str_replace(',','.',$this->limit);
+
+        if(is_numeric($this->limit)==false) {
+            $this->errors[] = 'Wpisz poprawny format liczby!';
+        }
+        else if($this->limit<0) {
+            $this->errors[] = 'Limit nie może być ujemny';
+        }
+        else {
+            $this->limit = number_format($this->limit, 2, '.', '');
+        }
     }
 
 

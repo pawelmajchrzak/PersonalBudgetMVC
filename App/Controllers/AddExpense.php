@@ -26,24 +26,6 @@ class AddExpense extends \Core\Controller
 
     public function createAction()
     {
-        //Limit//
-
-        $limit = Expense::getLimit ($_POST['category']);
-        //$limit = $_POST['category'];
-        //$endOfMonth = Expense::getLastDayOfMonth ($_POST['date']);
-        $monthlySum = Expense::getMonthlyCategoryExpense($_POST['category'],$_POST['date']);
-        $monthlySumAndThis = $monthlySum+$_POST['amount'];
-
-
-        header('Location://'.$_SERVER['HTTP_HOST'].'/addExpense/success', true, 303);
-        Flash::addMessage('Limit dla wybranej kategorii to: '.$limit.' zł. Wykorzystano już: '.$monthlySum.' zł. Po dodaniu tego przychodu będzie: '.$monthlySumAndThis.' zł.');
-        exit();
-
-        //endLimit//
-
-
-
-
         $expense = new Expense($_POST);
         
         if ($expense ->save()) {

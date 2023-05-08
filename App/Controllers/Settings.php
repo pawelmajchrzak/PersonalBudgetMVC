@@ -85,7 +85,26 @@ class Settings extends \Core\Controller
 
 /////////////////expenses/////////////////////////////////////////
 
+    public function editLimitAction()
+    {
+        $expense = new Expense($_POST);
 
+        if (isset($_POST['limit'])) {
+
+            if($expense->updateLimit()){
+
+                Flash::addMessage('Limit został zaaktualizowany');
+                $this->redirect('/settings');
+            } else {
+                    Flash::addMessage('Nie udało się zmienić limitu', FLASH::WARNING);
+                    $this->redirect('/settings');
+            }
+
+        } else {
+            Flash::addMessage('Nie udało się zmienić limitu', FLASH::INFO);
+            $this->redirect('/settings');
+        }
+    }
 
 
     public function editCategoryExpenseAction()

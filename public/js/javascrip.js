@@ -86,3 +86,15 @@ var modalTitle = deleteOperationModalPay.querySelector('.text')
 modalBodyInputH.value = oldName
 modalTitle.textContent = oldName
 })
+
+
+//////////////////////Limit///////////////////////////
+var editOperationModalLimit = document.getElementById('editLimit')
+editOperationModalLimit.addEventListener('show.bs.modal', function (event) {
+var button = event.relatedTarget
+var oldName = button.getAttribute('data-bs-whatever')
+var modalBodyInput = editOperationModalLimit.querySelector('.modal-body input')
+var modalBodyInputH = editOperationModalLimit.querySelector('.modal-body-H input')
+modalBodyInput.value = oldName
+modalBodyInputH.value = oldName
+})
