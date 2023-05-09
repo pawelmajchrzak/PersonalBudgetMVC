@@ -17,7 +17,7 @@ class Income extends \Core\Model
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
-            $this->$key = $value;
+            $this->$key = $value;   
         };
     }
 
@@ -94,7 +94,7 @@ class Income extends \Core\Model
         else if($this->category == '') {
             $this->errors[] = 'Kategoria jest wymagana!';
         }
-        else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+-]*$/', $this->category) == false) {
+        else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+ -]*$/', $this->category) == false) {
             $this->errors[] = 'Kategoria może składać się tylko z liter i cyfr';
         }
 
@@ -140,11 +140,9 @@ class Income extends \Core\Model
     {
         $id = $_SESSION['user_id'];
 
-        $sql = "
-                SELECT id, name
+        $sql = "SELECT id, name
                 FROM incomes_category_assigned_to_users
-                WHERE user_id = :id
-                ";
+                WHERE user_id = :id";
 
         $db = static::getDb();
         $stmt = $db->prepare($sql);
@@ -162,11 +160,9 @@ class Income extends \Core\Model
 		$startOfCurrentMonth = date('Y-m-01');
 		$startOfNextMonth = date('Y-m-01',strtotime('+1 month',time()));
 
-        $sql = "
-                SELECT *
+        $sql = "SELECT *
                 FROM incomes
-                WHERE user_id = :id AND date_of_income >= :startOfCurrentMonth AND date_of_income < :startOfNextMonth
-                ";
+                WHERE user_id = :id AND date_of_income >= :startOfCurrentMonth AND date_of_income < :startOfNextMonth";
 
 
         $db = static::getDb();
@@ -179,5 +175,154 @@ class Income extends \Core\Model
 
         return $stmt->fetchAll();
     }   
+
+    public function updateIncomeCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        $this->validateCategoryName();
+
+        if (empty($this->errors))
+        {
+
+            $sql = "UPDATE `incomes_category_assigned_to_users` 
+                    SET name = :newNameCategory
+                    WHERE  name = :oldNameCategory AND user_id = :id";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+            $stmt->bindValue(':oldNameCategory',      $this->oldNameCategory,    PDO::PARAM_STR);
+            $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+
+    }
+
+
+    public function validateCategoryName()
+    {
+        //walidacja kategorii
+        if (!isset($this->newNameCategory))
+		{
+            $this->errors[] = 'Wybierz kategorię!';
+		}	
+        else if($this->newNameCategory == '') {
+            $this->errors[] = 'Kategoria jest wymagana!';
+        }
+        else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+ -]*$/', $this->newNameCategory) == false) {
+            $this->errors[] = 'Kategoria może składać się tylko z liter i cyfr';
+        }
+
+        if (static::categoryExists($this->newNameCategory)) {
+            $this->errors[] = 'Jest już kategoria o tej nazwie';
+        }
+    }
+
+    public static function categoryExists($category)
+    {
+        $income = static::findByCategory($category);
+
+        if ($income) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function findByCategory($name)
+    {
+        $sql = 'SELECT * FROM incomes_category_assigned_to_users WHERE LOWER(name) = :name AND user_id = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':name', $name,                 PDO::PARAM_STR);
+        $stmt->bindValue(':id',   $_SESSION['user_id'],  PDO::PARAM_INT);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    public function deleteIncomeCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        if (empty($this->errors))
+        {
+
+            $db = static::getDB();
+
+            $sql1 = "SELECT id FROM `incomes_category_assigned_to_users` 
+                    WHERE  name = :nameCategory AND user_id = :id";
+
+            $stmt1 = $db->prepare($sql1);
+            $stmt1->bindValue(':id',            $id,                    PDO::PARAM_INT);
+            $stmt1->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            $stmt1->execute();
+
+            $result = $stmt1->fetch(PDO::FETCH_ASSOC);
+            $idCategory = $result['id'];
+            
+            
+            $sql2 = "UPDATE `incomes` 
+                    SET income_category_assigned_to_user_id = :categoryReplace
+                    WHERE  income_category_assigned_to_user_id = :idCategory";
+
+            $stmt2 = $db->prepare($sql2);
+            $stmt2->bindValue(':idCategory',  $idCategory,    PDO::PARAM_STR);
+            $stmt2->bindValue(':categoryReplace',  $this->categoryReplace,    PDO::PARAM_STR);
+            $stmt2->execute();
+
+            
+            $sql = "DELETE FROM `incomes_category_assigned_to_users` 
+                    WHERE  name = :nameCategory AND user_id = :id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':id',            $id,                    PDO::PARAM_INT);
+            $stmt->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            
+            return $stmt->execute();
+            
+            
+        } else {
+
+            return false;
+        }
+
+    }
+
+
+    public function addNewCategoryIncome()
+    {
+        $id = $_SESSION['user_id'];
+
+        $this->validateCategoryName();
+
+        if (empty($this->errors))
+        {
+            $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name)
+                    VALUES (:id, :newNameCategory)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+            $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+
+    }
+
 
 }

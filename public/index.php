@@ -29,6 +29,9 @@ session_start();
  */
 $router = new Core\Router();
 
+$router->add('api/limit/{category:[\wąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+}', ['controller' => 'AddExpense', 'action' => 'limit']);
+$router->add('api/limitSum/{category:[\wąćęłńóśźżĄĆĘŁŃÓŚŹŻ ]+}/{date:[\d-]+}', ['controller' => 'AddExpense', 'action' => 'expenseMonthlySum']);
+
 // Add the routes
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('login', ['controller' => 'Login', 'action' => 'new']);
@@ -38,6 +41,7 @@ $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'act
 $router->add('addIncome', ['controller' => 'AddIncome', 'action' => 'new']);
 $router->add('addExpense', ['controller' => 'AddExpense', 'action' => 'new']);
 $router->add('viewBalanceSheet', ['controller' => 'ViewBalanceSheet', 'action' => 'index']);
+$router->add('settings', ['controller' => 'Settings', 'action' => 'index']);
 $router->add('{controller}/{action}');
     
 $router->dispatch($_SERVER['QUERY_STRING']);

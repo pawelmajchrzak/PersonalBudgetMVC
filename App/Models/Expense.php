@@ -7,6 +7,7 @@ use \App\Token;
 use \App\Mail;
 use \Core\View;
 use DateTime;
+use DateInterval;
 
 
 class Expense extends \Core\Model
@@ -144,11 +145,9 @@ class Expense extends \Core\Model
     {
         $id = $_SESSION['user_id'];
 
-        $sql = "
-                SELECT id, name
+        $sql = "SELECT id, name, category_limit
                 FROM expenses_category_assigned_to_users
-                WHERE user_id = :id
-                ";
+                WHERE user_id = :id";
 
         $db = static::getDb();
         $stmt = $db->prepare($sql);
@@ -156,18 +155,16 @@ class Expense extends \Core\Model
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }   
 
     public static function selectMethodsPayment()
     {
         $id = $_SESSION['user_id'];
 
-        $sql = "
-                SELECT id, name
+        $sql = "SELECT id, name
                 FROM payment_methods_assigned_to_users
-                WHERE user_id = :id
-                ";
+                WHERE user_id = :id";
 
         $db = static::getDb();
         $stmt = $db->prepare($sql);
@@ -177,5 +174,416 @@ class Expense extends \Core\Model
 
         return $stmt->fetchAll();
     }   
+
+/////////////////////To Settings//////////////////////////////
+
+////////////ExpenseCategory//////////
+
+    public function updateExpenseCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        $this->validateCategoryName();
+        /*
+        if ($this->limit)
+        {
+            $this->updateLimit();
+        }
+        */
+        if (empty($this->errors))
+        {
+
+            $sql = "UPDATE `expenses_category_assigned_to_users` 
+                    SET name = :newNameCategory
+                    WHERE  name = :oldNameCategory AND user_id = :id";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+            $stmt->bindValue(':oldNameCategory',      $this->oldNameCategory,    PDO::PARAM_STR);
+            $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+
+    }
+
+    public function updateLimit()
+    {
+        $id = $_SESSION['user_id'];
+
+        $this->validateLimit();
+
+        if (empty($this->errors))
+        {
+
+            $sql = "UPDATE `expenses_category_assigned_to_users` 
+                    SET category_limit = :limitData
+                    WHERE  name = :oldNameCategory AND user_id = :id";
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+            $stmt->bindValue(':oldNameCategory',      $this->oldNameCategory,    PDO::PARAM_STR);
+            $stmt->bindValue(':limitData',            $this->limit,              PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+    }
+
+    public function validateLimit()
+    {
+        //Sprawdź poprawność limitu
+        $this->limit = str_replace(',','.',$this->limit);
+
+        if(is_numeric($this->limit)==false) {
+            $this->errors[] = 'Wpisz poprawny format liczby!';
+        }
+        else if($this->limit<0) {
+            $this->errors[] = 'Limit nie może być ujemny';
+        }
+        else {
+            $this->limit = number_format($this->limit, 2, '.', '');
+        }
+    }
+
+
+    public function validateCategoryName()
+    {
+        //walidacja kategorii
+        if (!isset($this->newNameCategory))
+		{
+            $this->errors[] = 'Wybierz kategorię!';
+		}	
+        else if($this->newNameCategory == '') {
+            $this->errors[] = 'Kategoria jest wymagana!';
+        }
+        else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+ -]*$/', $this->newNameCategory) == false) {
+            $this->errors[] = 'Kategoria może składać się tylko z liter i cyfr';
+        }
+
+        if (static::categoryExists($this->newNameCategory)) {
+            $this->errors[] = 'Jest już kategoria o tej nazwie';
+        }
+    }
+
+    public static function categoryExists($category)
+    {
+        $expense = static::findByCategory($category);
+
+        if ($expense) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function findByCategory($name)
+    {
+        $sql = 'SELECT * FROM expenses_category_assigned_to_users WHERE LOWER(name) = :name AND user_id = :id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':name', $name,                 PDO::PARAM_STR);
+        $stmt->bindValue(':id',   $_SESSION['user_id'],  PDO::PARAM_INT);
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
+    public function deleteExpenseCategory()
+    {
+        $id = $_SESSION['user_id'];
+
+        if (empty($this->errors))
+        {
+
+            $db = static::getDB();
+
+            $sql1 = "SELECT id FROM `expenses_category_assigned_to_users` 
+                    WHERE  name = :nameCategory AND user_id = :id";
+
+            $stmt1 = $db->prepare($sql1);
+            $stmt1->bindValue(':id',            $id,                    PDO::PARAM_INT);
+            $stmt1->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            $stmt1->execute();
+
+            $result = $stmt1->fetch(PDO::FETCH_ASSOC);
+            $idCategory = $result['id'];
+            
+            
+            $sql2 = "UPDATE `expenses` 
+                    SET expense_category_assigned_to_user_id = :categoryReplace
+                    WHERE  expense_category_assigned_to_user_id = :idCategory";
+
+            $stmt2 = $db->prepare($sql2);
+            $stmt2->bindValue(':idCategory',  $idCategory,    PDO::PARAM_STR);
+            $stmt2->bindValue(':categoryReplace',  $this->categoryReplace,    PDO::PARAM_STR);
+            $stmt2->execute();
+
+            
+            $sql = "DELETE FROM `expenses_category_assigned_to_users` 
+                    WHERE  name = :nameCategory AND user_id = :id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':id',            $id,                    PDO::PARAM_INT);
+            $stmt->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+            
+            return $stmt->execute();
+            
+            
+        } else {
+
+            return false;
+        }
+
+    }
+
+
+    public function addNewCategoryExpense()
+    {
+        $id = $_SESSION['user_id'];
+
+        $this->validateCategoryName();
+
+        if (empty($this->errors))
+        {
+            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name)
+                    VALUES (:id, :newNameCategory)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+            $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+            return $stmt->execute();
+
+        } else {
+
+            return false;
+        }
+
+    }    
+
+////////////PaymentMethods//////////
+
+public function updatePaymentMethod()
+{
+    $id = $_SESSION['user_id'];
+
+    $this->validatePaymentMethod();
+
+    if (empty($this->errors))
+    {
+
+        $sql = "UPDATE `payment_methods_assigned_to_users` 
+                SET name = :newNameCategory
+                WHERE  name = :oldNameCategory AND user_id = :id";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+        $stmt->bindValue(':oldNameCategory',      $this->oldNameCategory,    PDO::PARAM_STR);
+        $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+        return $stmt->execute();
+
+    } else {
+
+        return false;
+    }
+
+}
+
+
+public function validatePaymentMethod()
+{
+    //walidacja metody płatności
+    if (!isset($this->newNameCategory))
+    {
+        $this->errors[] = 'Wybierz metodę płatności!';
+    }	
+    else if($this->newNameCategory == '') {
+        $this->errors[] = 'Metoda płatności jest wymagana!';
+    }
+    else if(preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+ -]*$/', $this->newNameCategory) == false) {
+        $this->errors[] = 'Metoda płatności może składać się tylko z liter i cyfr';
+    }
+
+    if (static::paymentMethodExists($this->newNameCategory)) {
+        $this->errors[] = 'Jest już metoda płatności o tej nazwie';
+    }
+}
+
+public static function paymentMethodExists($category)
+{
+    $expense = static::findByMethodPayment($category);
+
+    if ($expense) {
+        return true;
+    }
+
+    return false;
+}
+
+public static function findByMethodPayment($name)
+{
+    $sql = 'SELECT * FROM payment_methods_assigned_to_users WHERE LOWER(name) = :name AND user_id = :id';
+
+    $db = static::getDB();
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':name', $name,                 PDO::PARAM_STR);
+    $stmt->bindValue(':id',   $_SESSION['user_id'],  PDO::PARAM_INT);
+
+    $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+
+    $stmt->execute();
+
+    return $stmt->fetch();
+}
+
+public function deletePaymentMethod()
+{
+    $id = $_SESSION['user_id'];
+
+    if (empty($this->errors))
+    {
+
+        $db = static::getDB();
+
+        $sql1 = "SELECT id FROM `payment_methods_assigned_to_users` 
+                WHERE  name = :nameCategory AND user_id = :id";
+
+        $stmt1 = $db->prepare($sql1);
+        $stmt1->bindValue(':id',            $id,                    PDO::PARAM_INT);
+        $stmt1->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+        $stmt1->execute();
+
+        $result = $stmt1->fetch(PDO::FETCH_ASSOC);
+        $idCategory = $result['id'];
+        
+        if($idCategory!=$this->categoryReplace)
+        {
+            $sql2 = "UPDATE `expenses` 
+            SET payment_method_assigned_to_user_id = :categoryReplace
+            WHERE  payment_method_assigned_to_user_id = :idCategory";
+
+            $stmt2 = $db->prepare($sql2);
+            $stmt2->bindValue(':idCategory',  $idCategory,    PDO::PARAM_INT);
+            $stmt2->bindValue(':categoryReplace',  $this->categoryReplace,    PDO::PARAM_INT);
+            $stmt2->execute();
+
+        } else
+        {
+            $sql2 = "DELETE FROM `expenses` 
+            WHERE  payment_method_assigned_to_user_id = :idCategory";
+            $stmt2 = $db->prepare($sql2);
+            $stmt2->bindValue(':idCategory',  $idCategory,    PDO::PARAM_INT);
+            $stmt2->execute();
+        }
+
+
+        
+        $sql = "DELETE FROM `payment_methods_assigned_to_users` 
+                WHERE  name = :nameCategory AND user_id = :id";
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id',            $id,                    PDO::PARAM_INT);
+        $stmt->bindValue(':nameCategory',  $this->nameCategory,    PDO::PARAM_STR);
+        
+        return $stmt->execute();
+        
+        
+    } else {
+
+        return false;
+    }
+
+}
+
+
+public function addNewPaymentMethod()
+{
+    $id = $_SESSION['user_id'];
+
+    $this->validatePaymentMethod();
+
+    if (empty($this->errors))
+    {
+        $sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name)
+                VALUES (:id, :newNameCategory)';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':id',                   $id,                       PDO::PARAM_INT);
+        $stmt->bindValue(':newNameCategory',      $this->newNameCategory,    PDO::PARAM_STR);
+        return $stmt->execute();
+
+    } else {
+
+        return false;
+    }
+
+}    
+
+/////////////////////To Limits//////////////////////////////
+
+    public static function getLimit ($category)
+    {
+        $db = static::getDB();
+
+        $sql = "SELECT category_limit FROM `expenses_category_assigned_to_users` 
+                WHERE  id = :id";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id',     $category,    PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$result) {
+            return null;
+        }
+        else {
+            return $result['category_limit'];
+        }
+    }
+
+    public static function getMonthlyCategoryExpense($category,$date)
+    {
+        $dateObject = new DateTime($date);
+        $beginMonth = $dateObject->format('Y-m-01');
+        $endMonth = $dateObject->format('Y-m-t');
+
+        $db = static::getDB();
+
+        $sql = "SELECT SUM(amount) AS monthlySum FROM `expenses` 
+                WHERE  expense_category_assigned_to_user_id = :id
+                AND date_of_expense BETWEEN :beginMonth AND :endMonth";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id',             $category,      PDO::PARAM_INT);
+        $stmt->bindValue(':beginMonth',     $beginMonth,    PDO::PARAM_STR);
+        $stmt->bindValue(':endMonth',       $endMonth,      PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return null;
+        }
+        else {
+            return $result['monthlySum'];
+        }
+    }
+    
 
 }

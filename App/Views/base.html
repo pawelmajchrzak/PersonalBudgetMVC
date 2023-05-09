@@ -19,12 +19,12 @@
     </head>
 <body>
     {% if current_user %}
-        <header class="col-12 col-lg-11 col-xl-10 col-xxl-8 px-3 m-auto mt-3 pt-5">
-            <h1 class="logo"><a href="/" class="cleanLink"><i class="icon-money"></i>  Budżet osobisty</a></h1>
+        <header class="col-12 col-lg-11 col-xl-10 col-xxl-8 px-3 m-auto mt-3 pt-5 mt-5">
+            <h1 class="logo"><a href="/" class="cleanLink"><i class="icon-money-2"></i>  Budżet osobisty</a></h1>
         </header>
     {% else %}
         <header class="col-12 col-md-8 col-lg-7 col-xl-6 col-xxl-5 px-3 m-auto mt-3 pt-5">
-            <h1 class="logo"><i class="icon-money"></i>  Budżet osobisty</h1>
+            <h1 class="logo"><i class="icon-money-2"></i>  Budżet osobisty</h1>
         </header>     
     {% endif %}
     
@@ -60,13 +60,7 @@
 					<li class="nav-item col-lg-3"><a class="nav-link" href="/addIncome"><i class="icon-money-1"></i>Dodaj przychód</a></li>
 					<li class="nav-item col-lg-3"><a class="nav-link" href="/addExpense"><i class="icon-basket"></i>Dodaj wydatek</a></li>
 					<li class="nav-item col-lg-3"><a class="nav-link" href="/viewBalanceSheet"><i class="icon-chart-pie"></i>Przeglądaj bilans</a></li>
-					<li class="nav-item dropdown col-lg-3"><a class="nav-link" href="" data-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"><i class="icon-cog-alt"></i>Ustawienia <i class="icon-down-open"></i></a>
-						<ul class="dropdown-menu" aria-labelledby="submenu">
-							<li><a class="dropdown-item" href="/profile/show">Edytuj konto</a></li>
-							<li><a class="dropdown-item" href="#">Preferencje użytkownika</a></li>
-							<li><a class="dropdown-item" href="#">Edytuj/Usuń operację</a></li>
-						</ul>					
-					</li>
+					<li class="nav-item col-lg-3"><a class="nav-link" href="/settings"><i class="icon-cog-alt"></i>Ustawienia</a></li>
 				</ol>
 			</div>
 			
@@ -89,6 +83,7 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="/js/javascrip.js"></script>
 
     {% block footer %}
     {% endblock %}

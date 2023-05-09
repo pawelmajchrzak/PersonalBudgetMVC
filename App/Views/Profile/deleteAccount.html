@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block footer %}
+    <script src="/js/hideShowPassword.min.js"></script>
+    <script src="/js/app.js"></script>
+
+    
+
+{% endblock %}
+
+{% block body %}
+
+
+    {% if user.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <article>
+    
+        <div class="container px-2 pb-2">
+        
+            <div class="col-12 border border-success bg-light rounded p-3 ">
+                <header class="h3 text-center mb-5">
+                    Usuwanie konta
+                </header>
+                
+                <form method="post" id="formProfile" action="/profile/deleteAccountNow">
+                
+                    <div class="text-center">Czy jesteś pewien, że chcesz usunąć konto i stracić wszelkie dane?</div>
+
+
+                    
+                    <div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+                        <button type="button"  class="btn btn-outline-success me-2" onclick="location.href='/profile/show';">Anuluj</button>
+                        <button type="submit" class="btn btn-danger ms-2">Usuń</button>
+                    </div>
+
+                </form>
+                
+            </div>
+        
+        </div>
+
+
+
+    </article>
+
+
+{% endblock %}

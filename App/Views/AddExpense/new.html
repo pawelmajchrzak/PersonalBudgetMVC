@@ -3,8 +3,10 @@
 {% block title %}Add Expense{% endblock %}
 
 {% block footer %}
-
+<script src="/js/limit.js"></script>
 <script>
+
+    
 
     $.validator.addMethod('validTextField',
             function(value, element, param) {
@@ -98,7 +100,7 @@
                 <header class="h3 text-center mb-5">
                     Dodaj wydatek
                 </header>
-                
+
                 <form method="post" action="/addExpense/create" id="formAddExpense">
 
                     <div class="row m-0 m-lg-3 pb-1">
@@ -145,14 +147,15 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text w-50">Kategoria</span>
                                 <select class="form-select" name="category" id="inputCategory" aria-label="category" required>
-                                    <option value="cat0" selected disabled>	</option>
+                                    <option value="" selected disabled>	</option>
                                     {% for category in expensesCategory %}
                                     <option value="{{ category.id }}">
                                             {{ category.name }}
                                     </option>
                                     {% endfor %}
-
-
+                                    <div class="exampleModalLabel">
+                                    <span class="text text-success fw-bold" id="exampleModalLabel">New message</span>
+                                </div>
                                 </select>								
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
@@ -177,7 +180,17 @@
                     </div>
 
                 </form>
-                
+
+                <!--limit-->
+                <div class="limitBoard bg-success text-white row justify-content-center align-items-center" id="second_column">
+                    <div class="legend row justify-content-center align-items-center">
+
+                    </div>
+                    <div class="limit_box col-4 text-center" id="limit_info_box"></div>
+                    <div class="limit_box col-4 text-center" id="limit_value_box"></div>
+                    <div class="limit_box col-4 text-center" id="limit_left_box"></div>
+                </div>
+                <!--limit-->
             </div>
         
         </div>

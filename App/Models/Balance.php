@@ -27,6 +27,12 @@ class Balance extends \Core\Model
     public $balanceSign;
     public $commentToBalance;
     public $colorText;
+    public $singleIncomeComment = [];
+    public $singleIncomeDate = [];
+    public $singleIncomeAmount = [];
+    public $singleExpenseComment = [];
+    public $singleExpenseDate = [];
+    public $singleExpenseAmount = [];
 
 
     public function __construct($data = [])
@@ -88,10 +94,14 @@ class Balance extends \Core\Model
         {
             $incomes = $this -> selectUserIncomes($this->startOfPeriodTime,$this->endOfPeriodTime,$singleCategory['id']);
             $sumOfIncomes[$i]=0;
-
+            $k=0;
             foreach ($incomes as $income)
             {
                 $sumOfIncomes[$i]+=$income['amount'];
+                $singleIncomeComment[$i][$k]=$income['income_comment'];
+                $singleIncomeDate[$i][$k]=$income['date_of_income'];
+                $singleIncomeAmount[$i][$k]=$income['amount'];
+                $k++;
             }
             $generalSumOfIncomes += $sumOfIncomes[$i];
 
@@ -109,10 +119,14 @@ class Balance extends \Core\Model
         {
             $expenses = $this -> selectUserExpenses($this->startOfPeriodTime,$this->endOfPeriodTime,$singleCategory['id']);
             $sumOfExpenses[$i]=0;
-
+            $k=0;
             foreach ($expenses as $expense)
             {
                 $sumOfExpenses[$i]+=$expense['amount'];
+                $singleExpenseComment[$i][$k]=$expense['expense_comment'];
+                $singleExpenseDate[$i][$k]=$expense['date_of_expense'];
+                $singleExpenseAmount[$i][$k]=$expense['amount'];
+                $k++;
             }
             $generalSumOfExpenses += $sumOfExpenses[$i];
 
@@ -167,6 +181,18 @@ class Balance extends \Core\Model
             $this->commentToBalance = $commentToBalance;
             $this->colorText = $colorText;
 
+            if (isset($singleIncomeComment))
+            {
+            $this->singleIncomeComment = $singleIncomeComment;
+            $this->singleIncomeDate = $singleIncomeDate;
+            $this->singleIncomeAmount = $singleIncomeAmount;
+            }
+            if (isset($singleExpenseComment))
+            {
+            $this->singleExpenseComment = $singleExpenseComment;
+            $this->singleExpenseDate = $singleExpenseDate;
+            $this->singleExpenseAmount = $singleExpenseAmount;
+            }
     }
 
 

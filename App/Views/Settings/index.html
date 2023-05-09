@@ -1,0 +1,701 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block footer %}
+<script src="/js/limit.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    {% if current_user %}
+
+	<main>
+		
+		<div class="container">
+			
+			<div class="row px-2">
+				<div class="col-12 border border-success bg-light rounded p-3 text-center h3">
+					Ustawienia
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span> <a class="cleanLink2" data-bs-toggle="collapse" href="#collapseIncomes" role="button" aria-expanded="false" aria-controls="collapseIncomes"><i class="icon-money-1"></i>Kategorie przychodów <i class="icon-down-open"></i></a></span>
+
+
+						<div class="collapse" id="collapseIncomes">
+							<div class="card card-body">
+								<ul>
+									{% for category in incomesCategory %}
+									<li class="py-1"> 
+										{{ category.name }} 
+										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome"  data-bs-whatever="{{ category.name }}">Edytuj</button>
+										{% if incomesCategory|length > 1 %}
+											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
+										{% else %}
+											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
+										{% endif %}
+									</li>
+									{% endfor %}
+								</ul>
+
+								<div class="d-grid gap-2 mx-auto">
+									<button
+										class="btn btn-success btn-lg"
+										data-bs-toggle="modal"
+										data-bs-target="#newCategoryIncome"
+									>
+										Dodaj nową kategorię
+									</button>
+								</div>
+							  
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span><a class="cleanLink2" data-bs-toggle="collapse" href="#collapseExpenses" role="button" aria-expanded="false" aria-controls="collapseExpenses"><i class="icon-basket"></i> Kategorie wydatków<i class="icon-down-open"></i></a> </span>
+
+						<div class="collapse" id="collapseExpenses">
+							<div class="card card-body">
+								<ul>
+									{% for category in expensesCategory %}
+									<li class="py-1"> 
+										{{ category.name }}
+										{% if category.category_limit > 0 %}
+											<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Limit: {{ category.category_limit }}</button>
+										{% else %}
+											<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Ustaw Limit</button>
+										{% endif %}
+										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryExpense"  data-bs-whatever="{{ category.name }}">Edytuj</button>
+										{% if expensesCategory|length > 1 %}
+											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryExpense" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
+										{% else %}
+											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
+										{% endif %}
+									</li>
+									{% endfor %}
+								</ul>
+
+								<div class="d-grid gap-2 mx-auto">
+									<button
+										class="btn btn-success btn-lg"
+										data-bs-toggle="modal"
+										data-bs-target="#newCategoryExpense"
+									>
+										Dodaj nową kategorię
+									</button>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span><a class="cleanLink2" data-bs-toggle="collapse" href="#collapseMethodsPayment" role="button" aria-expanded="false" aria-controls="collapseMethodsPayment"><i class="icon-money"></i> Sposoby płatności<i class="icon-down-open"></i></a></span>
+						
+						<div class="collapse" id="collapseMethodsPayment">
+							<div class="card card-body">
+								<ul>
+									{% for paymentMethod in paymentMethod %}
+									<li class="py-1"> 
+										{{ paymentMethod.name }} 
+										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editPaymentMethod"  data-bs-whatever="{{ paymentMethod.name }}">Edytuj</button>
+										{% if paymentMethod|length > 1 %}
+											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePaymentMethod" data-bs-whatever="{{ paymentMethod.name }}" id="my-button" data-old-name="{{ paymentMethod.name }}">Usuń</button>
+										{% else %}
+											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej metody płatności jest nie możliwe</div>
+										{% endif %}
+									</li>
+									{% endfor %}
+								</ul>
+
+								<div class="d-grid gap-2 mx-auto">
+									<button
+										class="btn btn-success btn-lg"
+										data-bs-toggle="modal"
+										data-bs-target="#newPaymentMethod"
+									>
+										Dodaj nową metodę płatności
+									</button>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 p-2">
+					<div class="border border-success bg-light rounded p-2 text-center">
+
+						<span><a class="cleanLink2" href="/profile/show"><i class="icon-user"></i> Użytkownik </a></span>
+						
+						<div class="collapse" id="collapseUserSettings">
+							<div class="card card-body">
+								<div>Imię:  {% for i in username %} <strong>{{ i.username }}</strong> {% endfor %}</div>
+								<div>E-mail: {% for i in email %} <strong>{{ i.email }}</strong> {% endfor %}</div>
+								<div>
+									<a href="/profile/show" class="btn btn-lg btn-outline-success mt-2 col-7">Edytuj swoje dane</a>
+									<button class="col-5 d-inline-block btn btn-success my-2" type="button" style="color: white" data-toggle="modal" data-target="/profile/show">
+										Edytuj swoje dane
+									</button>
+									<button name="deleteIncomesExpenses" class="col-5 d-inline-block btn btn-danger my-2" type="button"
+											data-toggle="modal" data-target=".confirmationIncomesExpenses">
+										Usuń przychody i wydatki
+									</button>
+								</div>
+								<div>
+									<button class="col-5 d-inline-block btn btn-success my-2" type="button" style="color: white"
+											data-toggle="modal" data-target=".editPasswordAccountModal">
+										Zmień hasło
+									</button>
+									<button class="col-5 d-inline-block btn btn-danger my-2" type="button"
+											data-toggle="modal" data-target=".confirmationUser">
+										Usuń moje konto
+									</button>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+			
+
+
+				
+
+				
+		</div>
+
+		
+
+	
+	</main>
+
+<!---------------------------------------------INCOME------------------------------------------------------------->
+
+	<div class="modal fade" id="editCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  	<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Edycja kategorii</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<form method="post" action="/settings/editCategoryIncome" id="formCategory">
+					<div class="modal-body-H">
+						<div class="mb-3">
+							
+							<input type="hidden" class="form-control" name="oldNameCategory">
+						</div>
+					</div>
+					<div class="modal-body">
+					
+						<div class="mb-3">
+
+							<label for="oldName" class="col-form-label">Nowa nazwa kategorii:</label>
+							<input type="text" class="form-control" name="newNameCategory">
+						</div>
+					</div>
+					<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+						{% if income.errors is not empty %}
+							<p>Errors:</p>
+							<ul>
+								{% for error in income.errors %}
+									<li>{{ error }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+						<button type="submit" class="btn btn-success mx-2">Zmień</button>
+					
+					</div>
+				</form>
+			</div>
+		</div>
+	  </div>
+	  
+
+
+	  <div class="modal fade" id="deleteCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  	<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Usuwanie kategorii</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+
+				<form method="post" action="/settings/deleteCategoryIncome">
+					<div class="modal-body-H">
+						<div class="mb-3 px-3">
+							<span class="fs-6">Czy jesteś pewien, że chcesz usunąć kategorię o nazwie:</span><br>
+							<span class="text text-success fw-bold" id="exampleModalLabel">New message</span>
+							<input type="hidden" class="form-control" name="nameCategory">
+						</div>
+					</div>
+					<div class="modal-body">
+					
+						<div class="mb-3">
+
+							<span class="fs-6">Wybierz kategorię do której mają zostać przeniesione przychody z usuniętej kategorii:</span><br>
+							<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" value="{{ income.category }}" required> 
+
+								<option value="cat0" selected disabled>	</option>
+								{% for category in incomesCategory %}
+										<option value="{{ category.id }}">
+												{{ category.name }}
+										</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="fs-6 fst-italic mx-3 text-center">Jeśli chcesz na stałe usunąć przychody z usuwanej kategorii, to wybierz usuwaną kategorię</div>
+					</div>	
+					
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+						<button type="submit" class="btn btn-success mx-2">Usuń</button>
+					
+					</div>
+				</form>
+			</div>
+		</div>
+	  </div>
+
+
+
+	<div class="modal fade" id="newCategoryIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  	<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Dodawanie nowej kategorii przychodu</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<form method="post" action="/settings/addNewCategoryIncome" id="formCategory">
+					<div class="modal-body-H">
+						<div class="mb-3">
+							
+							<input type="hidden" class="form-control" name="oldNameCategory">
+						</div>
+					</div>
+					<div class="modal-body">
+					
+						<div class="mb-3">
+
+							<label for="oldName" class="col-form-label"> Nazwa nowej kategorii:</label>
+							<input type="text" class="form-control" name="newNameCategory">
+						</div>
+					</div>
+					<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+						{% if income.errors is not empty %}
+							<p>Errors:</p>
+							<ul>
+								{% for error in income.errors %}
+									<li>{{ error }}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+						<button type="submit" class="btn btn-success mx-2">Dodaj</button>
+					
+					</div>
+				</form>
+			</div>
+		</div>
+	  </div>
+
+
+<!---------------------------------------------EXPENSE------------------------------------------------------------->
+
+<div class="modal fade" id="editCategoryExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelExp">Edycja kategorii</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<form method="post" action="/settings/editCategoryExpense" id="formCategoryExp">
+				<div class="modal-body-H">
+					<div class="mb-3">
+						
+						<input type="hidden" class="form-control" name="oldNameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+
+						<label for="oldName" class="col-form-label">Nowa nazwa kategorii:</label>
+						<input type="text" class="form-control" name="newNameCategory">
+					</div>
+
+					<span> <a class="cleanLink2" data-bs-toggle="collapse" href="#collapseLimit" role="button" aria-expanded="false" aria-controls="collapseLimit">Rozwiń, aby ustawić/zmienić limit <i class="icon-down-open"></i></a></span>
+
+
+					<div class="collapse" id="collapseLimit">
+						<div class="card card-body">
+                            <div class="input-group mb-3">
+
+                                <span class="input-group-text w-50">Limit</span>
+                                <input type="number" id="inputLimit" value="" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Limit" name="limit" min="0">
+                            </div>
+                            <div class="text-danger ms-2 fs-6 position-absolute"></div>
+						</div>
+					</div>
+
+
+
+				</div>
+
+				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+					{% if expense.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in expense.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Zmień</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+  
+
+
+  <div class="modal fade" id="deleteCategoryExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelExp">Usuwanie kategorii</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+
+			<form method="post" action="/settings/deleteCategoryExpense">
+				<div class="modal-body-H">
+					<div class="mb-3 px-3">
+						<span class="fs-6">Czy jesteś pewien, że chcesz usunąć kategorię o nazwie:</span><br>
+						<span class="text text-success fw-bold" id="exampleModalLabelExp">New message</span>
+						<input type="hidden" class="form-control" name="nameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+
+						<span class="fs-6">Wybierz kategorię do której mają zostać przeniesione wydatki z usuniętej kategorii:</span><br>
+						<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" value="{{ expense.category }}" required> 
+
+							<option value="cat0" selected disabled>	</option>
+							{% for category in expensesCategory %}
+									<option value="{{ category.id }}">
+											{{ category.name }}
+									</option>
+							{% endfor %}
+						</select>
+						
+					</div>
+					<div class="fs-6 fst-italic mx-3 text-center">Jeśli chcesz na stałe usunąć wydatki z usuwanej kategorii, to wybierz usuwaną kategorię</div>
+				</div>	
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Usuń</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+
+
+
+<div class="modal fade" id="newCategoryExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelExp">Dodawanie nowej kategorii wydatku</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<form method="post" action="/settings/addNewCategoryExpense" id="formCategoryExp">
+				<div class="modal-body-H">
+					<div class="mb-3">
+						
+						<input type="hidden" class="form-control" name="oldNameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+
+						<label for="oldName" class="col-form-label"> Nazwa nowej kategorii:</label>
+						<input type="text" class="form-control" name="newNameCategory">
+					</div>
+				</div>
+				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+					{% if expense.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in expense.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Dodaj</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+
+
+<!---------------------------------------------PAYMENTS-METHOD------------------------------------------------------------->
+
+<div class="modal fade" id="editPaymentMethod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelPay">Edycja metody płatności</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<form method="post" action="/settings/editPaymentMethod" id="formCategoryPay">
+				<div class="modal-body-H">
+					<div class="mb-3">
+						
+						<input type="hidden" class="form-control" name="oldNameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+
+						<label for="oldName" class="col-form-label">Nowa nazwa metody płatności:</label>
+						<input type="text" class="form-control" name="newNameCategory">
+					</div>
+				</div>
+				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+					{% if expense.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in expense.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Zmień</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+  
+
+
+  <div class="modal fade" id="deletePaymentMethod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelPay">Usuwanie metody płatności</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+
+			<form method="post" action="/settings/deletePaymentMethod">
+				<div class="modal-body-H">
+					<div class="mb-3 px-3">
+						<span class="fs-6">Czy jesteś pewien, że chcesz usunąć metodę płatności o nazwie:</span><br>
+						<span class="text text-success fw-bold" id="exampleModalLabelExp">New message</span>
+						<input type="hidden" class="form-control" name="nameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+
+						<span class="fs-6">Wybierz metodę płatności do której mają zostać przeniesione wydatki z usuniętej metody płatności:</span><br>
+						<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" required> 
+
+							<option value="cat0" selected disabled>	</option>
+							{% for paymentMethod in paymentMethod %}
+									<option>
+											{{ paymentMethod.name }}
+									</option>
+							{% endfor %}
+						</select>
+						
+					</div>
+					<div class="fs-6 fst-italic mx-1 text-center">Jeśli chcesz na stałe usunąć wydatki z usuwanej metody płatności, to wybierz usuwaną metodę płatności</div>
+				</div>	
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Usuń</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+
+
+
+<div class="modal fade" id="newPaymentMethod" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelPay">Dodawanie nowej metody płatności</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<form method="post" action="/settings/addNewPaymentMethod" id="formCategoryPay">
+				<div class="modal-body-H">
+					<div class="mb-3">
+						
+						<input type="hidden" class="form-control" name="oldNameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+
+						<label for="oldName" class="col-form-label"> Nazwa nowej metody płatności:</label>
+						<input type="text" class="form-control" name="newNameCategory">
+					</div>
+				</div>
+				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+					{% if method.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in method.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Dodaj</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+  </div>
+
+
+  
+<!---------------------------------------------LIMIT------------------------------------------------------------->
+
+<div class="modal fade" id="editLimit" tabindex="-1" aria-labelledby="exampleModalLabelLimit" aria-hidden="true">
+	<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabelLimit">Edycja/Ustawienie limitu</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<form method="post" action="/settings/editLimit" id="formCategoryExp">
+				<div class="modal-body-H">
+					<div class="mb-3">
+						<input type="hidden" class="form-control" name="oldNameCategory">
+					</div>
+				</div>
+				<div class="modal-body">
+				
+					<div class="mb-3">
+						<div class="input-group mb-3">
+							<span class="input-group-text w-50">Nowy limit</span>
+							<input type="number" id="inputLimit" value="" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Limit" name="limit" min="0">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
+					{% if expense.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in expense.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Anuluj</button>
+					<button type="submit" class="btn btn-success mx-2">Zmień</button>
+				
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+    {% else %}
+    <article>
+	
+		<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5 bg-white m-2 m-md-auto border border-light rounded p-2 shadow-lg">
+		
+			<header class="h4 text-start mx-auto my-3 text-center" style="letter-spacing: 2px;">
+				Witaj w aplikacji Budżet osobisty!
+			</header>
+			
+			<div class="input-group p-3 m-auto text-center px-5">
+				Ta aplikacja pozwoli usystematyzować Twoj budżet domowy. 
+				Dzięki temu będziesz miał kontrolę nad finansami.
+			</div>
+
+			<div class="btn-group btn-group-lg start-50 translate-middle mt-5" role="group">
+				<button type="button"  class="btn btn-outline-success me-2 btn-lg" onclick="location.href='/signup/new';">Zarejestruj się</button>
+				<button type="button" class="btn btn-success ms-2 btn-lg" onclick="location.href='/login';">Zaloguj się</button>
+			</div>
+				
+		</div>
+	
+	</article>
+       
+    {% endif %}
+
+{% endblock %}

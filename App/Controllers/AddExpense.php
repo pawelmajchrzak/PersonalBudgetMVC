@@ -26,7 +26,6 @@ class AddExpense extends \Core\Controller
 
     public function createAction()
     {
-
         $expense = new Expense($_POST);
         
         if ($expense ->save()) {
@@ -49,5 +48,23 @@ class AddExpense extends \Core\Controller
     {
         View::renderTemplate('AddExpense/success.html'); 
     }
+
+    public function limitAction() {
+
+        ///ponizszyZapisOgarnac
+        $category = $this->route_params['category'];
+        echo json_encode(Expense::getLimit($category), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function expenseMonthlySumAction() {
+
+        ///ponizszyZapisOgarnac
+        $category = $this->route_params['category'];
+        $date = $this->route_params['date'];
+
+        echo json_encode(Expense::getMonthlyCategoryExpense($category, $date), JSON_UNESCAPED_UNICODE);
+    }
+
+
 
 }
