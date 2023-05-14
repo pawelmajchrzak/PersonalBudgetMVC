@@ -195,3 +195,45 @@ ul > li
 	background-color: yellowgreen;
 }
 
+@media only screen and (max-width: 600px) {
+	body {
+	  font-size: 15px;
+	}
+  }
+
+  @media only screen and (max-width: 600px) {
+	#chartContainer2 {
+	  height: 250px !important;
+	}
+  }
+
+  @media only screen and (max-width: 600px) {
+	#chartx {
+	  height: 350px !important;
+	}
+  }
+
+  @media only screen and (max-width: 600px) {
+	input[type="text"], 
+	input[type="email"], 
+	input[type="password"], 
+	input[type="number"], 
+	input[type="date"], 
+	input[type="select"], 
+	select.form-select,
+	textarea {
+	  font-size: 13px;
+	}
+  }
+
+  @media only screen and (max-width: 600px) {
+	.inputx {
+		font-size: 13px;
+	}
+  }
+
+  @media only screen and (max-width: 600px) {
+	#periodText {
+		font-size: 12px !important;
+	}
+  }

@@ -14,7 +14,10 @@
                 if (value != '') {
 
                     if (value.match(/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9+_ -.,]*$/)) {
-                        return true;
+                        if(value.length < 50)
+                            return true;
+                        else 
+                            return false;
                     }
                     
                 }
@@ -22,7 +25,7 @@
 
                 return false;
             },
-            'To pole może składać się tylko z liter, cyfr, plusów, minusów oraz spacji'
+            'To pole może składać się tylko z liter, cyfr, plusów, minusów oraz spacji i mniejsze niż 50 znaków'
     ); 
 
     $(document).ready(function() {
@@ -36,6 +39,7 @@
                 amount: {
                     required: true,
                     min: 0,
+                    max: 9999999999,
                 },
                 date: {
                     required: true,
@@ -59,7 +63,7 @@
                 amount: {
                     required:  'Kwota jest wymagana',
                     min: 'Kwota nie może być ujemna',
-                    
+                    max: 'Kwota nie może być większa od 9999999999',
                 },
                 date: {
                     required: 'Data jest wymagana',
@@ -107,7 +111,7 @@
                         <div class="col-12 col-lg-6">
                             <div class="input-group mb-3">
 
-                                <span class="input-group-text w-50">Kwota</span>
+                                <span class="input-group-text col-5 inputx">Kwota</span>
                                 <input type="number" id="inputAmount" value="{{ expense.amount }}" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Amount" name="amount" min="0" required>
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
@@ -116,7 +120,7 @@
                         <div class="col-12 col-lg-6">
                             <div class="input-group mb-3">
 
-                                <span class="input-group-text w-50">Data</span>
+                                <span class="input-group-text col-5 inputx">Data</span>
                                 <input type="date" id="inputDate" class="form-control" aria-label="Date" name="date" min="1990-01-01" value="{{ date }}" max="2035-12-31" required>
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>
@@ -128,7 +132,7 @@
                         <div class="col-12 col-lg-6">
 
                             <div class="input-group mb-3">
-                                <span class="input-group-text w-50">Sposób płatności </span>
+                                <span class="input-group-text col-5 inputx">Sposób płatności </span>
                                 <select class="form-select" id="inputPayment" name="paymentMethod" aria-label="payment" required>
                                     <option value="cat0" selected disabled> </option>
                                     {% for paymentMethod in methodsPayment %}
@@ -145,7 +149,7 @@
                         <div class="col-12 col-lg-6">
 
                             <div class="input-group mb-3">
-                                <span class="input-group-text w-50">Kategoria</span>
+                                <span class="input-group-text col-5 inputx">Kategoria</span>
                                 <select class="form-select" name="category" id="inputCategory" aria-label="category" required>
                                     <option value="" selected disabled>	</option>
                                     {% for category in expensesCategory %}
@@ -167,7 +171,7 @@
                         <div class="col-12">
 
                             <div class="input-group mb-3">
-                                <span class="input-group-text">Komentarz</span>
+                                <span class="input-group-text inputx">Komentarz</span>
                                 <input type="text" name="comment" id="inputComment" class="form-control" placeholder="Dodaj komentarz" aria-label="Comment">
                             </div>
                             <div class="text-danger ms-2 fs-6 position-absolute"></div>

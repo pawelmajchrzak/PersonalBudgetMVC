@@ -28,17 +28,27 @@
 
 
 						<div class="collapse" id="collapseIncomes">
-							<div class="card card-body">
+							<div class="card card-body p-1 p-lg-3">
 								<ul>
 									{% for category in incomesCategory %}
-									<li class="py-1"> 
-										{{ category.name }} 
-										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome"  data-bs-whatever="{{ category.name }}">Edytuj</button>
+									<li class="py-1 row justify-content-center"> 
+										<div class="col-5 col-lg-4">
+											{{ category.name }} 
+										</div>
+
+										<div class="col-3 col-lg-1">
+											<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryIncome"  data-bs-whatever="{{ category.name }}">Edytuj</button>
+										</div>
+
+										<div class="col-3 col-lg-1">
 										{% if incomesCategory|length > 1 %}
+										
 											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryIncome" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
+										
 										{% else %}
 											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
 										{% endif %}
+										</div>
 									</li>
 									{% endfor %}
 								</ul>
@@ -67,22 +77,30 @@
 						<span><a class="cleanLink2" data-bs-toggle="collapse" href="#collapseExpenses" role="button" aria-expanded="false" aria-controls="collapseExpenses"><i class="icon-basket"></i> Kategorie wydatków<i class="icon-down-open"></i></a> </span>
 
 						<div class="collapse" id="collapseExpenses">
-							<div class="card card-body">
-								<ul>
+							<div class="card card-body p-1 p-lg-3">
+								<ul class="px-0">
 									{% for category in expensesCategory %}
-									<li class="py-1"> 
-										{{ category.name }}
-										{% if category.category_limit > 0 %}
-											<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Limit: {{ category.category_limit }}</button>
-										{% else %}
-											<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Ustaw Limit</button>
-										{% endif %}
-										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryExpense"  data-bs-whatever="{{ category.name }}">Edytuj</button>
-										{% if expensesCategory|length > 1 %}
-											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryExpense" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
-										{% else %}
-											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
-										{% endif %}
+									<li class="py-1 row justify-content-center"> 
+										<div class="col-3 col-lg-3 px-0 mx-0">
+											{{ category.name }}
+										</div>
+										<div class="col-3 col-lg-1 px-0 mx-0">
+											{% if category.category_limit > 0 %}
+												<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Limit: {{ category.category_limit }}</button>
+											{% else %}
+												<button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLimit"  data-bs-whatever="{{ category.name }}">Ustaw Limit</button>
+											{% endif %}
+										</div>
+										<div class="col-3 col-lg-1 px-0 mx-0">
+											<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryExpense"  data-bs-whatever="{{ category.name }}">Edytuj</button>
+										</div>
+										<div class="col-3 col-lg-1 px-0 mx-0">
+											{% if expensesCategory|length > 1 %}
+												<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryExpense" data-bs-whatever="{{ category.name }}" id="my-button" data-old-name="{{ category.name }}">Usuń</button>
+											{% else %}
+												<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej kategorii jest nie możliwe</div>
+											{% endif %}
+										</div>
 									</li>
 									{% endfor %}
 								</ul>
@@ -111,17 +129,25 @@
 						<span><a class="cleanLink2" data-bs-toggle="collapse" href="#collapseMethodsPayment" role="button" aria-expanded="false" aria-controls="collapseMethodsPayment"><i class="icon-money"></i> Sposoby płatności<i class="icon-down-open"></i></a></span>
 						
 						<div class="collapse" id="collapseMethodsPayment">
-							<div class="card card-body">
+							<div class="card card-body p-1 p-lg-3">
 								<ul>
+									
 									{% for paymentMethod in paymentMethod %}
-									<li class="py-1"> 
-										{{ paymentMethod.name }} 
-										<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editPaymentMethod"  data-bs-whatever="{{ paymentMethod.name }}">Edytuj</button>
-										{% if paymentMethod|length > 1 %}
-											<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePaymentMethod" data-bs-whatever="{{ paymentMethod.name }}" id="my-button" data-old-name="{{ paymentMethod.name }}">Usuń</button>
-										{% else %}
-											<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej metody płatności jest nie możliwe</div>
-										{% endif %}
+
+									<li class="py-1 row justify-content-center"> 
+										<div class="col-5 col-lg-4 px-0 mx-0">
+											{{ paymentMethod.name }} 
+										</div>
+										<div class="col-3 col-lg-1 px-0 mx-0">
+											<button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#editPaymentMethod"  data-bs-whatever="{{ paymentMethod.name }}">Edytuj</button>
+										</div>
+										<div class="col-3 col-lg-1 px-0 mx-0">
+											{% if paymentMethod|length > 1 %}
+												<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePaymentMethod" data-bs-whatever="{{ paymentMethod.name }}" id="my-button" data-old-name="{{ paymentMethod.name }}">Usuń</button>
+											{% else %}
+												<div class="fs-6 fst-italic mt-2"> Usunięcie ostatniej metody płatności jest nie możliwe</div>
+											{% endif %}
+										</div>
 									</li>
 									{% endfor %}
 								</ul>
@@ -214,7 +240,7 @@
 						<div class="mb-3">
 
 							<label for="oldName" class="col-form-label">Nowa nazwa kategorii:</label>
-							<input type="text" class="form-control" name="newNameCategory">
+							<input type="text" class="form-control" name="newNameCategory" maxlength="25" required>
 						</div>
 					</div>
 					<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
@@ -263,7 +289,7 @@
 							<span class="fs-6">Wybierz kategorię do której mają zostać przeniesione przychody z usuniętej kategorii:</span><br>
 							<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" value="{{ income.category }}" required> 
 
-								<option value="cat0" selected disabled>	</option>
+								
 								{% for category in incomesCategory %}
 										<option value="{{ category.id }}">
 												{{ category.name }}
@@ -306,7 +332,7 @@
 						<div class="mb-3">
 
 							<label for="oldName" class="col-form-label"> Nazwa nowej kategorii:</label>
-							<input type="text" class="form-control" name="newNameCategory">
+							<input type="text" class="form-control" name="newNameCategory" maxlength="25" required>
 						</div>
 					</div>
 					<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
@@ -352,7 +378,7 @@
 					<div class="mb-3">
 
 						<label for="oldName" class="col-form-label">Nowa nazwa kategorii:</label>
-						<input type="text" class="form-control" name="newNameCategory">
+						<input type="text" class="form-control" name="newNameCategory" maxlength="25" required>
 					</div>
 
 				</div>
@@ -403,7 +429,6 @@
 						<span class="fs-6">Wybierz kategorię do której mają zostać przeniesione wydatki z usuniętej kategorii:</span><br>
 						<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" value="{{ expense.category }}" required> 
 
-							<option value="cat0" selected disabled>	</option>
 							{% for category in expensesCategory %}
 									<option value="{{ category.id }}">
 											{{ category.name }}
@@ -447,7 +472,7 @@
 					<div class="mb-3">
 
 						<label for="oldName" class="col-form-label"> Nazwa nowej kategorii:</label>
-						<input type="text" class="form-control" name="newNameCategory">
+						<input type="text" class="form-control" name="newNameCategory" maxlength="25" required>
 					</div>
 				</div>
 				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
@@ -493,7 +518,7 @@
 					<div class="mb-3">
 
 						<label for="oldName" class="col-form-label">Nowa nazwa metody płatności:</label>
-						<input type="text" class="form-control" name="newNameCategory">
+						<input type="text" class="form-control" name="newNameCategory" maxlength="25" required>
 					</div>
 				</div>
 				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
@@ -542,7 +567,6 @@
 						<span class="fs-6">Wybierz metodę płatności do której mają zostać przeniesione wydatki z usuniętej metody płatności:</span><br>
 						<select class="form-select" name="categoryReplace" id="inputCategory" aria-label="category" required> 
 
-							<option value="cat0" selected disabled>	</option>
 							{% for paymentMethod in paymentMethod %}
 									<option>
 											{{ paymentMethod.name }}
@@ -586,7 +610,7 @@
 					<div class="mb-3">
 
 						<label for="oldName" class="col-form-label"> Nazwa nowej metody płatności:</label>
-						<input type="text" class="form-control" name="newNameCategory">
+						<input type="text" class="form-control" name="newNameCategory" maxlength="25" required>
 					</div>
 				</div>
 				<div class="col-md-8 col-lg-7 col-xl-6 col-xxl-5  ps-5 pt-2 mt-5 m-md-auto text-danger fs-6 ">
@@ -632,7 +656,7 @@
 					<div class="mb-3">
 						<div class="input-group mb-3">
 							<span class="input-group-text w-50">Nowy limit</span>
-							<input type="number" id="inputLimit" value="" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Limit" name="limit" min="0">
+							<input type="number" id="inputLimit" value="" class="form-control" placeholder="Podaj kwotę w zł" aria-label="Limit" name="limit" min="0" max="99999999999">
 						</div>
 					</div>
 				</div>

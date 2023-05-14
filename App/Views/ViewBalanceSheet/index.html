@@ -18,7 +18,7 @@
 			
 			<div class="row">
 				<div class="col-12 col-lg-6 p-2">
-					<div class="border border-success bg-light rounded p-4">
+					<div class="border border-success bg-light rounded p-1 p-lg-4">
 						<section>
 							<form method="post" action="/viewBalanceSheet/create">
 								<div class="row my-3">					
@@ -45,9 +45,9 @@
 								</div>
 							</form>
 							
-							<div class="d-grid gap-2 col-6 mx-auto">
+							<div class="d-grid gap-2 col-9 col-lg-6 mx-auto">
 								<button
-								  class="btn btn-outline-success btn-lg"
+								  class="btn btn-outline-success"
 								  data-bs-toggle="modal"
 								  data-bs-target="#timeRange"
 								>
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				<div class="col-12 col-lg-6 p-2">
-					<div class="border border-success bg-light rounded p-3">
+					<div class="border border-success bg-light rounded p-1 p-lg-3">
 						<section>
 							<div class="row my-3 px-4">
 								<div class="col-6 h4 text-center fw-bold">Bilans:</div>
@@ -68,7 +68,7 @@
 
 							<div class="fs-6 text-center {{balance.colorText}}"> {{balance.commentToBalance}}</div>
 
-							<div class="text-success fs-6 text-center "><br>{{balance.periodTime}}</div>
+							<div class="text-success fs-6 text-center " id="periodText"><br>{{balance.periodTime}}</div>
 
 						</section>
 
@@ -79,7 +79,7 @@
 			
 			<div class="row">
 				<div class="col-12 col-lg-6 p-2">
-					<div class="border border-success bg-light rounded py-3 px-3">
+					<div class="border border-success bg-light rounded py-3 px-1 px-lg-3">
 						<section>
 							
 							<header class="h4 text-center mb-3">
@@ -89,7 +89,7 @@
 							{% for categoryIndex, category in balance.incomeCategories %}
 							{% if balance.sumOfIncomes[categoryIndex] > 0 %}
 								
-								<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
+								<div class="col-6 col-lg-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
 								<div class="col-3 text-end d-inline-block ms-2 my-2"><span class="text-success pe-1">+</span>{{ balance.sumOfIncomes[categoryIndex] }}zł</div>
 								<a class="cleanLink2" data-bs-toggle="collapse" href="#collapseIncome{{categoryIndex}}" role="button" aria-expanded="false"> &nbsp; <i class="icon-down-open"></i></a>
 								<div class="collapse" id="collapseIncome{{categoryIndex}}">
@@ -126,7 +126,7 @@
 					</div>
 				</div>
 				<div class="col-12 col-lg-6 p-2">
-					<div class="border border-success bg-light rounded py-3 px-3">
+					<div class="border border-success bg-light rounded py-3 px-1 px-lg-3">
 						<section>
 							<header class="h4 text-center mb-3">
 								Wydatki
@@ -134,7 +134,7 @@
 							
 							{% for categoryIndex, category in balance.expenseCategories %}
 								{% if balance.sumOfExpenses[categoryIndex]>0 %}
-									<div class="col-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
+									<div class="col-6 col-lg-7 text-start d-inline-block ms-2 my-2">{{ category.name }}</div>
 									<div class="col-3 text-end d-inline-block ms-2 my-2"><span class="text-danger pe-1">-</span>{{ balance.sumOfExpenses[categoryIndex] }}zł</div>
 									<a class="cleanLink2" data-bs-toggle="collapse" href="#collapseExpense{{categoryIndex}}" role="button" aria-expanded="false"> &nbsp; <i class="icon-down-open"></i></a>
 									<div class="collapse" id="collapseExpense{{categoryIndex}}">

@@ -21,8 +21,9 @@
 		data: [{
 			type: "doughnut",
 			startAngle: -90,
-			//innerRadius: 60,
-			indexLabelFontSize: 17,
+			radius:  "70%",
+			//innerRadius: 120,
+			indexLabelFontSize: 16,
 			indexLabel: "{label} - #percent%",
 			toolTipContent: "<b>{label}:</b> {y} (#percent%)",
 			dataPoints: chartDataIncomes
@@ -47,8 +48,9 @@
 		data: [{
 			type: "doughnut",
 			startAngle: -90,
+			radius:  "70%",
 			//innerRadius: 60,
-			indexLabelFontSize: 17,
+			indexLabelFontSize: 16,
 			indexLabel: "{label} - #percent%",
 			toolTipContent: "<b>{label}:</b> {y} (#percent%)",
 			dataPoints: chartDataExpenses
@@ -59,7 +61,7 @@
 	chart2.render();
 	}
 
-	</script>
+</script>
 
 {% endblock %}
 
@@ -126,7 +128,7 @@
 				
 				<div class="col-12 col-lg-7">
 					<article>
-						<div class="mb-3 border border-success bg-light rounded p-2" style="height: 603px;">
+						<div class="mb-3 border border-success bg-light rounded p-2" id="chartx" style="height: 603px;">
 							
 								<header class="h4 text-center mb-3">
 									Wydatki
